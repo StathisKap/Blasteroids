@@ -1,25 +1,25 @@
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_font.h>
 #ifndef HEADER_
 #define HEADER_
 #include "../include/blasteroids_header.h"
 #endif
 
 void error(char *msg);
+void ReadKeys(ALLEGRO_EVENT *Ev, bool Keys[4]);
 
 int main()
 {
+	bool redraw = true;
+	bool done = false;
+	bool KeyIsDown[4] = {false};
+	Spaceship ship = {250, 250, 0, 0, 0, 0, al_map_rgb(255,255,0)};
+    ALLEGRO_EVENT event;
+	ALLEGRO_KEYBOARD_STATE key_state;
+
 	if (!al_init())
 		error("Couldn't initialize Allegro");
 
 	if (!al_install_keyboard())
 		error("Couldn't initialize Keyboard");
-
 
 	ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0); //FPS
 	if (!time)
@@ -29,58 +29,48 @@ int main()
 	if (!queue)
 		error("Couldn't initialize Queue");
 
-	ALLEGRO_DISPLAY* disp = al_create_display(520, 500);
+	ALLEGRO_DISPLAY* disp = al_create_display(520, 500); //Creates a window
 	if (!disp)
 		error("Couldn't initialize Display");
 
-	ALLEGRO_FONT* font = al_create_builtin_font();
-	if (!font)
-		error("Couldn't initialize Font");
-
-	Spaceship ship = {250, 250, 0, 0, 0, al_map_rgb(255,255,0)};
-
+	
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_display_event_source(disp));
 	al_register_event_source(queue, al_get_timer_event_source(timer));
 
-	bool redraw = true;
-	bool Key_Down = false;
-    ALLEGRO_EVENT event;
 
     al_start_timer(timer);	
-	while(1)
+	while(!done)
 	{
-		// Key_Down = false;
 		al_wait_for_event(queue, &event); //Capture keystrokes
 
         if(event.type == ALLEGRO_EVENT_TIMER)
             redraw = true;
         else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-            break;
+			done = true; 
+        else if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+			done = true; 
 
-		if (event.type == ALLEGRO_EVENT_KEY_DOWN) {  //If you detect any key stroke
-			// Key_Down = true;
-			switch(event.keyboard.keycode) { //Do something with them
-			case ALLEGRO_KEY_LEFT:
-				ship.heading -= ROT_SPEED;
-				break;
-			case ALLEGRO_KEY_RIGHT:
-				ship.heading += ROT_SPEED;
-				break;
-			case ALLEGRO_KEY_SPACE:
-				break;
-			}
-		}
+
+		ReadKeys(&event,KeyIsDown);
+
+		// if (KeyIsDown[UP])
+			// ship.heading -= ROT_SPEED;
+		if (KeyIsDown[LEFT])
+			ship.heading -= ROT_SPEED;
+		else if (KeyIsDown[RIGHT])
+			ship.heading += ROT_SPEED;
+		// else if (KeyIsDown[SPACE])
+			// ship.heading += ROT_SPEED;	
 
 		if(redraw && al_is_event_queue_empty(queue))
 		{
-		    al_clear_to_color(al_map_rgb(0, 0, 0));
 			draw_ship(&ship);
 			al_flip_display();
+		    al_clear_to_color(al_map_rgb(0, 0, 0));
     		redraw = false;
 		}
 	}
-	al_destroy_font(font);
 	al_destroy_display(disp);
 	al_destroy_timer(timer);
 	al_destroy_event_queue(queue);
@@ -103,4 +93,51 @@ void error(char *msg)
 {
 	fprintf(stderr, "%s: %s\n", msg, strerror(errno));
 	exit(1);
+}
+
+void ReadKeys(ALLEGRO_EVENT *Ev, bool Keys[4])
+{
+		if (Ev->type == ALLEGRO_EVENT_KEY_DOWN ) {  //If you detect any key stroke
+			switch(Ev->keyboard.keycode) { //Do something with them
+
+			case ALLEGRO_KEY_UP:
+				Keys[UP] = true;
+				break;
+
+			case ALLEGRO_KEY_LEFT:
+				Keys[LEFT] = true;
+				break;
+
+			case ALLEGRO_KEY_RIGHT:
+				Keys[RIGHT] = true;
+				break;
+
+			case ALLEGRO_KEY_SPACE:
+				Keys[SPACE] = true;
+				break;
+		
+			}
+		}
+		else if (Ev->type == ALLEGRO_EVENT_KEY_UP){ //If a key is released
+			switch(Ev->keyboard.keycode) { //Do something with them
+
+			case ALLEGRO_KEY_UP:
+				Keys[UP] = false;
+				break;
+
+			case ALLEGRO_KEY_LEFT:
+				Keys[LEFT] = false;
+				break;
+
+			case ALLEGRO_KEY_RIGHT:
+				Keys[RIGHT] = false;
+				break;
+
+			case ALLEGRO_KEY_SPACE:
+				Keys[SPACE] = false;
+				break;
+		
+			}
+		}
+
 }
