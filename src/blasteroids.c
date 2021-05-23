@@ -3,15 +3,13 @@
 #include "../include/blasteroids_header.h"
 #endif
 
-void error(char *msg);
-void ReadKeys(ALLEGRO_EVENT *Ev, bool Keys[4]);
 
 int main()
 {
 	bool redraw = true;
 	bool done = false;
-	bool KeyIsDown[4] = {false};
-	Spaceship ship = {250, 250, 0, 0, 0, 0, al_map_rgb(255,255,0)};
+	bool KeyIsDown[SPACESHIP_KEYS_NUM] = {false};
+	Spaceship ship = {250, 250, 0, 0, 0, 1, 0, al_map_rgb(255,255,0)};
     ALLEGRO_EVENT event;
 	ALLEGRO_KEYBOARD_STATE key_state;
 
@@ -29,15 +27,12 @@ int main()
 	if (!queue)
 		error("Couldn't initialize Queue");
 
-	ALLEGRO_DISPLAY* disp = al_create_display(520, 500); //Creates a window
+	ALLEGRO_DISPLAY* disp = al_create_display(DISPLAY_HEIGHT, DISPLAY_WIDTH); //Creates a window
 	if (!disp)
 		error("Couldn't initialize Display");
 
-	
-	al_register_event_source(queue, al_get_keyboard_event_source());
-	al_register_event_source(queue, al_get_display_event_source(disp));
-	al_register_event_source(queue, al_get_timer_event_source(timer));
-
+	if(!al_register_all(disp, timer, queue))
+		error("Coulnd't register something");
 
     al_start_timer(timer);	
 	while(!done)
@@ -46,47 +41,33 @@ int main()
 
         if(event.type == ALLEGRO_EVENT_TIMER)
             redraw = true;
-        else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-			done = true; 
-        else if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+        else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 			done = true; 
 
 
-		ReadKeys(&event,KeyIsDown);
-
-		// if (KeyIsDown[UP])
-			// ship.heading -= ROT_SPEED;
-		if (KeyIsDown[LEFT])
-			ship.heading -= ROT_SPEED;
-		else if (KeyIsDown[RIGHT])
-			ship.heading += ROT_SPEED;
-		// else if (KeyIsDown[SPACE])
-			// ship.heading += ROT_SPEED;	
+		ReadKeysForSpaceship(&event,KeyIsDown);
+		UseKeysForSpaceship(&ship,KeyIsDown);
+		
 
 		if(redraw && al_is_event_queue_empty(queue))
 		{
 			draw_ship(&ship);
+			teleport(&ship.sx, &ship.sy);
 			al_flip_display();
 		    al_clear_to_color(al_map_rgb(0, 0, 0));
     		redraw = false;
 		}
 	}
-	al_destroy_display(disp);
-	al_destroy_timer(timer);
-	al_destroy_event_queue(queue);
-
+		if(!al_destroy_all(disp,timer,queue))
+			error("Couldn't destroy everything");
 	return 0;
 }
 
-/* Read keypresses like this
- *
- *
+/* 
  * You need to display the number of lives, and score on the screen
  * When you run out of lives you need to display "Game Over!"
  * in big friendly letters in the middle of the screen.
  *
- *
-
 */
 
 void error(char *msg)
@@ -95,49 +76,30 @@ void error(char *msg)
 	exit(1);
 }
 
-void ReadKeys(ALLEGRO_EVENT *Ev, bool Keys[4])
+int al_destroy_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue)
 {
-		if (Ev->type == ALLEGRO_EVENT_KEY_DOWN ) {  //If you detect any key stroke
-			switch(Ev->keyboard.keycode) { //Do something with them
+	al_destroy_display(display);
+	al_destroy_timer(timer_event);
+	al_destroy_event_queue(event_queue);
+	return 1;
+}
 
-			case ALLEGRO_KEY_UP:
-				Keys[UP] = true;
-				break;
+int al_register_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue)
+{
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+	al_register_event_source(event_queue, al_get_timer_event_source(timer_event));
+	return 1;
+}
 
-			case ALLEGRO_KEY_LEFT:
-				Keys[LEFT] = true;
-				break;
-
-			case ALLEGRO_KEY_RIGHT:
-				Keys[RIGHT] = true;
-				break;
-
-			case ALLEGRO_KEY_SPACE:
-				Keys[SPACE] = true;
-				break;
-		
-			}
-		}
-		else if (Ev->type == ALLEGRO_EVENT_KEY_UP){ //If a key is released
-			switch(Ev->keyboard.keycode) { //Do something with them
-
-			case ALLEGRO_KEY_UP:
-				Keys[UP] = false;
-				break;
-
-			case ALLEGRO_KEY_LEFT:
-				Keys[LEFT] = false;
-				break;
-
-			case ALLEGRO_KEY_RIGHT:
-				Keys[RIGHT] = false;
-				break;
-
-			case ALLEGRO_KEY_SPACE:
-				Keys[SPACE] = false;
-				break;
-		
-			}
-		}
-
+void teleport(float *sx, float *sy)
+{
+	if (*sx > DISPLAY_WIDTH)
+		*sx = 0;
+	if (*sx < 0)
+		*sx = DISPLAY_WIDTH;
+	if (*sy > DISPLAY_HEIGHT)
+		*sy = 0;
+	if (*sy < 0)
+		*sy = DISPLAY_HEIGHT;
 }
