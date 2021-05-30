@@ -3,15 +3,15 @@
 #include "../include/blasteroids_header.h"
 #endif
 
+bool done = false;
+
 
 int main()
 {
 	bool redraw = true;
-	bool done = false;
 	bool KeyIsDown[SPACESHIP_KEYS_NUM] = {false};
-	Spaceship ship = {250, 250, 0, 0, 0, 1, 0, al_map_rgb(255,255,0)};
+	Spaceship ship = {DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, 0, al_map_rgb(255,255,0)};
     ALLEGRO_EVENT event;
-	ALLEGRO_KEYBOARD_STATE key_state;
 
 	if (!al_init())
 		error("Couldn't initialize Allegro");
@@ -43,7 +43,6 @@ int main()
             redraw = true;
         else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 			done = true; 
-
 
 		ReadKeysForSpaceship(&event,KeyIsDown);
 		UseKeysForSpaceship(&ship,KeyIsDown);

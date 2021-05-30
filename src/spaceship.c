@@ -4,6 +4,7 @@
 #endif
 
 bool init = false;
+static int interval = BULLET_INTERVAL;
 
 void draw_ship(Spaceship* s)
 {
@@ -17,6 +18,29 @@ void draw_ship(Spaceship* s)
 	al_draw_line(0*s->scale, -11*s->scale, 8*s->scale, 9*s->scale, s->color, thickness);
 	al_draw_line(-6*s->scale, 4*s->scale, -1*s->scale, 4*s->scale, s->color, thickness);
 	al_draw_line(6*s->scale, 4*s->scale, 1*s->scale, 4*s->scale, s->color, thickness);
+}
+
+void *draw_bullet(void * si)
+{
+	// interval--;
+	// if (interval == 0)
+	Spaceship *s = (Spaceship*)si;
+	float drift = s->drift;
+	float thickness = 1.5f;
+	float bX = s->sx, bY = s->sy;
+	ALLEGRO_TRANSFORM transform;
+	al_identity_transform(&transform);
+	al_rotate_transform(&transform, s->heading + PI / 2);
+	while(bX < DISPLAY_WIDTH && bY < DISPLAY_HEIGHT)
+	{
+		bX += BULLET_SPEED * cos(drift);
+		bY += BULLET_SPEED * sin(drift);
+		al_translate_transform(&transform, bX, bY);
+		al_use_transform(&transform);
+		al_draw_line(0, 10, 0, -10,al_map_rgb(255,0,0),thickness);
+	}
+	free(s);
+	return NULL;
 }
 
 void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev, bool Keys[SPACESHIP_KEYS_NUM])
@@ -75,7 +99,24 @@ void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev, bool Keys[SPACESHIP_KEYS_NUM])
 }
 
 void UseKeysForSpaceship(Spaceship *s, bool Keys[SPACESHIP_KEYS_NUM])
-{
+{	
+	if (Keys[SPACE])
+	{
+	pthread_t threads[BULLET_COUNT];
+	void * result;
+	for(int i = 0; i < BULLET_COUNT; i++)
+	{
+			// if (pthread_create(&threads[i], NULL, draw_bullet, (void*)&s) == -1)
+				// error("Couldn't create threads");
+				draw_bullet(s);
+
+			// for(int i = 0; i < BULLET_COUNT; i++)
+			// {
+				// if(pthread_join(threads[i], &result) == -1)
+					// error("Can't join thread");
+			// }
+		}
+	}		
 	if (Keys[LEFT])
 		s->heading -= ROT_SPEED;
 	if (Keys[RIGHT])
@@ -97,14 +138,13 @@ void UseKeysForSpaceship(Spaceship *s, bool Keys[SPACESHIP_KEYS_NUM])
 		init = true;
 	}
 
-	float Pos_Neg = (s->drift >= 0 && s->drift < PI ? SPACESHIP_SPEED : -SPACESHIP_SPEED);
-	s->sx += s->speed * cos(s->drift); //: sin(s->drift); 
-	s->sy += s->speed * sin(s->drift); //: cos(s->drift);
+	s->sx += s->speed * cos(s->drift);
+	s->sy += s->speed * sin(s->drift);
 
 	s->speed = s->speed > 0 ? s->speed - DRAG : 0;
 	if(s->speed > SPACESHIP_SPEED_MAX)
 		s->speed = SPACESHIP_SPEED_MAX;
-	printf("speed:%f\tdrift:%f\theading:%f\tsx:%f\tsy:%f\t\n",s->speed, s->drift, s->heading, s->sx, s->sy);
+	// printf("speed:%f\tdrift:%f\theading:%f\tsx:%f\tsy:%f\t\n",s->speed, s->drift, s->heading, s->sx, s->sy);
 }
 /* Spaceship behaviour
  * The spaceship starts stationary in the center of the screen.
