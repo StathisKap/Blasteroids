@@ -10,7 +10,9 @@ int main()
 {
 	bool redraw = true;
 	bool KeyIsDown[SPACESHIP_KEYS_NUM] = {false};
-	Spaceship ship = {DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, 0, al_map_rgb(255,255,0)};
+	Spaceship ship = {DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, true, al_map_rgb(255,255,0)};
+	Bullet bullets[BULLET_COUNT];
+	init_bullet(bullets);
     ALLEGRO_EVENT event;
 
 	if (!al_init())
@@ -45,12 +47,14 @@ int main()
 			done = true; 
 
 		ReadKeysForSpaceship(&event,KeyIsDown);
-		UseKeysForSpaceship(&ship,KeyIsDown);
+		UseKeysForSpaceship(&ship,KeyIsDown,bullets);
 		
 
 		if(redraw && al_is_event_queue_empty(queue))
 		{
 			draw_ship(&ship);
+			draw_bullet(bullets);
+			update_bullet(bullets);
 			teleport(&ship.sx, &ship.sy);
 			al_flip_display();
 		    al_clear_to_color(al_map_rgb(0, 0, 0));

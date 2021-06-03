@@ -9,4 +9,4 @@
 
 ./objects/blasteroids.o: ./src/blasteroids.c
 	@mkdir -p $(@D)
-	gcc ./src/blasteroids.c -c -o ./objects/blasteroids.o `pkg-config --libs allegro-5 allegro_font-5 allegro_primitives-5` -lm --lpthread
+	gcc ./src/blasteroids.c -c -o ./objects/blasteroids.o `pkg-config --libs allegro-5 allegro_font-5 allegro_primitives-5` -lm -lpthread
