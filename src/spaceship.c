@@ -136,7 +136,9 @@ void draw_bullet()
 	{
 		if (bullets[i].live)
 		{
-
+			ALLEGRO_TRANSFORM transform; 
+			al_identity_transform(&transform);
+			al_use_transform(&transform);
 			al_draw_filled_circle(bullets[i].sx, bullets[i].sy, 2, al_map_rgb(255,0,0)); // Draws a red dot
 		}
 		
