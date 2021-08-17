@@ -51,6 +51,7 @@ void error(char *msg);
 int al_destroy_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue);
 int al_register_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue);
 void teleport(float *sx, float *sy);
+void init_bullet();
 void draw_bullet();
 void fire_bullet(Spaceship *s);
 void update_bullet();

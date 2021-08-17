@@ -111,6 +111,14 @@ void UseKeysForSpaceship(Spaceship *s) //uses the booleans from ReadKeysForSpace
 	// printf("speed:%f\tdrift:%f\theading:%f\tsx:%f\tsy:%f\t\n",s->speed, s->drift, s->heading, s->sx, s->sy);
 }
 
+void init_bullet() // we set all bullets to false
+{
+	for (size_t i = 0; i < BULLET_COUNT; i++)
+	{
+		bullets[i].live = false;
+	}
+	
+}
 
 void fire_bullet(Spaceship *s)
 {
