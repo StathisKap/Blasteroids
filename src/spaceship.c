@@ -108,7 +108,6 @@ void UseKeysForSpaceship(Spaceship *s) //uses the booleans from ReadKeysForSpace
 	s->speed = s->speed > 0 ? s->speed - DRAG : 0;
 	if(s->speed > SPACESHIP_SPEED_MAX)
 		s->speed = SPACESHIP_SPEED_MAX;
-	// printf("speed:%f\tdrift:%f\theading:%f\tsx:%f\tsy:%f\t\n",s->speed, s->drift, s->heading, s->sx, s->sy);
 }
 	
 
@@ -122,7 +121,6 @@ void fire_bullet(Spaceship *s)
 			bullets[i].heading = s->heading; // It sets the heading equal to wherever the ship was looking
 			bullets[i].sx = s->sx; // It sets the starting position to where the ship is
 			bullets[i].sy = s->sy;
-			printf("%ld:\tBh %.3f Sh %.3f Bx %.3f Sx %.3f\n",i,bullets[i].heading,s->heading,bullets[i].sx, s->sx); // It fails though, so I'm debugging
 			break;
 		}
 		
