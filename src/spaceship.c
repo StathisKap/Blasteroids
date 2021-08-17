@@ -5,6 +5,7 @@
 
 bool init = false;
 extern Bullet *bullets;
+extern bool *Keys;
 
 void draw_ship(Spaceship* s)
 {
@@ -19,7 +20,7 @@ void draw_ship(Spaceship* s)
 	al_draw_line(-6*s->scale, 4*s->scale, -1*s->scale, 4*s->scale, s->color, thickness); //We draw the lines
 	al_draw_line(6*s->scale, 4*s->scale, 1*s->scale, 4*s->scale, s->color, thickness); //We draw the lines
 }
-void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev, bool Keys[SPACESHIP_KEYS_NUM])
+void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev)
 {
 		if (Ev->type == ALLEGRO_EVENT_KEY_DOWN ) {  //If you detect any key stroke
 			switch(Ev->keyboard.keycode) { //Do something with them
@@ -74,7 +75,7 @@ void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev, bool Keys[SPACESHIP_KEYS_NUM])
 
 }
 
-void UseKeysForSpaceship(Spaceship *s, bool Keys[]) //uses the booleans from ReadKeysForSpaceship to perform certain actions
+void UseKeysForSpaceship(Spaceship *s) //uses the booleans from ReadKeysForSpaceship to perform certain actions
 {																						//This way we get smooth movement, sliding, etc
 	if (Keys[SPACE])
 	{

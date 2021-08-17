@@ -5,13 +5,13 @@
 
 bool done = false;
 Bullet *bullets;
-
+bool *Keys;
 
 int main()
 { 
 	bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
+	Keys = malloc(sizeof(bool)*(SPACESHIP_KEYS_NUM));
 	bool redraw = true;
-	bool KeyIsDown[SPACESHIP_KEYS_NUM] = {false};
 	Spaceship ship = {DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, true, al_map_rgb(255,255,0)};
 	init_bullet();
     ALLEGRO_EVENT event;
@@ -47,8 +47,8 @@ int main()
         else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 			done = true; 
 
-		ReadKeysForSpaceship(&event,KeyIsDown);
-		UseKeysForSpaceship(&ship,KeyIsDown);
+		ReadKeysForSpaceship(&event);
+		UseKeysForSpaceship(&ship);
 		
 
 		if(redraw && al_is_event_queue_empty(queue))
@@ -86,6 +86,7 @@ int al_destroy_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO
 	al_destroy_timer(timer_event);
 	al_destroy_event_queue(event_queue);
 	free(bullets);
+	free(Keys);
 	return 1;
 }
 
