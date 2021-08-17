@@ -4,19 +4,20 @@
 #endif
 
 bool init = false;
+extern Bullet *bullets;
 
 void draw_ship(Spaceship* s)
 {
-	float thickness = 2.5f;
-	ALLEGRO_TRANSFORM transform;
+	float thickness = 2.5f; // just a variable to control the thickness in case we wanna vary it;
+	ALLEGRO_TRANSFORM transform; 
 	al_identity_transform(&transform);
-	al_rotate_transform(&transform, s->heading + PI / 2);
-	al_translate_transform(&transform, s->sx, s->sy);
+	al_rotate_transform(&transform, s->heading + PI / 2); //We rotate it
+	al_translate_transform(&transform, s->sx, s->sy); //We move it to an initial position
 	al_use_transform(&transform);
-	al_draw_line(-8*s->scale, 9*s->scale, 0*s->scale, -11*s->scale, s->color, thickness );
-	al_draw_line(0*s->scale, -11*s->scale, 8*s->scale, 9*s->scale, s->color, thickness);
-	al_draw_line(-6*s->scale, 4*s->scale, -1*s->scale, 4*s->scale, s->color, thickness);
-	al_draw_line(6*s->scale, 4*s->scale, 1*s->scale, 4*s->scale, s->color, thickness);
+	al_draw_line(-8*s->scale, 9*s->scale, 0*s->scale, -11*s->scale, s->color, thickness ); //We draw the lines
+	al_draw_line(0*s->scale, -11*s->scale, 8*s->scale, 9*s->scale, s->color, thickness);  //We draw the lines
+	al_draw_line(-6*s->scale, 4*s->scale, -1*s->scale, 4*s->scale, s->color, thickness); //We draw the lines
+	al_draw_line(6*s->scale, 4*s->scale, 1*s->scale, 4*s->scale, s->color, thickness); //We draw the lines
 }
 void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev, bool Keys[SPACESHIP_KEYS_NUM])
 {
@@ -73,11 +74,11 @@ void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev, bool Keys[SPACESHIP_KEYS_NUM])
 
 }
 
-void UseKeysForSpaceship(Spaceship *s, bool Keys[SPACESHIP_KEYS_NUM], Bullet bullets[])
-{	
+void UseKeysForSpaceship(Spaceship *s, bool Keys[]) //uses the booleans from ReadKeysForSpaceship to perform certain actions
+{																						//This way we get smooth movement, sliding, etc
 	if (Keys[SPACE])
 	{
-		fire_bullet(bullets,s);
+		fire_bullet(s);
 	}		
 	if (Keys[LEFT])
 		s->heading -= ROT_SPEED;
@@ -109,7 +110,7 @@ void UseKeysForSpaceship(Spaceship *s, bool Keys[SPACESHIP_KEYS_NUM], Bullet bul
 	// printf("speed:%f\tdrift:%f\theading:%f\tsx:%f\tsy:%f\t\n",s->speed, s->drift, s->heading, s->sx, s->sy);
 }
 
-void init_bullet(Bullet bullets[])
+void init_bullet() // we set all bullets to false
 {
 	for (size_t i = 0; i < BULLET_COUNT; i++)
 	{
@@ -118,17 +119,17 @@ void init_bullet(Bullet bullets[])
 	
 }
 
-void fire_bullet(Bullet bullets[], Spaceship *s)
+void fire_bullet(Spaceship *s)
 {
-	for (size_t i = 0; i < BULLET_COUNT; i++)
+	for (size_t i = 0; i < BULLET_COUNT; i++) //goes through each bullet
 	{
-		if (!bullets[i].live)
+		if (!bullets[i].live) //If it is false then
 		{
-			bullets[i].live = true;
-			bullets[i].heading = s->heading;
-			bullets[i].sx = s->sx;
+			bullets[i].live = true; // It turns it to true
+			bullets[i].heading = s->heading; // It sets the heading equal to wherever the ship was looking
+			bullets[i].sx = s->sx; // It sets the starting position to where the ship is
 			bullets[i].sy = s->sy;
-			printf("%ld:\tBh %.3f Sh %.3f Bx %.3f Sx %.3f\n",i,bullets[i].heading,s->heading,bullets[i].sx, s->sx);
+			printf("%ld:\tBh %.3f Sh %.3f Bx %.3f Sx %.3f\n",i,bullets[i].heading,s->heading,bullets[i].sx, s->sx); // It fails though, so I'm debugging
 			break;
 		}
 		
@@ -136,20 +137,20 @@ void fire_bullet(Bullet bullets[], Spaceship *s)
 	
 }
 
-void draw_bullet(Bullet bullets[])
+void draw_bullet()
 {
 	for (size_t i = 0; i < BULLET_COUNT; i++)
 	{
 		if (bullets[i].live)
 		{
-			al_draw_filled_circle(bullets[i].sx, bullets[i].sy, 2, al_map_rgb(255,0,0));
+			al_draw_filled_circle(bullets[i].sx, bullets[i].sy, 2, al_map_rgb(255,0,0)); // Draws a red dot
 		}
 		
 	}
 	
 }
 
-void update_bullet(Bullet bullets[])
+void update_bullet()
 {
 	for (size_t i = 0; i < BULLET_COUNT; i++)
 	{
@@ -173,10 +174,6 @@ void update_bullet(Bullet bullets[])
 	}
 	
 }
-/* Spaceship behaviour
- * The spaceship starts stationary in the center of the screen.
- * "Up" goes forward. "Right" and "Left" rotate. "Space" fires
- */
 
 /* Collisions
  * If the spaceship collides with a rock, it dies immediately and the player
