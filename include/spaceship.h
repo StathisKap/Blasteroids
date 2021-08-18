@@ -1,0 +1,1 @@
+void draw_ship(Spaceship* s); //Draws the ship

@@ -1,6 +1,6 @@
 #ifndef HEADER_
 #define HEADER_
-#include "../include/blasteroids_header.h"
+#include "../include/blasteroids.h"
 #endif
 
 bool done = false;

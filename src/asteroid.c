@@ -1,3 +1,10 @@
+#ifndef HEADER_
+#define HEADER_
+#include "../include/blasteroids.h"
+#endif
+
+
+
 /*
  *
  * if an asteroid is hit by a blast from the spaceship's cannon

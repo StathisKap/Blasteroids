@@ -34,7 +34,6 @@ typedef struct {
 	ALLEGRO_COLOR color;
 } Spaceship;
 
-
 typedef struct 
 {
 	float sx; //Where it is on the screen
@@ -44,13 +43,12 @@ typedef struct
 	ALLEGRO_COLOR color;
 } Bullet;
 
-void draw_ship(Spaceship* s); //Draws the ship
+
+#include "blast.h"
+#include "spaceship.h"
 void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev); 
 void UseKeysForSpaceship(Spaceship *s);
 void error(char *msg);
-int al_destroy_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue);
-int al_register_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue);
+int  al_destroy_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue);
+int  al_register_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue);
 void teleport(float *sx, float *sy);
-void draw_bullet();
-void fire_bullet(Spaceship *s);
-void update_bullet();
