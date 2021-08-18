@@ -1,5 +1,5 @@
-#ifndef HEADER_
-#define HEADER_
+#ifndef	BLAST_ 
+#define BLAST_
 #include "../include/blasteroids.h"
 #endif
 
