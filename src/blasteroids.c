@@ -3,14 +3,18 @@
 #include "../include/blasteroids.h"
 #endif
 
+
+
 bool done = false;
 Bullet *bullets;
+Asteroid *asteroids;
 bool *Keys;
 
 int main()
 { 
 	bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
-	Keys = malloc(sizeof(bool)*(SPACESHIP_KEYS_NUM));
+	asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
+	Keys = malloc(sizeof(bool)*SPACESHIP_KEYS_NUM);
 	bool redraw = true;
 	Spaceship ship = {DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, true, al_map_rgb(255,255,0)};
     ALLEGRO_EVENT event;
@@ -53,8 +57,9 @@ int main()
 		if(redraw && al_is_event_queue_empty(queue))
 		{
 			draw_ship(&ship);
-			draw_bullet(bullets);
-			update_bullet(bullets);
+			draw_bullet();
+			//draw_asteroid();
+			update_bullet();
 			teleport(&ship.sx, &ship.sy);
 			al_flip_display();
 		    al_clear_to_color(al_map_rgb(0, 0, 0));

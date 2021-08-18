@@ -20,32 +20,14 @@
 #define DISPLAY_HEIGHT 700
 #define BULLET_COUNT 100000
 #define BULLET_SPEED 15
+#define MAX_BIG_ASTEROIDS 4
 
 enum KEYS {UP, LEFT, RIGHT, SPACE, DOWN};
+enum COLOURS {YELLOW, ORANGE, RED};
 
-typedef struct {
-	float sx; //Where it is on the screen
-	float sy;//*
-	float heading; //The direction it's pointing
-	float speed;
-	float drift;
-	float scale;
-	bool live; //is it dead?
-	ALLEGRO_COLOR color;
-} Spaceship;
-
-typedef struct 
-{
-	float sx; //Where it is on the screen
-	float sy;
-	float heading;
-	bool live; //is it dead?
-	ALLEGRO_COLOR color;
-} Bullet;
-
-
-#include "blast.h"
 #include "spaceship.h"
+#include "blast.h"
+#include "asteroid.h"
 void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev); 
 void UseKeysForSpaceship(Spaceship *s);
 void error(char *msg);
