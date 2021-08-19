@@ -9,6 +9,7 @@ bool done = false;
 Bullet *bullets;
 Asteroid *asteroids;
 bool *Keys;
+Spaceship ship;
 
 int main()
 { 
@@ -16,9 +17,8 @@ int main()
 	asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
 	Keys = malloc(sizeof(bool)*SPACESHIP_KEYS_NUM);
 	bool redraw = true;
-	Spaceship ship = {DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, true, al_map_rgb(255,255,0)};
     ALLEGRO_EVENT event;
-
+ 	ship = (Spaceship){DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, true, al_map_rgb(255,255,0)};
 	if (!al_init())
 		error("Couldn't initialize Allegro");
 
@@ -52,7 +52,6 @@ int main()
 
 		ReadKeysForSpaceship(&event);
 		UseKeysForSpaceship(&ship);
-		
 
 		if(redraw && al_is_event_queue_empty(queue))
 		{

@@ -4,17 +4,18 @@
 #endif
 
 extern Bullet *bullets;
+extern Spaceship ship;
 
-void fire_bullet(Spaceship *s)
+void fire_bullet()
 {
 	for (size_t i = 0; i < BULLET_COUNT; i++) //goes through each bullet
 	{
 		if (!bullets[i].live) //If it is false then
 		{
 			bullets[i].live = true; // It turns it to true
-			bullets[i].heading = s->heading; // It sets the heading equal to wherever the ship was looking
-			bullets[i].sx = s->sx; // It sets the starting position to where the ship is
-			bullets[i].sy = s->sy;
+			bullets[i].heading = ship.heading; // It sets the heading equal to wherever the ship was looking
+			bullets[i].sx = ship.sx; // It sets the starting position to where the ship is
+			bullets[i].sy = ship.sy;
 			break;
 		}
 		

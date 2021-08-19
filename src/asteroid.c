@@ -4,9 +4,13 @@
 #endif
 
 extern Asteroid *asteroids;
+extern Spaceship ship;
 
 void draw_asteroid()
 {
+	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
+		//asteroids[i] = {DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 0, 1, false, al_map_rgb(255,0,0)};
+	 
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
 		if (!asteroids[i].gone)
@@ -28,6 +32,22 @@ void draw_asteroid()
  			al_draw_line(20, 10, 10, 20, asteroids[i].color, 2.0f);
  			al_draw_line(10, 20, 0, 15, asteroids[i].color, 2.0f);
 			al_draw_line(0, 15, -20, 20, asteroids[i].color, 2.0f);
+		}
+		
+	}
+	
+}
+void fire_asteroid()
+{
+	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
+	{
+		if (!asteroids[i].gone) //If it is false then
+		{
+			asteroids[i].gone = true; // It turns it to true
+			asteroids[i].heading = ship.heading; // It sets the heading equal to wherever the ship was looking
+			asteroids[i].sx = ship.sx; // It sets the starting position to where the ship is
+			asteroids[i].sy = ship.sy;
+			break;
 		}
 		
 	}

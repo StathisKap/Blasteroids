@@ -10,4 +10,4 @@ typedef struct {
 } Spaceship;
 
 
-void draw_ship(Spaceship* s); //Draws the ship
+void draw_ship(); //Draws the ship

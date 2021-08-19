@@ -6,6 +6,7 @@
 bool init = false;
 extern Bullet *bullets;
 extern bool *Keys;
+extern Spaceship ship;
 
 void draw_ship(Spaceship* s)
 {
@@ -44,6 +45,9 @@ void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev)
 			case ALLEGRO_KEY_SPACE:
 				Keys[SPACE] = true;
 				break;
+//			case ALLEGRO_KEY_A:
+//				fire_asteroid();
+//				break;
 		
 			}
 		}
@@ -75,52 +79,52 @@ void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev)
 
 }
 
-void UseKeysForSpaceship(Spaceship *s) //uses the booleans from ReadKeysForSpaceship to perform certain actions
+void UseKeysForSpaceship() //uses the booleans from ReadKeysForSpaceship to perform certain actions
 {																						//This way we get smooth movement, sliding, etc
 	if (Keys[SPACE])
 	{
-		fire_bullet(s);
+		fire_bullet();
 	}		
 	if (Keys[LEFT])
-		s->heading -= ROT_SPEED;
+		ship.heading -= ROT_SPEED;
 	if (Keys[RIGHT])
-		s->heading += ROT_SPEED;
+		ship.heading += ROT_SPEED;
 	if (Keys[UP]){
-		s->speed += SPACESHIP_SPEED;
-		s->drift = s->heading;
+		ship.speed += SPACESHIP_SPEED;
+		ship.drift = ship.heading;
 	}
 	if (Keys[DOWN])
-		s->speed -= DRAG * 10;
+		ship.speed -= DRAG * 10;
 
-	if (s->heading > 2*PI)
-		s->heading = 0;
-	else if (s->heading < 0) 
-		s->heading = 2*PI;
+	if (ship.heading > 2*PI)
+		ship.heading = 0;
+	else if (ship.heading < 0) 
+		ship.heading = 2*PI;
 
 	if (!init)
 	{
 		init = true;
 	}
 
-	s->sx += s->speed * cos(s->drift);
-	s->sy += s->speed * sin(s->drift);
+	ship.sx += ship.speed * cos(ship.drift);
+	ship.sy += ship.speed * sin(ship.drift);
 
-	s->speed = s->speed > 0 ? s->speed - DRAG : 0;
-	if(s->speed > SPACESHIP_SPEED_MAX)
-		s->speed = SPACESHIP_SPEED_MAX;
+	ship.speed = ship.speed > 0 ? ship.speed - DRAG : 0;
+	if(ship.speed > SPACESHIP_SPEED_MAX)
+		ship.speed = SPACESHIP_SPEED_MAX;
 }
 	
 
-void fire_bullet(Spaceship *s)
+void fire_bullet()
 {
 	for (size_t i = 0; i < BULLET_COUNT; i++) //goes through each bullet
 	{
 		if (!bullets[i].live) //If it is false then
 		{
 			bullets[i].live = true; // It turns it to true
-			bullets[i].heading = s->heading; // It sets the heading equal to wherever the ship was looking
-			bullets[i].sx = s->sx; // It sets the starting position to where the ship is
-			bullets[i].sy = s->sy;
+			bullets[i].heading = ship.heading; // It sets the heading equal to wherever the ship was looking
+			bullets[i].sx = ship.sx; // It sets the starting position to where the ship is
+			bullets[i].sy = ship.sy;
 			break;
 		}
 		

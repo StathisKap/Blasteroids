@@ -1,5 +1,5 @@
 void draw_bullet();
-void fire_bullet(Spaceship *s);
+void fire_bullet();
 void update_bullet();
 
 typedef struct 

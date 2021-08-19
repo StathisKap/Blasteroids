@@ -25,11 +25,11 @@
 enum KEYS {UP, LEFT, RIGHT, SPACE, DOWN};
 enum COLOURS {YELLOW, ORANGE, RED};
 
-#include "asteroid.h"
 #include "spaceship.h"
+#include "asteroid.h"
 #include "blast.h"
 void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev); 
-void UseKeysForSpaceship(Spaceship *s);
+void UseKeysForSpaceship();
 void error(char *msg);
 int  al_destroy_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue);
 int  al_register_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue);
