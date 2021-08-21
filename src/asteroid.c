@@ -48,7 +48,7 @@ void spawn_asteroid()
 			asteroids[i].rot_velocity = 0;
 			asteroids[i].scale = 0;
 			asteroids[i].gone = false; // It turns it to true
-			asteroids[i].color = al_map_rgb(255,0,0);
+			asteroids[i].color = al_map_rgb(54, 94, 163);
 			draw_asteroid();	
 			break;
 		}

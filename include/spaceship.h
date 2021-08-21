@@ -1,4 +1,5 @@
 void draw_ship(); //Draws the ship
+void draw_flame(); //Draws the flame when it goes forward
 
 typedef struct {
 	float sx; //Where it is on the screen

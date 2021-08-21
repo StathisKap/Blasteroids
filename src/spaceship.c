@@ -21,6 +21,20 @@ void draw_ship()
 	al_draw_line(-6*ship.scale, 4*ship.scale, -1*ship.scale, 4*ship.scale, ship.color, thickness); //We draw the lines
 	al_draw_line(6*ship.scale, 4*ship.scale, 1*ship.scale, 4*ship.scale, ship.color, thickness); //We draw the lines
 }
+
+void draw_flame() //Draws the flame when it goes forward
+{
+	float thickness = 2.5f; // just a variable to control the thickness in case we wanna vary it;
+	ALLEGRO_TRANSFORM transform; 
+	al_identity_transform(&transform);
+	al_rotate_transform(&transform, ship.heading + PI / 2); //We rotate it
+	al_translate_transform(&transform, ship.sx, ship.sy); //We move it to an initial position
+	al_use_transform(&transform);
+	al_draw_line(6*ship.scale, 4*ship.scale, -1*ship.scale, 20*ship.scale, al_map_rgb(222, 136, 44), thickness); //We draw the lines
+	al_draw_line(-6*ship.scale, 4*ship.scale, 1*ship.scale, 20*ship.scale, al_map_rgb(222, 136, 44), thickness); //We draw the lines
+
+}
+
 void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev)
 {
 		if (Ev->type == ALLEGRO_EVENT_KEY_DOWN ) {  //If you detect any key stroke
@@ -91,6 +105,7 @@ void UseKeysForSpaceship() //uses the booleans from ReadKeysForSpaceship to perf
 	if (Keys[UP]){
 		ship.speed += SPACESHIP_SPEED;
 		ship.drift = ship.heading;
+		draw_flame();
 	}
 	if (Keys[DOWN])
 		ship.speed -= DRAG * 10;
