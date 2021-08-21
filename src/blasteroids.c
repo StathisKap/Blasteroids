@@ -51,13 +51,13 @@ int main()
 			done = true; 
 
 		ReadKeysForSpaceship(&event);
-		UseKeysForSpaceship(&ship);
+		UseKeysForSpaceship();
 
 		if(redraw && al_is_event_queue_empty(queue))
 		{
-			draw_ship(&ship);
+			draw_ship();
 			draw_bullet();
-			//draw_asteroid();
+			draw_asteroid();
 			update_bullet();
 			teleport(&ship.sx, &ship.sy);
 			al_flip_display();

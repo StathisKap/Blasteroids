@@ -8,18 +8,18 @@ extern Bullet *bullets;
 extern bool *Keys;
 extern Spaceship ship;
 
-void draw_ship(Spaceship* s)
+void draw_ship()
 {
 	float thickness = 2.5f; // just a variable to control the thickness in case we wanna vary it;
 	ALLEGRO_TRANSFORM transform; 
 	al_identity_transform(&transform);
-	al_rotate_transform(&transform, s->heading + PI / 2); //We rotate it
-	al_translate_transform(&transform, s->sx, s->sy); //We move it to an initial position
+	al_rotate_transform(&transform, ship.heading + PI / 2); //We rotate it
+	al_translate_transform(&transform, ship.sx, ship.sy); //We move it to an initial position
 	al_use_transform(&transform);
-	al_draw_line(-8*s->scale, 9*s->scale, 0*s->scale, -11*s->scale, s->color, thickness ); //We draw the lines
-	al_draw_line(0*s->scale, -11*s->scale, 8*s->scale, 9*s->scale, s->color, thickness);  //We draw the lines
-	al_draw_line(-6*s->scale, 4*s->scale, -1*s->scale, 4*s->scale, s->color, thickness); //We draw the lines
-	al_draw_line(6*s->scale, 4*s->scale, 1*s->scale, 4*s->scale, s->color, thickness); //We draw the lines
+	al_draw_line(-8*ship.scale, 9*ship.scale, 0*ship.scale, -11*ship.scale, ship.color, thickness ); //We draw the lines
+	al_draw_line(0*ship.scale, -11*ship.scale, 8*ship.scale, 9*ship.scale, ship.color, thickness);  //We draw the lines
+	al_draw_line(-6*ship.scale, 4*ship.scale, -1*ship.scale, 4*ship.scale, ship.color, thickness); //We draw the lines
+	al_draw_line(6*ship.scale, 4*ship.scale, 1*ship.scale, 4*ship.scale, ship.color, thickness); //We draw the lines
 }
 void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev)
 {
@@ -45,9 +45,9 @@ void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev)
 			case ALLEGRO_KEY_SPACE:
 				Keys[SPACE] = true;
 				break;
-//			case ALLEGRO_KEY_A:
-//				fire_asteroid();
-//				break;
+			case ALLEGRO_KEY_A:
+				fire_asteroid();
+				break;
 		
 			}
 		}
@@ -114,65 +114,6 @@ void UseKeysForSpaceship() //uses the booleans from ReadKeysForSpaceship to perf
 		ship.speed = SPACESHIP_SPEED_MAX;
 }
 	
-
-void fire_bullet()
-{
-	for (size_t i = 0; i < BULLET_COUNT; i++) //goes through each bullet
-	{
-		if (!bullets[i].live) //If it is false then
-		{
-			bullets[i].live = true; // It turns it to true
-			bullets[i].heading = ship.heading; // It sets the heading equal to wherever the ship was looking
-			bullets[i].sx = ship.sx; // It sets the starting position to where the ship is
-			bullets[i].sy = ship.sy;
-			break;
-		}
-		
-	}
-	
-}
-
-void draw_bullet()
-{
-	for (size_t i = 0; i < BULLET_COUNT; i++)
-	{
-		if (bullets[i].live)
-		{
-			ALLEGRO_TRANSFORM transform; 
-			al_identity_transform(&transform);
-			al_use_transform(&transform);
-			al_draw_filled_circle(bullets[i].sx, bullets[i].sy, 2, al_map_rgb(255,0,0)); // Draws a red dot
-		}
-		
-	}
-	
-}
-
-void update_bullet()
-{
-	for (size_t i = 0; i < BULLET_COUNT; i++)
-	{
-		if (bullets[i].live)
-		{
-			bullets[i].sx += BULLET_SPEED * cos(bullets[i].heading);
-			bullets[i].sy += BULLET_SPEED * sin(bullets[i].heading);
-				
-			if (bullets[i].sx < 0)
-				bullets[i].live = false;
-			if (bullets[i].sx > DISPLAY_WIDTH)
-				bullets[i].live = false;
-			if (bullets[i].sy < 0)
-				bullets[i].live = false;
-			if (bullets[i].sy > DISPLAY_HEIGHT)
-				bullets[i].live = false;
-			
-			
-		}
-		
-	}
-	
-}
-
 /* Collisions
  * If the spaceship collides with a rock, it dies immediately and the player
  * loses a life. For the first 5 seconds after a new ship is created, it

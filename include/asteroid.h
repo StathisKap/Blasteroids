@@ -1,5 +1,5 @@
-void draw_asteroid();
 void fire_asteroid();
+void draw_asteroid();
 
 typedef struct {
 	float sx;

@@ -9,7 +9,7 @@ extern Spaceship ship;
 void draw_asteroid()
 {
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
-		//asteroids[i] = {DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 0, 1, false, al_map_rgb(255,0,0)};
+		asteroids[i] = (Asteroid){DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 0, 1, false, al_map_rgb(255,0,0)};
 	 
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{

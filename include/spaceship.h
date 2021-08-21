@@ -1,3 +1,5 @@
+void draw_ship(); //Draws the ship
+
 typedef struct {
 	float sx; //Where it is on the screen
 	float sy;//*
@@ -8,6 +10,3 @@ typedef struct {
 	bool live; //is it dead?
 	ALLEGRO_COLOR color;
 } Spaceship;
-
-
-void draw_ship(); //Draws the ship
