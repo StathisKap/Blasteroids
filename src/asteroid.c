@@ -9,9 +9,6 @@ extern Spaceship ship;
 void draw_asteroid()
 {
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
-		asteroids[i] = (Asteroid){DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 0, 1, false, al_map_rgb(255,0,0)};
-	 
-	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
 		if (!asteroids[i].gone)
 		{
@@ -37,16 +34,22 @@ void draw_asteroid()
 	}
 	
 }
-void fire_asteroid()
+void spawn_asteroid()
 {
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
 		if (!asteroids[i].gone) //If it is false then
 		{
-			asteroids[i].gone = true; // It turns it to true
-			asteroids[i].heading = ship.heading; // It sets the heading equal to wherever the ship was looking
 			asteroids[i].sx = ship.sx; // It sets the starting position to where the ship is
 			asteroids[i].sy = ship.sy;
+			asteroids[i].heading = ship.heading; // It sets the heading equal to wherever the ship was looking
+			asteroids[i].twist = 0;
+			asteroids[i].speed = 0;
+			asteroids[i].rot_velocity = 0;
+			asteroids[i].scale = 0;
+			asteroids[i].gone = false; // It turns it to true
+			asteroids[i].color = al_map_rgb(255,0,0);
+			draw_asteroid();	
 			break;
 		}
 		
@@ -54,6 +57,20 @@ void fire_asteroid()
 	
 }
 
+void update_asteroid()
+{
+	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
+	{
+		if (!asteroids[i].gone)
+		{
+				
+			
+			
+		}
+		
+	}
+	
+}
 
 /*
  * if an asteroid is hit by a blast from the spaceship's cannon

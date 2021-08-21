@@ -46,9 +46,8 @@ void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev)
 				Keys[SPACE] = true;
 				break;
 			case ALLEGRO_KEY_A:
-				fire_asteroid();
+				spawn_asteroid();
 				break;
-		
 			}
 		}
 		else if (Ev->type == ALLEGRO_EVENT_KEY_UP){ //If a key is released
