@@ -20,6 +20,9 @@ int main()
 	Keys = malloc(sizeof(bool)*SPACESHIP_KEYS_NUM);
 	bool redraw = true;
  	ship = (Spaceship){DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, true, al_map_rgb(255,255,0)};
+	srand(time(NULL));
+
+
 	for(int i = 0 ; i < MAX_BIG_ASTEROIDS; i++)
 		asteroids[i].gone = true;
 

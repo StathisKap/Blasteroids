@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <pthread.h>
+#include <time.h>
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>

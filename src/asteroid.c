@@ -41,19 +41,27 @@ void draw_asteroid()
 
 void spawn_asteroid()
 {
+	int x_initial = ((rand() % 2) - 1) + rand() % DISPLAY_WIDTH;
+	int y_initial = ((rand() % 2) - 1) + rand() % DISPLAY_HEIGHT;
+	int heading_initial = (rand() % (int)(2 * PI));
+	int twist_initial = (rand() % (int)(2 * PI));
+	int speed_initial = rand() % 2 + 1;
+	int rot_velocity_initial = rand() % 10;
+	int scale_initial = rand() % 4 + 1;
+
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
 		
-		if (asteroids[i].gone) //If it is false then
+		if (asteroids[i].gone) //If it is true then
 		{
-			asteroids[i].sx = ship.sx; // It sets the starting position to where the ship is
-			asteroids[i].sy = ship.sy;
-			asteroids[i].heading = ship.heading; // It sets the heading equal to wherever the ship was looking
-			asteroids[i].twist = 0;
-			asteroids[i].speed = 0.8;
-			asteroids[i].rot_velocity = 5;
-			asteroids[i].scale = 0;
-			asteroids[i].gone = false; // It turns it to true
+			asteroids[i].sx = x_initial; // It sets the starting position to where the ship is
+			asteroids[i].sy = y_initial;
+			asteroids[i].heading = heading_initial; // It sets the heading equal to wherever the ship was looking
+			asteroids[i].twist = twist_initial;
+			asteroids[i].speed = speed_initial;
+			asteroids[i].rot_velocity = rot_velocity_initial;
+			asteroids[i].scale = scale_initial;
+			asteroids[i].gone = false; // It turns it to false 
 			asteroids[i].color = al_map_rgb(54, 94, 163);
 			break;
 		}
