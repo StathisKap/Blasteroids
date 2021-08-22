@@ -4,12 +4,14 @@
 #endif
 
 
-
 bool done = false;
 Bullet *bullets;
 Asteroid *asteroids;
 bool *Keys;
 Spaceship ship;
+ALLEGRO_EVENT_QUEUE *queue;
+ALLEGRO_EVENT event;
+extern ALLEGRO_TIMER *asteroid_rotation_timer;
 
 int main()
 { 
@@ -17,8 +19,10 @@ int main()
 	asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
 	Keys = malloc(sizeof(bool)*SPACESHIP_KEYS_NUM);
 	bool redraw = true;
-    ALLEGRO_EVENT event;
  	ship = (Spaceship){DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, true, al_map_rgb(255,255,0)};
+	for(int i = 0 ; i < MAX_BIG_ASTEROIDS; i++)
+		asteroids[i].gone = true;
+
 	if (!al_init())
 		error("Couldn't initialize Allegro");
 
@@ -26,10 +30,14 @@ int main()
 		error("Couldn't initialize Keyboard");
 
 	ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0); //FPS
-	if (!time)
+	if (!timer)
 		error("Couldn't initialize Timer");
-
-	ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue(); //Create event queue to catch keystrokes
+	 
+	asteroid_rotation_timer = al_create_timer(1.0/15);
+	if (!asteroid_rotation_timer)
+		error("Couldn't initialize Timer");
+	
+	queue = al_create_event_queue(); //Create event queue to catch keystrokes
 	if (!queue)
 		error("Couldn't initialize Queue");
 
@@ -40,7 +48,10 @@ int main()
 	if(!al_register_all(disp, timer, queue))
 		error("Coulnd't register something");
 
+	al_register_event_source(queue, al_get_timer_event_source(asteroid_rotation_timer));
+
     al_start_timer(timer);	
+    al_start_timer(asteroid_rotation_timer);	
 	while(!done)
 	{
 		al_wait_for_event(queue, &event); //Capture keystrokes
@@ -58,8 +69,6 @@ int main()
 			draw_ship();
 			draw_bullet();
 			draw_asteroid();
-			update_bullet();
-			teleport(&ship.sx, &ship.sy);
 			al_flip_display();
 		    al_clear_to_color(al_map_rgb(0, 0, 0));
     		redraw = false;

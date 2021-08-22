@@ -20,6 +20,8 @@ void draw_ship()
 	al_draw_line(0*ship.scale, -11*ship.scale, 8*ship.scale, 9*ship.scale, ship.color, thickness);  //We draw the lines
 	al_draw_line(-6*ship.scale, 4*ship.scale, -1*ship.scale, 4*ship.scale, ship.color, thickness); //We draw the lines
 	al_draw_line(6*ship.scale, 4*ship.scale, 1*ship.scale, 4*ship.scale, ship.color, thickness); //We draw the lines
+
+	teleport(&ship.sx, &ship.sy);
 }
 
 void draw_flame() //Draws the flame when it goes forward

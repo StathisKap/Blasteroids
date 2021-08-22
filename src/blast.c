@@ -36,7 +36,7 @@ void draw_bullet()
 		}
 		
 	}
-	
+	update_bullet();
 }
 
 void update_bullet()

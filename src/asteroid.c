@@ -5,6 +5,9 @@
 
 extern Asteroid *asteroids;
 extern Spaceship ship;
+extern ALLEGRO_EVENT_QUEUE *queue;
+extern ALLEGRO_EVENT event;
+ALLEGRO_TIMER* asteroid_rotation_timer;
 
 void draw_asteroid()
 {
@@ -14,8 +17,8 @@ void draw_asteroid()
 		{
 			ALLEGRO_TRANSFORM transform; 
 			al_identity_transform(&transform);
-			al_rotate_transform(&transform, 0); //We rotate it
-			al_translate_transform(&transform,DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2); //We move it to an initial position
+			al_rotate_transform(&transform, asteroids[i].twist); //We rotate it
+			al_translate_transform(&transform,asteroids[i].sy, asteroids[i].sx); //We move it to an initial position
 			al_use_transform(&transform);
  			al_draw_line(-20, 20, -25, 5, asteroids[i].color, 2.0f);
  			al_draw_line(-25, 5, -25, -10, asteroids[i].color, 2.0f);
@@ -32,24 +35,26 @@ void draw_asteroid()
 		}
 		
 	}
-	
+
+	update_asteroid();	
 }
+
 void spawn_asteroid()
 {
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
-		if (!asteroids[i].gone) //If it is false then
+		
+		if (asteroids[i].gone) //If it is false then
 		{
 			asteroids[i].sx = ship.sx; // It sets the starting position to where the ship is
 			asteroids[i].sy = ship.sy;
 			asteroids[i].heading = ship.heading; // It sets the heading equal to wherever the ship was looking
 			asteroids[i].twist = 0;
-			asteroids[i].speed = 0;
-			asteroids[i].rot_velocity = 0;
+			asteroids[i].speed = 0.8;
+			asteroids[i].rot_velocity = 5;
 			asteroids[i].scale = 0;
 			asteroids[i].gone = false; // It turns it to true
 			asteroids[i].color = al_map_rgb(54, 94, 163);
-			draw_asteroid();	
 			break;
 		}
 		
@@ -61,15 +66,21 @@ void update_asteroid()
 {
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
-		if (!asteroids[i].gone)
-		{
-				
-			
-			
-		}
+
+		if (event.timer.source == asteroid_rotation_timer)
+			asteroids[i].twist += asteroids[i].rot_velocity * PI /180;
 		
-	}
+		if (asteroids[i].twist > 2 * PI)
+			asteroids[i].twist = 0;
+		
+		if (asteroids[i].twist <  0)
+			asteroids[i].twist = 2 * PI;
 	
+		asteroids[i].sx += asteroids[i].speed * cos(asteroids[i].heading);
+		asteroids[i].sy += asteroids[i].speed * sin(asteroids[i].heading);
+		
+		teleport(&asteroids[i].sx, &asteroids[i].sy);
+	}
 }
 
 /*
