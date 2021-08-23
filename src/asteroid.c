@@ -41,13 +41,14 @@ void draw_asteroid()
 
 void spawn_asteroid()
 {
-	int x_initial = ((rand() % 2) - 1) + rand() % DISPLAY_WIDTH;
-	int y_initial = ((rand() % 2) - 1) + rand() % DISPLAY_HEIGHT;
-	int heading_initial = (rand() % (int)(2 * PI));
-	int twist_initial = (rand() % (int)(2 * PI));
-	int speed_initial = rand() % 2 + 1;
-	int rot_velocity_initial = rand() % 10;
-	int scale_initial = rand() % 4 + 1;
+	int x_initial = rand() * rand() % DISPLAY_WIDTH;
+	int y_initial = rand() * rand() % DISPLAY_HEIGHT;
+
+	float heading_initial = (rand() % (int)(2 * PI));
+	float twist_initial = (rand() % (int)(2 * PI));
+	float speed_initial = rand() % 2 + 1;
+	float rot_velocity_initial = rand() % 10;
+	float scale_initial = rand() % 4 + 1;
 
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{

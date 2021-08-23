@@ -72,6 +72,7 @@ int main()
 			draw_ship();
 			draw_bullet();
 			draw_asteroid();
+			spawn_asteroid();
 			al_flip_display();
 		    al_clear_to_color(al_map_rgb(0, 0, 0));
     		redraw = false;
