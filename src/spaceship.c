@@ -3,7 +3,6 @@
 #include "../include/blasteroids.h"
 #endif
 
-bool init = false;
 extern Bullet *bullets;
 extern bool *Keys;
 extern Spaceship ship;
@@ -34,7 +33,6 @@ void draw_flame() //Draws the flame when it goes forward
 	al_use_transform(&transform);
 	al_draw_line(6*ship.scale, 4*ship.scale, -1*ship.scale, 20*ship.scale, al_map_rgb(222, 136, 44), thickness); //We draw the lines
 	al_draw_line(-6*ship.scale, 4*ship.scale, 1*ship.scale, 20*ship.scale, al_map_rgb(222, 136, 44), thickness); //We draw the lines
-
 }
 
 void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev)
@@ -114,16 +112,13 @@ void UseKeysForSpaceship() //uses the booleans from ReadKeysForSpaceship to perf
 	else if (ship.heading < 0) 
 		ship.heading = 2*PI;
 
-	if (!init)
-	{
-		init = true;
-	}
-
+	//Drift of the ship
 	ship.sx += ship.speed * cos(ship.drift);
 	ship.sy += ship.speed * sin(ship.drift);
 
+	// Ship decelaration due to "drag"
 	ship.speed = ship.speed > 0 ? ship.speed - DRAG : 0;
-	if(ship.speed > SPACESHIP_SPEED_MAX)
+	if(ship.speed > SPACESHIP_SPEED_MAX) //Not exceeding max speed
 		ship.speed = SPACESHIP_SPEED_MAX;
 }
 	
@@ -133,4 +128,3 @@ void UseKeysForSpaceship() //uses the booleans from ReadKeysForSpaceship to perf
  * doesn't check for collisions. The new ship should appear in the center of
  * the screen
  */
-

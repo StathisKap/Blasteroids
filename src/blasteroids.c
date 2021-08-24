@@ -1,5 +1,5 @@
-#ifndef HEADER_
-#define HEADER_
+#ifndef BLASTEROIDS_
+#define BLASTEROIDS_
 #include "../include/blasteroids.h"
 #endif
 
@@ -12,12 +12,14 @@ Spaceship ship;
 ALLEGRO_EVENT_QUEUE *queue;
 ALLEGRO_EVENT event;
 extern ALLEGRO_TIMER *asteroid_rotation_timer;
+extern ALLEGRO_BITMAP *collision_mask;
 
 int main()
 { 
 	bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
 	asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
 	Keys = malloc(sizeof(bool)*SPACESHIP_KEYS_NUM);
+	ALLEGRO_BITMAP *collision_mask = NULL;
 	bool redraw = true;
  	ship = (Spaceship){DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, true, al_map_rgb(255,255,0)};
 	srand(time(NULL));
@@ -72,6 +74,7 @@ int main()
 			draw_ship();
 			draw_bullet();
 			draw_asteroid();
+			spawn_asteroid();
 			al_flip_display();
 		    al_clear_to_color(al_map_rgb(0, 0, 0));
     		redraw = false;
