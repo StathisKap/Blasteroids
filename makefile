@@ -18,6 +18,6 @@
 	@mkdir -p $(@D)
 	gcc ./src/asteroid.c -c -o ./objects/asteroid.o `pkg-config --libs allegro-5 allegro_font-5 allegro_primitives-5` -lm -lpthread
 
-./objects/collisions.o: ./src/collisions.c ./include/blcollisionss.h
+./objects/collisions.o: ./src/collisions.c ./include/blasteroids.h
 	@mkdir -p $(@D)
 	gcc ./src/collisions.c -c -o ./objects/collisions.o `pkg-config --libs allegro-5 allegro_font-5 allegro_primitives-5` -lm -lpthread

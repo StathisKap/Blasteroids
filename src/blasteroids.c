@@ -16,6 +16,7 @@ extern ALLEGRO_BITMAP *collision_mask;
 
 int main()
 { 
+	// Initializing variables that are on the heap or are from other source files
 	bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
 	asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
 	Keys = malloc(sizeof(bool)*SPACESHIP_KEYS_NUM);
