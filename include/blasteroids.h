@@ -28,7 +28,9 @@ enum COLOURS {YELLOW, ORANGE, RED};
 
 #include "asteroid.h"
 #include "spaceship.h"
-#include "../include/blast.h"
+#include "blast.h"
+#include "collisions.h"
+
 void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev); 
 void UseKeysForSpaceship();
 void error(char *msg);
