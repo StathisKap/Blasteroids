@@ -10,4 +10,6 @@ typedef struct {
 	float scale;
 	bool live; //is it dead?
 	ALLEGRO_COLOR color;
+	ALLEGRO_BITMAP *image;
+	mask_t * mask;
 } Spaceship;

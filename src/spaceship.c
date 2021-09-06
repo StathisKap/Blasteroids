@@ -6,20 +6,33 @@
 extern Bullet *bullets;
 extern bool *Keys;
 extern Spaceship ship;
+extern ALLEGRO_DISPLAY *disp;
+bool SpaceShipBitmapCreated = false;
 
 void draw_ship()
 {
+	int BitmapScale = 20;
 	float thickness = 2.5f; // just a variable to control the thickness in case we wanna vary it;
+	int xoffset = BitmapScale * ship.scale / 2 , yoffset = BitmapScale * ship.scale / 2;
+	
+	if(SpaceShipBitmapCreated == false)
+	{
+		ship.image = al_create_bitmap(BitmapScale*ship.scale,BitmapScale*ship.scale);
+ 	   	al_set_target_bitmap(ship.image);
+	 	al_draw_line(-8*ship.scale + xoffset, 9*ship.scale + yoffset, 0*ship.scale + xoffset, -11*ship.scale + yoffset, ship.color, thickness ); //We draw the lines
+		al_draw_line(0*ship.scale  + xoffset, -11*ship.scale + yoffset, 8*ship.scale + xoffset, 9*ship.scale + yoffset, ship.color, thickness);  //We draw the lines
+		al_draw_line(-6*ship.scale + xoffset, 4*ship.scale + yoffset, -1*ship.scale + xoffset, 4*ship.scale + yoffset, ship.color, thickness); //We draw the lines
+		al_draw_line(6*ship.scale  + xoffset, 4*ship.scale + yoffset, 1*ship.scale + xoffset, 4*ship.scale + yoffset, ship.color, thickness); //We draw the lines
+		al_set_target_bitmap(al_get_backbuffer(disp));
+		SpaceShipBitmapCreated = true;
+	}
+
 	ALLEGRO_TRANSFORM transform; 
 	al_identity_transform(&transform);
 	al_rotate_transform(&transform, ship.heading + PI / 2); //We rotate it
 	al_translate_transform(&transform, ship.sx, ship.sy); //We move it to an initial position
 	al_use_transform(&transform);
-	al_draw_line(-8*ship.scale, 9*ship.scale, 0*ship.scale, -11*ship.scale, ship.color, thickness ); //We draw the lines
-	al_draw_line(0*ship.scale, -11*ship.scale, 8*ship.scale, 9*ship.scale, ship.color, thickness);  //We draw the lines
-	al_draw_line(-6*ship.scale, 4*ship.scale, -1*ship.scale, 4*ship.scale, ship.color, thickness); //We draw the lines
-	al_draw_line(6*ship.scale, 4*ship.scale, 1*ship.scale, 4*ship.scale, ship.color, thickness); //We draw the lines
-
+	al_draw_bitmap(ship.image,BitmapScale*ship.scale/2 - BitmapScale, BitmapScale*ship.scale/2 - BitmapScale, 0);
 	teleport(&ship.sx, &ship.sy);
 }
 

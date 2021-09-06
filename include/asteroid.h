@@ -12,4 +12,6 @@ typedef struct {
 	float scale;
 	int gone;
 	ALLEGRO_COLOR color;
+	ALLEGRO_BITMAP *image;
+	mask_t * mask;
 } Asteroid;
