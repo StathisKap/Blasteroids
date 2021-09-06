@@ -9,6 +9,8 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_ttf.h>
 
 #define PI 3.14159265359
 #define ROT_SPEED PI * 0.025
@@ -26,10 +28,10 @@
 enum KEYS {UP, LEFT, RIGHT, SPACE, DOWN};
 enum COLOURS {YELLOW, ORANGE, RED};
 
+#include "collisions.h"
 #include "asteroid.h"
 #include "spaceship.h"
 #include "blast.h"
-#include "collisions.h"
 
 void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev); 
 void UseKeysForSpaceship();

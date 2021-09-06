@@ -9,4 +9,6 @@ typedef struct
 	float heading;
 	bool live; //is it dead?
 	ALLEGRO_COLOR color;
+	ALLEGRO_BITMAP *image;
+	mask_t * mask;
 } Bullet;

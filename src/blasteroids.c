@@ -11,6 +11,7 @@ bool *Keys;
 Spaceship ship;
 ALLEGRO_EVENT_QUEUE *queue;
 ALLEGRO_EVENT event;
+ALLEGRO_DISPLAY* disp;
 extern ALLEGRO_TIMER *asteroid_rotation_timer;
 extern ALLEGRO_BITMAP *collision_mask;
 
@@ -20,9 +21,8 @@ int main()
 	bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
 	asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
 	Keys = malloc(sizeof(bool)*SPACESHIP_KEYS_NUM);
-	ALLEGRO_BITMAP *collision_mask = NULL;
 	bool redraw = true;
- 	ship = (Spaceship){DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, true, al_map_rgb(255,255,0)};
+ 	ship = (Spaceship){DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, true, al_map_rgb(255,255,0), NULL, NULL};
 	srand(time(NULL));
 
 
@@ -47,7 +47,7 @@ int main()
 	if (!queue)
 		error("Couldn't initialize Queue");
 
-	ALLEGRO_DISPLAY* disp = al_create_display(DISPLAY_HEIGHT, DISPLAY_WIDTH); //Creates a window
+	disp = al_create_display(DISPLAY_HEIGHT, DISPLAY_WIDTH); //Creates a window
 	if (!disp)
 		error("Couldn't initialize Display");
 
@@ -58,6 +58,10 @@ int main()
 
     al_start_timer(timer);	
     al_start_timer(asteroid_rotation_timer);	
+
+	//Creates masks for all objects
+	// ship.mask = Mask_New();
+
 	while(!done)
 	{
 		al_wait_for_event(queue, &event); //Capture keystrokes
