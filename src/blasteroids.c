@@ -32,6 +32,9 @@ int main()
 	if (!al_init())
 		error("Couldn't initialize Allegro");
 
+	if (!al_init_primitives_addon())
+		error("Couldn't initialize Allegro Primitives");
+
 	if (!al_install_keyboard())
 		error("Couldn't initialize Keyboard");
 
