@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "blasteroids.h": "c",
+        "spaceship.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
+}

@@ -33,9 +33,29 @@ enum COLOURS {YELLOW, ORANGE, RED};
 #include "spaceship.h"
 #include "blast.h"
 
-void ReadKeysForSpaceship(ALLEGRO_EVENT *Ev); 
+typedef struct Global{
+    bool done;
+    Bullet *bullets;
+    Asteroid *asteroids;
+    bool *Keys;
+    Spaceship ship;
+    ALLEGRO_EVENT_QUEUE *queue;
+    ALLEGRO_EVENT event;
+    ALLEGRO_DISPLAY* disp;
+    ALLEGRO_TIMER *asteroid_rotation_timer;
+    ALLEGRO_TIMER* timer;
+    ALLEGRO_BITMAP *collision_mask;
+    bool SpaceShipBitmapCreated;
+    bool redraw;
+    ALLEGRO_BITMAP *AsteroidBitmap;
+} Global;
+
+
+
+void Blasteroids_Init(Global * global);
+void ReadKeysForSpaceship(); 
 void UseKeysForSpaceship();
 void error(char *msg);
-int  al_destroy_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue);
-int  al_register_all(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer_event, ALLEGRO_EVENT_QUEUE *event_queue);
+int  al_destroy_all();
+int  al_register_all();
 void teleport(float *sx, float *sy);

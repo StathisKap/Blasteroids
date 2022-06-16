@@ -3,22 +3,16 @@
 #include "../include/blasteroids.h"
 #endif
 
-extern Asteroid *asteroids;
-extern Spaceship ship;
-extern ALLEGRO_EVENT_QUEUE *queue;
-extern ALLEGRO_EVENT event;
-extern ALLEGRO_DISPLAY *disp;
-ALLEGRO_TIMER* asteroid_rotation_timer;
-ALLEGRO_BITMAP *AsteroidBitmap;
+extern Global * global;
 
 void draw_asteroid()
 {
 		int BitmapScale = 50;
 
 		//Asteroid bitmap
-		AsteroidBitmap = al_create_bitmap(BitmapScale, BitmapScale);
+		global->AsteroidBitmap = al_create_bitmap(BitmapScale, BitmapScale);
 		int xoffset = BitmapScale / 2, yoffset = BitmapScale / 2;
-		al_set_target_bitmap(AsteroidBitmap);
+		al_set_target_bitmap(global->AsteroidBitmap);
 
 		// al_clear_to_color(al_map_rgba_f(.9, 0, 0, .5)); //Testing
 
@@ -35,21 +29,21 @@ void draw_asteroid()
 		al_draw_line(10  + xoffset, 20  + yoffset, 0   + xoffset, 15  + yoffset, al_map_rgb(255,255,255), 2.0f);
 		al_draw_line(0   + xoffset, 15  + yoffset, -20 + xoffset, 20  + yoffset, al_map_rgb(255,255,255), 2.0f);
 
-		al_set_target_bitmap(al_get_backbuffer(disp));
+		al_set_target_bitmap(al_get_backbuffer(global->disp));
 	
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
 		
-		asteroids[i].image = AsteroidBitmap;
+		global->asteroids[i].image = global->AsteroidBitmap;
 
-		if (!asteroids[i].gone)
+		if (!global->asteroids[i].gone)
 		{
 			ALLEGRO_TRANSFORM transform; 
 			al_identity_transform(&transform);
-			al_rotate_transform(&transform, asteroids[i].twist); //We rotate it
-			al_translate_transform(&transform,asteroids[i].sy, asteroids[i].sx); //We move it to an initial position
+			al_rotate_transform(&transform, global->asteroids[i].twist); //We rotate it
+			al_translate_transform(&transform,global->asteroids[i].sy, global->asteroids[i].sx); //We move it to an initial position
 			al_use_transform(&transform);
-			al_draw_tinted_bitmap(asteroids[i].image, asteroids[i].color, -(BitmapScale/2), -(BitmapScale/2), 0);
+			al_draw_tinted_bitmap(global->asteroids[i].image, global->asteroids[i].color, -(BitmapScale/2), -(BitmapScale/2), 0);
 		}
 	}
 
@@ -70,17 +64,17 @@ void spawn_asteroid()
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
 		
-		if (asteroids[i].gone) //If it is true then
+		if (global->asteroids[i].gone) //If it is true then
 		{
-			asteroids[i].sx = x_initial;
-			asteroids[i].sy = y_initial;
-			asteroids[i].heading = heading_initial;
-			asteroids[i].twist = twist_initial;
-			asteroids[i].speed = speed_initial;
-			asteroids[i].rot_velocity = rot_velocity_initial;
-			asteroids[i].scale = scale_initial;
-			asteroids[i].gone = false; // It turns it to false 
-			asteroids[i].color = al_map_rgba_f(0.211, 0.368, 0.639, 1);
+			global->asteroids[i].sx = x_initial;
+			global->asteroids[i].sy = y_initial;
+			global->asteroids[i].heading = heading_initial;
+			global->asteroids[i].twist = twist_initial;
+			global->asteroids[i].speed = speed_initial;
+			global->asteroids[i].rot_velocity = rot_velocity_initial;
+			global->asteroids[i].scale = scale_initial;
+			global->asteroids[i].gone = false; // It turns it to false 
+			global->asteroids[i].color = al_map_rgba_f(0.211, 0.368, 0.639, 1);
 			break;
 		}
 		
@@ -93,19 +87,19 @@ void update_asteroid()
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
 
-		if (event.timer.source == asteroid_rotation_timer)
-			asteroids[i].twist += asteroids[i].rot_velocity * PI /180;
+		if (global->event.timer.source == global->asteroid_rotation_timer)
+			global->asteroids[i].twist += global->asteroids[i].rot_velocity * PI /180;
 		
-		if (asteroids[i].twist > 2 * PI)
-			asteroids[i].twist = 0;
+		if (global->asteroids[i].twist > 2 * PI)
+			global->asteroids[i].twist = 0;
 		
-		if (asteroids[i].twist <  0)
-			asteroids[i].twist = 2 * PI;
+		if (global->asteroids[i].twist <  0)
+			global->asteroids[i].twist = 2 * PI;
 	
-		asteroids[i].sx += asteroids[i].speed * cos(asteroids[i].heading);
-		asteroids[i].sy += asteroids[i].speed * sin(asteroids[i].heading);
+		global->asteroids[i].sx += global->asteroids[i].speed * cos(global->asteroids[i].heading);
+		global->asteroids[i].sy += global->asteroids[i].speed * sin(global->asteroids[i].heading);
 		
-		teleport(&asteroids[i].sx, &asteroids[i].sy);
+		teleport(&global->asteroids[i].sx, &global->asteroids[i].sy);
 	}
 }
 
