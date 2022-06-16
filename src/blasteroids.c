@@ -121,7 +121,7 @@ void Blasteroids_Init(Global * global)
 	if (!global->disp)
 		error("Couldn't initialize Display");
 
-	if(!al_register_all(global->disp, global->timer, global->queue))
+	if(!al_register_all())
 		error("Coulnd't register something");
 
 	al_register_event_source(global->queue, al_get_timer_event_source(global->asteroid_rotation_timer));
