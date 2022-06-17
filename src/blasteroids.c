@@ -7,10 +7,11 @@ Global *global;
 
 int main()
 {
+	printf("Start of the program\n");
 	global = malloc(sizeof(Global));
 	Blasteroids_Init(global);
-	//Creates masks for all objects
-	// ship.mask = Mask_New();
+
+
 
 	while(!global->done)
 	{
@@ -71,16 +72,16 @@ int al_register_all()
 	return 1;
 }
 
-void teleport(float *sx, float *sy)
+void teleport()
 {
-	if (*sx > DISPLAY_WIDTH)
-		*sx = 0;
-	if (*sx < 0)
-		*sx = DISPLAY_WIDTH;
-	if (*sy > DISPLAY_HEIGHT)
-		*sy = 0;
-	if (*sy < 0)
-		*sy = DISPLAY_HEIGHT;
+	if (global->ship.sx > DISPLAY_WIDTH)
+		global->ship.sx = 0;
+	if (global->ship.sx < 0)
+		global->ship.sx = DISPLAY_WIDTH;
+	if (global->ship.sy > DISPLAY_HEIGHT)
+		global->ship.sy = 0;
+	if (global->ship.sy < 0)
+		global->ship.sy = DISPLAY_HEIGHT;
 }
 
 void Blasteroids_Init(Global * global)
@@ -90,7 +91,19 @@ void Blasteroids_Init(Global * global)
 	global->asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
 	global->Keys = malloc(sizeof(bool)*SPACESHIP_KEYS_NUM);
 	global->redraw = true;
- 	global->ship = (Spaceship){DISPLAY_HEIGHT / 2, DISPLAY_WIDTH / 2, 0, 0, 0, 1, true, al_map_rgb(255,255,0), NULL, NULL};
+ 	global->ship = (Spaceship){
+		 DISPLAY_HEIGHT / 2,//	sx
+		 DISPLAY_WIDTH / 2, // sy
+		 0, 				// heading
+		 0,					// speed 
+		 0,					// drift
+		 2,					// scale
+		 20,				// Bitmapscale
+		 true,				// live
+		 al_map_rgb(255,255,0), //color
+		 NULL, 				// image
+		 NULL,				// mask
+		 };
 	srand(time(NULL));
 
 	for(int i = 0 ; i < MAX_BIG_ASTEROIDS; i++)
@@ -128,6 +141,10 @@ void Blasteroids_Init(Global * global)
 
     al_start_timer(global->timer);
     al_start_timer(global->asteroid_rotation_timer);
+
+	// Draw the ship once so that it creates a Bitmap for it
+	draw_ship();
+	Create_Ship_Mask();
 
 	printf("Global Variables initialised\n");
 }

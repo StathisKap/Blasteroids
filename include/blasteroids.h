@@ -12,20 +12,20 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_ttf.h>
 
-#define PI 3.14159265359
+#define PI M_PI
 #define ROT_SPEED PI * 0.025
-#define SPACESHIP_KEYS_NUM 5
+#define SPACESHIP_KEYS_NUM 6
 #define SPACESHIP_SPEED 0.025
 #define SPACESHIP_SPEED_MAX 2.5
 #define DRAG 0.005
 #define MASS 0.05
-#define DISPLAY_WIDTH 700
-#define DISPLAY_HEIGHT 700
+#define DISPLAY_WIDTH 1400
+#define DISPLAY_HEIGHT 1400
 #define BULLET_COUNT 100000
 #define BULLET_SPEED 15
 #define MAX_BIG_ASTEROIDS 4
 
-enum KEYS {UP, LEFT, RIGHT, SPACE, DOWN};
+enum KEYS {UP, LEFT, RIGHT, SPACE, DOWN, M};
 enum COLOURS {YELLOW, ORANGE, RED};
 
 #include "collisions.h"
@@ -53,9 +53,7 @@ typedef struct Global{
 
 
 void Blasteroids_Init(Global * global);
-void ReadKeysForSpaceship(); 
-void UseKeysForSpaceship();
 void error(char *msg);
 int  al_destroy_all();
 int  al_register_all();
-void teleport(float *sx, float *sy);
+void teleport();

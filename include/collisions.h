@@ -8,6 +8,9 @@ typedef struct mask
 {
     int w, h;
     int * bits;
+    float BitmapScale;
+    ALLEGRO_TRANSFORM *tranform;
+    ALLEGRO_BITMAP *bmp;
 } mask_t;
 
 
@@ -15,15 +18,12 @@ mask_t * Mask_New(ALLEGRO_BITMAP * bmp);
 
 mask_t * Mask_Create(int w, int h);
 
-mask_t * Mask_Clear(mask_t *m);
 
-mask_t * Mask_Fill(mask_t *m);
+void Mask_Fill(mask_t *m);
 
-mask_t * Mask_Delete(mask_t *m);
+void Mask_Delete(mask_t *m);
 
 void Mask_SetBit(mask_t *m, int x, int y);
-
-void Mask_UnsetBit(mask_t *m, int x, int y);
 
 void Mask_UnsetBit(mask_t *m, int x, int y);
 
