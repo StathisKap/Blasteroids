@@ -25,7 +25,6 @@
 #define BULLET_SPEED 15
 #define MAX_BIG_ASTEROIDS 4
 
-enum KEYS {UP, LEFT, RIGHT, SPACE, DOWN, M};
 enum COLOURS {YELLOW, ORANGE, RED};
 
 #include "collisions.h"
@@ -37,7 +36,6 @@ typedef struct Global{
     bool done;
     Bullet *bullets;
     Asteroid *asteroids;
-    bool *Keys;
     Spaceship ship;
     ALLEGRO_EVENT_QUEUE *queue;
     ALLEGRO_EVENT event;

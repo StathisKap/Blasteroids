@@ -79,7 +79,6 @@ int al_destroy_all()
 	al_destroy_timer(global->asteroid_rotation_timer);
 	al_destroy_event_queue(global->queue);
 	free(global->bullets);
-	free(global->Keys);
 	return 1;
 }
 
@@ -110,7 +109,6 @@ void Blasteroids_Init(Global * global)
 	// Initializing variables that are on the heap or are from other source files
 	global->bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
 	global->asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
-	global->Keys = malloc(sizeof(bool)*SPACESHIP_KEYS_NUM);
 	global->redraw = true;
 	global->AsteroidBitmap = NULL;
  	global->ship = (Spaceship){
