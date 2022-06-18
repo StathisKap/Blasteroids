@@ -83,5 +83,12 @@
         "version": "c",
         "asteroid.h": "c"
     },
-    "C_Cpp.errorSquiggles": "Enabled"
+    "C_Cpp.errorSquiggles": "Enabled",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/Users/stathis/Code/Blasteroids/bin",
+            "binaryPath": "/Users/stathis/Code/Blasteroids/bin/ship",
+            "binaryArgs": []
+        }
+    ]
 }

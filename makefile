@@ -1,16 +1,14 @@
 CC = gcc
-DEPS = ./include/blasteroids.h
-OBJ =  ./objects/spaceship.o ./objects/blasteroids.o ./objects/blast.o ./objects/asteroid.o  ./objects/collisions.o
-CFLAGS = `pkg-config --libs allegro-5 allegro_font-5 allegro_primitives-5 allegro_image-5 allegro_ttf-5` -lm -lpthread -lallegro_main -Wno-unused-command-line-argument
-
+SRC_DIR = ./src/
+OBJ_DIR = ./objects/
+SRC_FILES= $(wildcard $(SRC_DIR)*.c)
+OBJ= $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC_FILES))
+CFLAGS = `pkg-config --cflags --libs allegro_main-5 allegro_font-5 allegro_primitives-5 allegro_image-5 allegro_ttf-5` -lm  -Wno-unused-command-line-argument
 
 ./bin/ship: $(OBJ)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(OBJ) -o $@
-./objects/spaceship.o: ./src/spaceship.c ./include/blasteroids.h ./objects/asteroid.o
-	@mkdir -p $(@D)
-	$(CC)  $< $(CFLAGS) -c -o $@
 
-./objects/%.o: ./src/%.c $(DEPS)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(@D)
 	$(CC) $< $(CFLAGS) -c -o $@

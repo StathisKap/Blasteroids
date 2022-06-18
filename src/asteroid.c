@@ -7,8 +7,9 @@ extern Global * global;
 
 void draw_asteroid()
 {
-		int BitmapScale = 50;
-
+	int BitmapScale = 50;
+	if (global->AsteroidBitmap == NULL)
+	{
 		//Asteroid bitmap
 		global->AsteroidBitmap = al_create_bitmap(BitmapScale, BitmapScale);
 		int xoffset = BitmapScale / 2, yoffset = BitmapScale / 2;
@@ -30,6 +31,8 @@ void draw_asteroid()
 		al_draw_line(0   + xoffset, 15  + yoffset, -20 + xoffset, 20  + yoffset, al_map_rgb(255,255,255), 2.0f);
 
 		al_set_target_bitmap(al_get_backbuffer(global->disp));
+		printf("Asteroid Bitmap Created\n");
+	}
 	
 	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
@@ -41,7 +44,7 @@ void draw_asteroid()
 			ALLEGRO_TRANSFORM transform; 
 			al_identity_transform(&transform);
 			al_rotate_transform(&transform, global->asteroids[i].twist); //We rotate it
-			al_translate_transform(&transform,global->asteroids[i].sy, global->asteroids[i].sx); //We move it to an initial position
+			al_translate_transform(&transform,global->asteroids[i].sx, global->asteroids[i].sy); //We move it to an initial position
 			al_use_transform(&transform);
 			al_draw_tinted_bitmap(global->asteroids[i].image, global->asteroids[i].color, -(BitmapScale/2), -(BitmapScale/2), 0);
 		}

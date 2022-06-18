@@ -15,8 +15,8 @@
 #define PI M_PI
 #define ROT_SPEED PI * 0.025
 #define SPACESHIP_KEYS_NUM 6
-#define SPACESHIP_SPEED 0.025
-#define SPACESHIP_SPEED_MAX 2.5
+#define SPACESHIP_SPEED 0.08
+#define SPACESHIP_SPEED_MAX 4.5
 #define DRAG 0.005
 #define MASS 0.05
 #define DISPLAY_WIDTH 1400
@@ -51,9 +51,15 @@ typedef struct Global{
 } Global;
 
 
+typedef struct DUMMY
+{
+	ALLEGRO_TRANSFORM transform;
+	ALLEGRO_BITMAP *bmp;
+	mask_t *mask;
+} DUMMY;
 
 void Blasteroids_Init(Global * global);
 void error(char *msg);
 int  al_destroy_all();
 int  al_register_all();
-void teleport();
+void teleport(float *sx, float *sy);

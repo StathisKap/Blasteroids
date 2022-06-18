@@ -5,7 +5,6 @@ typedef struct {
 	float speed;
 	float drift;
 	float scale;
-	float BitmapScale;
 	bool live; //is it dead?
 	ALLEGRO_COLOR color;
 	ALLEGRO_BITMAP *image;
@@ -15,6 +14,6 @@ typedef struct {
 
 void draw_ship(); //Draws the ship
 void draw_flame(); //Draws the flame when it goes forward
-void ReadKeysForSpaceship(); 
-void UseKeysForSpaceship();
+void KeysForSpaceship(); 
 void Create_Ship_Mask();
+void Ship_Init();

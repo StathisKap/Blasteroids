@@ -14,7 +14,6 @@ void fire_bullet()
 		{
 			global->bullets[i].live = true; // It turns it to true
 			global->bullets[i].heading = global->ship.heading; // It sets the heading equal to wherever the ship was looking
-			printf("%.3f\n",global->ship.heading);
 			global->bullets[i].sx = global->ship.sx + 10 * sin(global->ship.heading + PI / 2) * global->ship.scale; // It sets the starting position to where the ship is
 			global->bullets[i].sy = global->ship.sy - 10 * cos(global->ship.heading  + PI / 2) * global->ship.scale;
 			break;
