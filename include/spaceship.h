@@ -14,6 +14,6 @@ typedef struct {
 
 void draw_ship(); //Draws the ship
 void draw_flame(); //Draws the flame when it goes forward
-void KeysForSpaceship(); 
+void KeysForSpaceship();
 void Create_Ship_Mask();
 void Ship_Init();

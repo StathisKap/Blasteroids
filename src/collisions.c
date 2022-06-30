@@ -17,7 +17,7 @@ mask_t * Mask_New(ALLEGRO_BITMAP *bmp)
 
     if(!temp)
         error("Failed to create temprary mask in Mask_New");
-    
+
     for(int i = 0; i < h; i++)
         for(int j = 0; j < w; j++){
             pixel = al_get_pixel(bmp,j,i);
@@ -38,7 +38,7 @@ mask_t * Mask_Create(int w, int h)
 
     if(!temp)
         error("Failed to create temprary mask in Mask_Create");
-    
+
     return temp;
 }
 
@@ -48,7 +48,7 @@ void Mask_Fill(mask_t *m)
     {
         m->bits[i] = 1;
     }
-    
+
 }
 
 void Mask_SetBit(mask_t *m, int x, int y)
@@ -65,7 +65,7 @@ void Mask_Delete(mask_t *m)
 {
     if (m->bits != NULL)
         free(m->bits);
-    
+
     if (m != NULL)
         free(m);
 
@@ -92,9 +92,9 @@ int Mask_Collide(const mask_t *a, const mask_t *b, int xoffset, int yoffset)
                 b->bits[(x2 +i) * b->w + (y2 + j)] == 1)
                 printf("Collision\n");
                 return 1;
-            
+
         }
-        
+
     }
     return 0;
 }
@@ -125,4 +125,44 @@ int Color_Equiv(ALLEGRO_COLOR col1, ALLEGRO_COLOR col2)
 int Transparent(ALLEGRO_COLOR col1)
 {
     return col1.a == 0;
+}
+
+bool Box_Collision()
+{
+    al_identity_transform(&global->ship.transform);
+    al_use_transform(&global->ship.transform);
+    al_draw_rectangle(
+            global->ship.sx + 10 * global->ship.scale,
+            global->ship.sy + 10 * global->ship.scale,
+            global->ship.sx - 10 * global->ship.scale,
+            global->ship.sy - 10 * global->ship.scale,
+            al_map_rgb(255,0,0),
+            4);
+
+
+    for (int i = 0; i < MAX_BIG_ASTEROIDS; i++)
+    {
+    al_draw_rectangle(
+            global->asteroids[i].sx + 10 * global->asteroids[i].scale,
+            global->asteroids[i].sy + 10 * global->asteroids[i].scale,
+            global->asteroids[i].sx - 10 * global->asteroids[i].scale,
+            global->asteroids[i].sy - 10 * global->asteroids[i].scale,
+            al_map_rgb(255,0,0),
+            4);
+
+    	if (global->ship.sx + 10 * global->ship.scale < global->asteroids[i].sx + 10 * global->asteroids[i].scale ||
+    		global->ship.sx + 10 * global->ship.scale > global->asteroids[i].sx - 10 * global->asteroids[i].scale ||
+    		global->ship.sy + 10 * global->ship.scale < global->asteroids[i].sy + 10 * global->asteroids[i].scale ||
+    		global->ship.sy + 10 * global->ship.scale > global->asteroids[i].sy - 10 * global->asteroids[i].scale)
+        {
+          printf("Collision\n");
+        }
+    }
+    return false;
+}
+
+bool Distance_Colission()
+{
+
+    return false;
 }
