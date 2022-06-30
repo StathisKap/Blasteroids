@@ -24,3 +24,4 @@ int Mask_Collide(const mask_t *m, const mask_t *b, int xoffset, int yoffset);
 void Mask_Draw(mask_t *m, int x, int y); // Draws the Mask as a bitmap from the array
 int Color_Equiv(ALLEGRO_COLOR col1, ALLEGRO_COLOR col2); // Checks if 2 colors are the same
 int Transparent(ALLEGRO_COLOR col1); // Checks if a bit is transparent
+bool Box_Collision(); // Checks if two boxes are colliding

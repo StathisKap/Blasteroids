@@ -40,9 +40,9 @@ typedef struct Global{
     ALLEGRO_EVENT_QUEUE *queue;
     ALLEGRO_EVENT event;
     ALLEGRO_DISPLAY* disp;
-    ALLEGRO_TIMER *asteroid_rotation_timer;
-    ALLEGRO_TIMER* timer;
-    ALLEGRO_BITMAP *collision_mask;
+    ALLEGRO_TIMER * asteroid_rotation_timer;
+    ALLEGRO_TIMER * fire_rate_timer;
+    ALLEGRO_TIMER * timer;
     bool SpaceShipBitmapCreated;
     bool redraw;
     ALLEGRO_BITMAP *AsteroidBitmap;
