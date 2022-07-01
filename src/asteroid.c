@@ -82,9 +82,7 @@ void spawn_asteroid()
 			global->asteroids[i].dead = false; // It turns it to false
 			break;
 		}
-
 	}
-
 }
 
 void update_asteroid()

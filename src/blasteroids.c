@@ -86,7 +86,7 @@ int al_destroy_all()
 	free(global->asteroids);
 	free(global);
 //	free(dummy->mask);
-	free(dummy);
+//	free(dummy);
 	return 1;
 }
 
@@ -170,8 +170,8 @@ void Blasteroids_Init(Global * global)
 		error("Coulnd't register something");
 
     al_start_timer(global->timer);
+  	al_start_timer(global->fire_rate_timer);
     al_start_timer(global->asteroid_rotation_timer);
-    al_start_timer(global->fire_rate_timer);
 
 	printf("Global Variables initialised\n");
 

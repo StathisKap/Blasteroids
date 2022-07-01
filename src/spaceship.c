@@ -112,6 +112,12 @@ void KeysForSpaceship()
 	if(global->ship.speed > SPACESHIP_SPEED_MAX) //Not exceeding max speed
 		global->ship.speed = SPACESHIP_SPEED_MAX;
 
+	if (global->event.type == ALLEGRO_EVENT_TIMER)
+		if (!al_key_down(&keystate, ALLEGRO_KEY_SPACE))
+			if (global->event.timer.source == global->fire_rate_timer)
+			{
+				al_stop_timer(global->fire_rate_timer);
+			}
 }
 
 void Create_Ship_Mask()

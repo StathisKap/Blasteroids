@@ -5,25 +5,33 @@
 
 extern Global * global;
 
+void spawn_bullet()
+{
+	for (size_t i = 0; i < BULLET_COUNT; i++) //goes through each bullet
+	{
+		if (!global->bullets[i].live) //If it is false then
+		{
+			global->bullets[i].live = true; // It turns it to true
+			global->bullets[i].heading = global->ship.heading; // It sets the heading equal to wherever the ship was looking
+			global->bullets[i].sx = global->ship.sx + 10 * sin(global->ship.heading + PI / 2) * global->ship.scale; // It sets the starting position to where the ship is
+			global->bullets[i].sy = global->ship.sy - 10 * cos(global->ship.heading  + PI / 2) * global->ship.scale;
+			global->bullets[i].size = 5;
+			break;
+		}
+	}
+}
 
 void fire_bullet()
 {
+	if (!al_get_timer_started(global->fire_rate_timer))
+	{
+  	al_start_timer(global->fire_rate_timer);
+		spawn_bullet();
+	}
+
 	if (global->event.type == ALLEGRO_EVENT_TIMER)
 		if (global->event.timer.source == global->fire_rate_timer)
-		{
-			for (size_t i = 0; i < BULLET_COUNT; i++) //goes through each bullet
-			{
-				if (!global->bullets[i].live) //If it is false then
-				{
-					global->bullets[i].live = true; // It turns it to true
-					global->bullets[i].heading = global->ship.heading; // It sets the heading equal to wherever the ship was looking
-					global->bullets[i].sx = global->ship.sx + 10 * sin(global->ship.heading + PI / 2) * global->ship.scale; // It sets the starting position to where the ship is
-					global->bullets[i].sy = global->ship.sy - 10 * cos(global->ship.heading  + PI / 2) * global->ship.scale;
-					global->bullets[i].size = 5;
-					break;
-				}
-			}
-		}
+			spawn_bullet();
 }
 
 void draw_bullet()
