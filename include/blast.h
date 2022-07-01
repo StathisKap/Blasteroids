@@ -1,3 +1,7 @@
+#ifndef INCLUDE_BLAST_H_
+	#define INCLUDE_BLAST_H_
+#endif //INCLUDE_BLAST_H_
+
 void draw_bullet();
 void fire_bullet();
 void update_bullet();

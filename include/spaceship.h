@@ -1,3 +1,7 @@
+#ifndef INCLUDE_SPACESHIP_H_
+	#define INCLUDE_SPACESHIP_H_
+#endif // INCLUDE_SPACESHIP_H_
+
 typedef struct {
 	float sx; //Where it is on the screen
 	float sy;//*

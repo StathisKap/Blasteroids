@@ -119,6 +119,7 @@ void Blasteroids_Init(Global * global)
 	global->bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
 	global->asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
 	global->redraw = true;
+	global->done = false;
 	global->AsteroidBitmap = NULL;
  	global->ship = (Spaceship){
 		 DISPLAY_HEIGHT / 2,//	sx
@@ -132,7 +133,6 @@ void Blasteroids_Init(Global * global)
 		 NULL, 				// image
 		 NULL,				// mask
 		 };
-	srand(time(NULL));
 
 	for(int i = 0 ; i <= MAX_BIG_ASTEROIDS; i++)
 		global->asteroids[i].dead = true;

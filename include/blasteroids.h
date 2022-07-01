@@ -1,3 +1,7 @@
+#ifndef INCLUDE_BLASTEROIDS_H_
+    #define INCLUDE_BLASTEROIDS_H_
+#endif // INCLUDE_BLASTEROIDS_H_
+
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -27,10 +31,10 @@
 
 enum COLOURS {YELLOW, ORANGE, RED};
 
-#include "collisions.h"
-#include "asteroid.h"
-#include "spaceship.h"
-#include "blast.h"
+#include "./collisions.h"
+#include "./asteroid.h"
+#include "./spaceship.h"
+#include "./blast.h"
 
 typedef struct Global{
     bool done;

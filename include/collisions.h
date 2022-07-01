@@ -1,3 +1,7 @@
+#ifndef INCLUDE_COLLISIONS_H_
+    #define INCLUDE_COLLISIONS_H_
+#endif // INCLUDE_COLLISIONS_H_
+
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>

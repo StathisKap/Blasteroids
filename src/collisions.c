@@ -93,8 +93,10 @@ int Mask_Collide(const mask_t *a, const mask_t *b, int xoffset, int yoffset)
         {
             if (a->bits[(x1 +i) * a->w + (y1 + j)] == 1 &&
                 b->bits[(x2 +i) * b->w + (y2 + j)] == 1)
+            {
                 printf("Collision\n");
                 return 1;
+            }
         }
 
     }

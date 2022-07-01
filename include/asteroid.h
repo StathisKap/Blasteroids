@@ -1,3 +1,7 @@
+#ifndef INCLUDE_ASTEROID_H_
+	#define INCLUDE_ASTEROID_H_
+#endif // INCLUDE_ASTEROID_H_
+
 void spawn_asteroid();
 void draw_asteroid();
 void update_asteroid();
