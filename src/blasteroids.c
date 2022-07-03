@@ -6,28 +6,12 @@
 Global *global;
 
 
-//Dummy function for testing
-void draw_dummy(DUMMY *dummy);
-
-// Dummy variable for testing
-DUMMY *dummy;
-
 int main()
 {
 	printf("Start of the program\n");
 
 	global = malloc(sizeof(Global));
 	Blasteroids_Init(global);
-
-//	// Dummy variable for testing
-//	dummy = malloc(sizeof(DUMMY));
-//	draw_dummy(dummy);
-//	dummy->mask = Mask_New(dummy->bmp);
-//	dummy->mask->tranform = &dummy->transform;
-//	dummy->mask->BitmapScale = 20;
-//	Mask_Draw(dummy->mask, al_get_bitmap_height(dummy->bmp), al_get_bitmap_width(dummy->bmp));
-//	printf("Dummy Mask created\n");
-
 
 	while(!global->done)
 	{
@@ -40,11 +24,8 @@ int main()
 
 		KeysForSpaceship();
 
-//		printf("\n\nX: %.2f Y: %.2f	X: %.2f Y: %.2f", global->ship.sx, global->ship.sy, global->asteroids[0].sx, global->asteroids[0].sy);
 		if(global->redraw && al_is_event_queue_empty(global->queue))
 		{
-//			draw_dummy(dummy);
-//			Mask_Collide(global->ship.mask, dummy->mask, 10, 10);
 			Box_Collision();
 			draw_ship();
 			draw_bullet();
@@ -54,7 +35,6 @@ int main()
 		  al_clear_to_color(al_map_rgb(0, 0, 0));
     	global->redraw = false;
 		}
-
 	}
 	if(!al_destroy_all())
 		error("Couldn't destroy everything");
@@ -85,8 +65,6 @@ int al_destroy_all()
 	free(global->bullets);
 	free(global->asteroids);
 	free(global);
-//	free(dummy->mask);
-//	free(dummy);
 	return 1;
 }
 
@@ -131,7 +109,6 @@ void Blasteroids_Init(Global * global)
 		 true,				// live
 		 al_map_rgb(255,255,0), //color
 		 NULL, 				// image
-		 NULL,				// mask
 		 };
 
 	for(int i = 0 ; i <= MAX_BIG_ASTEROIDS; i++)
@@ -175,24 +152,5 @@ void Blasteroids_Init(Global * global)
 
 	printf("Global Variables initialised\n");
 
-	Ship_Init();
-}
-
-
-void draw_dummy(DUMMY *dummy)
-{
-	if (dummy->bmp == NULL)
-	{
-		dummy->bmp = al_create_bitmap(300,300);
-		al_set_target_bitmap(dummy->bmp);
-		al_draw_filled_rectangle(0,0,300,300,al_map_rgb(255,255,255));
-		al_set_target_bitmap(al_get_backbuffer(global->disp));
-
-		printf("Dummy Bitmap Created\n");
-	}
-
-	al_identity_transform(&dummy->transform);
-	al_translate_transform(&dummy->transform, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2); //We move it to an initial position
-	al_use_transform(&dummy->transform);
-//	al_draw_bitmap(dummy->bmp,0,0,0);
+	draw_ship();
 }

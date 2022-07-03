@@ -48,8 +48,19 @@ void draw_asteroid()
 			al_rotate_transform(&transform, global->asteroids[i].twist); //We rotate it
 			al_translate_transform(&transform,global->asteroids[i].sx, global->asteroids[i].sy); //We move it to an initial position
 			al_use_transform(&transform);
-			al_draw_tinted_scaled_bitmap(global->asteroids[i].image, global->asteroids[i].color, 0, 0, size, size, -s/2, -s/2, s, s, 0);
-		}
+			al_draw_tinted_scaled_bitmap(
+					global->asteroids[i].image,
+					global->asteroids[i].color,
+					0,
+					0,
+					size,
+					size,
+					-s/2,
+					-s/2,
+					s,
+					s,
+					0);
+	}
 	}
 
 	update_asteroid();

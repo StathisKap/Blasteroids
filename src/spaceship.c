@@ -4,19 +4,17 @@
 #endif
 
 extern Global *global;
-extern DUMMY *dummy;
-
 
 void draw_ship()
 {
-		int xoffset = 20 * global->ship.scale / 2 , yoffset = 20 * global->ship.scale / 2; // Half the Bitmap scale * ship scale
+	int xoffset = 20 * global->ship.scale / 2 , yoffset = 20 * global->ship.scale / 2; // Half the Bitmap scale * ship scale
 
 	if(global->SpaceShipBitmapCreated == false)
 	{
 		float thickness = 2.5f; // just a variable to control the thickness in case we wanna vary it;
 		thickness += global->ship.scale - 1;
 		global->ship.image = al_create_bitmap(20 * global->ship.scale, 20 * global->ship.scale);
- 	   	al_set_target_bitmap(global->ship.image);
+ 	  al_set_target_bitmap(global->ship.image);
 	 	al_draw_line(-8 * global->ship.scale + xoffset, 10 * global->ship.scale + yoffset, 0 * global->ship.scale + xoffset, -10 * global->ship.scale + yoffset, global->ship.color, thickness ); //We draw the lines
 		al_draw_line(0 * global->ship.scale  + xoffset, -10 * global->ship.scale + yoffset, 8 * global->ship.scale + xoffset, 10 * global->ship.scale + yoffset, global->ship.color, thickness);  //We draw the lines
 		al_draw_line(-6 * global->ship.scale + xoffset, 4 * global->ship.scale + yoffset, -1 * global->ship.scale + xoffset, 4 * global->ship.scale + yoffset, global->ship.color, thickness); //We draw the lines
@@ -78,23 +76,6 @@ void KeysForSpaceship()
 	if (al_key_down(&keystate, ALLEGRO_KEY_DOWN))
 		global->ship.speed -= DRAG * 10;
 
-	if (al_key_down(&keystate, ALLEGRO_KEY_M))
-	{
-	al_use_transform(&global->ship.transform);
-	al_draw_bitmap(
-		global->ship.mask->bmp,
-		-global->ship.mask->h,
-		-global->ship.mask->w,
-		0);
-	al_use_transform(&dummy->transform);
-	al_draw_bitmap(
-		dummy->mask->bmp,
-		0,
-		0,
-//		-dummy->mask->h,
-//		-dummy->mask->w,
-		0);
-	}
 
 	// Keeping the heading angle between 0 and 2*PI
 	if (global->ship.heading > 2*PI)
@@ -120,22 +101,7 @@ void KeysForSpaceship()
 			}
 }
 
-void Create_Ship_Mask()
-{
-	//Creates mask and transform for ship
-	global->ship.mask = Mask_New(global->ship.image);
-	global->ship.mask->tranform = &global->ship.transform;
-	global->ship.mask->BitmapScale = 20;
-	Mask_Draw(global->ship.mask, al_get_bitmap_height(global->ship.image), al_get_bitmap_width(global->ship.image));
-	printf("Ship Mask created\n");
-}
 
-void Ship_Init()
-{
-	// Draw the ship once so that it creates a Bitmap for it
-	draw_ship();
-	Create_Ship_Mask();
-}
 
 /* Collisions
  * If the spaceglobal->ship collides with a rock, it dies immediately and the player

@@ -52,14 +52,6 @@ typedef struct Global{
     ALLEGRO_BITMAP *AsteroidBitmap;
 } Global;
 
-
-typedef struct DUMMY
-{
-	ALLEGRO_TRANSFORM transform;
-	ALLEGRO_BITMAP *bmp;
-	mask_t *mask;
-} DUMMY;
-
 void Blasteroids_Init(Global * global);
 void error(char *msg);
 int  al_destroy_all();
