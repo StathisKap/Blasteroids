@@ -10,4 +10,3 @@
 
 bool Box_Collision_Ship(); // Checks if two boxes are colliding
 bool Box_Collision_Bullets(); // Checks if two boxes are colliding
-void Check_For_Collisions();

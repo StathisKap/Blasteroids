@@ -17,4 +17,6 @@ typedef struct {
 
 void draw_ship(); //Draws the ship
 void draw_flame(); //Draws the flame when it goes forward
-void KeysForSpaceship();
+void KeysForSpaceship(); // Reads the keystate of the keys and does stuff
+void Respawn();
+void draw_lives();

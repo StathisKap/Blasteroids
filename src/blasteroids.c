@@ -17,25 +17,43 @@ int main()
 	{
 		al_wait_for_event(global->queue, &global->event); //Capture keystrokes
 
-        if(global->event.type == ALLEGRO_EVENT_TIMER)
-            global->redraw = true;
-        else if(global->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || global->event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+    if(global->event.type == ALLEGRO_EVENT_TIMER)
+        global->redraw = true;
+    else if(global->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || global->event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 			global->done = true;
 
+
 		KeysForSpaceship();
-		Check_For_Collisions();
+		Box_Collision_Bullets();
+
+		if (!al_get_timer_started(global->respawn_timer) && global->ship.live)
+			Box_Collision_Ship();
 
 		if(global->redraw && al_is_event_queue_empty(global->queue))
 		{
 			draw_ship();
 			draw_bullet();
 			draw_asteroid();
+			draw_lives();
 			spawn_asteroid();
+
+			if(global->done)
+			{
+				al_draw_text(global->font, al_map_rgb(255,255,255),
+						DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2,
+						ALLEGRO_ALIGN_CENTER, "GAME OVER!!");
+				al_flip_display();
+				al_rest(5);
+				break;
+			}
+
 			al_flip_display();
 		  al_clear_to_color(al_map_rgb(0, 0, 0));
     	global->redraw = false;
 		}
 	}
+
+
 	if(!al_destroy_all())
 		error("Couldn't destroy everything");
 	return 0;
@@ -62,6 +80,7 @@ int al_destroy_all()
 	al_destroy_timer(global->fire_rate_timer);
 	al_destroy_event_queue(global->queue);
 	al_destroy_bitmap(global->AsteroidBitmap);
+	al_destroy_font(global->font);
 	free(global->bullets);
 	free(global->asteroids);
 	free(global);
@@ -94,6 +113,7 @@ void Blasteroids_Init(Global * global)
 {
 
 	// Initializing variables that are on the heap or are from other source files
+	global->Player_Lives = 3;
 	global->bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
 	global->asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
 	global->redraw = true;
@@ -119,6 +139,16 @@ void Blasteroids_Init(Global * global)
 
 	if (!al_init_primitives_addon())
 		error("Couldn't initialize Allegro Primitives");
+
+	if(!al_init_font_addon())
+		error("Couldn't initialize Allegro Font");
+
+	if(!al_init_ttf_addon())
+		error("Couldn't initialize Allegro TTF");
+
+	global->font = al_load_ttf_font("./assets/arial.ttf", 40, 0);
+	if(!global->font)
+		error("Couldn't Load TTF");
 
 	if (!al_install_keyboard())
 		error("Couldn't initialize Keyboard");
@@ -150,9 +180,11 @@ void Blasteroids_Init(Global * global)
 	if(!al_register_all())
 		error("Coulnd't register something");
 
-    al_start_timer(global->timer);
-  	al_start_timer(global->fire_rate_timer);
-    al_start_timer(global->asteroid_rotation_timer);
+  al_start_timer(global->timer);
+  al_start_timer(global->fire_rate_timer);
+  al_start_timer(global->asteroid_rotation_timer);
+
+	al_set_window_title(global->disp, "Blasteroids");
 
 	printf("Global Variables initialised\n");
 

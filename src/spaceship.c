@@ -5,8 +5,6 @@
 
 extern Global *global;
 
-void Respawn();
-
 void draw_ship()
 {
 	int xoffset = 20 * global->ship.scale / 2 , yoffset = 20 * global->ship.scale / 2; // Half the Bitmap scale * ship scale
@@ -33,17 +31,13 @@ void draw_ship()
 		al_rotate_transform(&global->ship.transform, global->ship.heading + PI / 2); //We rotate it
 		al_translate_transform(&global->ship.transform, global->ship.sx, global->ship.sy); //We move the transform to where the ship should be
 		al_use_transform(&global->ship.transform);
-		al_draw_bitmap(
-			global->ship.image,
+		al_draw_bitmap(global->ship.image,
 			global->ship.scale * -10,
-			global->ship.scale * -10,
-			0);
+			global->ship.scale * -10, 0);
 		teleport(&global->ship.sx, &global->ship.sy);
 	}
 	else
-	{
 		Respawn();
-	}
 }
 
 void draw_flame() //Draws the flame when it goes forward
@@ -113,6 +107,11 @@ void KeysForSpaceship()
 
 void Respawn()
 {
+	if (global->Player_Lives <= 0)
+	{
+		global->done = true;
+		return;
+	}
 	global->ship.sx = DISPLAY_WIDTH / 2;
 	global->ship.sy = DISPLAY_HEIGHT / 2;
 	global->ship.heading = 3 * PI / 2;
@@ -121,6 +120,7 @@ void Respawn()
 
 	if(!al_get_timer_started(global->respawn_timer))
 		al_start_timer(global->respawn_timer);
+
 	if (al_get_timer_count(global->respawn_timer) % 5)
 	{
 		al_identity_transform(&global->ship.transform);
@@ -137,10 +137,21 @@ void Respawn()
 	}
 }
 
-
-/* Collisions
- * If the spaceglobal->ship collides with a rock, it dies immediately and the player
- * loses a life. For the first 5 seconds after a new global->ship is created, it
- * doesn't check for collisions. The new global->ship should appear in the center of
- * the screen
- */
+void draw_lives()
+{
+		al_identity_transform(&global->ship.transform);
+		al_use_transform(&global->ship.transform);
+		for (short i = 0; i < global->Player_Lives; i++)
+		{
+			al_draw_tinted_scaled_bitmap(global->ship.image,
+					al_map_rgba_f(0.2, 0.7, 0.2, 1.0),
+					0,0,
+					20 * global->ship.scale,
+					20 * global->ship.scale,
+					17 * global->ship.scale * i + 5, // the +5 is the shift from the left
+					5, // Shift from the top
+					15 * global->ship.scale,
+					15 * global->ship.scale,
+					0);
+		}
+}

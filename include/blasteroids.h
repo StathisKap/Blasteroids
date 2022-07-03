@@ -37,19 +37,21 @@ enum COLOURS {YELLOW, ORANGE, RED};
 #include "./blast.h"
 
 typedef struct Global{
+    short Player_Lives;
     bool done;
+    bool SpaceShipBitmapCreated;
+    bool redraw;
     Bullet *bullets;
     Asteroid *asteroids;
     Spaceship ship;
     ALLEGRO_EVENT_QUEUE *queue;
     ALLEGRO_EVENT event;
-    ALLEGRO_DISPLAY* disp;
+    ALLEGRO_DISPLAY * disp;
+    ALLEGRO_FONT * font;
     ALLEGRO_TIMER * asteroid_rotation_timer;
     ALLEGRO_TIMER * fire_rate_timer;
     ALLEGRO_TIMER * timer;
     ALLEGRO_TIMER * respawn_timer;
-    bool SpaceShipBitmapCreated;
-    bool redraw;
     ALLEGRO_BITMAP *AsteroidBitmap;
 } Global;
 

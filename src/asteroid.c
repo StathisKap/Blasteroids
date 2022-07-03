@@ -50,14 +50,10 @@ void draw_asteroid()
 			al_draw_tinted_scaled_bitmap(
 					global->asteroids[i].image,
 					global->asteroids[i].color,
-					0,
-					0,
-					size,
-					size,
-					-s/2,
-					-s/2,
-					s,
-					s,
+					0, 0,
+					size, size,
+					-s/2, -s/2,
+					s, s,
 					0);
 		}
 	}

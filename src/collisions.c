@@ -17,6 +17,7 @@ bool Box_Collision_Ship()
         else
         {
             global->ship.live = false;
+            global->Player_Lives--;
             return true;
         }
     }
@@ -43,10 +44,4 @@ bool Box_Collision_Bullets()
             }
     }
     return false;
-}
-
-void Check_For_Collisions()
-{
-    Box_Collision_Bullets();
-    Box_Collision_Ship();
 }
