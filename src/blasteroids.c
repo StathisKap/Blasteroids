@@ -102,7 +102,7 @@ void Blasteroids_Init(Global * global)
  	global->ship = (Spaceship){
 		 DISPLAY_HEIGHT / 2,//	sx
 		 DISPLAY_WIDTH / 2, // sy
-		 0, 				// heading
+		 3 * PI / 2, 				// heading
 		 0,					// speed
 		 0,					// drift
 		 2,					// scale
@@ -134,6 +134,10 @@ void Blasteroids_Init(Global * global)
 	global->fire_rate_timer = al_create_timer(1.0/2);
 	if (!global->fire_rate_timer)
 		error("Couldn't initialize Fire Rate Timer");
+
+	global->respawn_timer = al_create_timer(1.0/10);
+	if (!global->fire_rate_timer)
+		error("Couldn't initialize Respawn Timer");
 
 	global->queue = al_create_event_queue(); //Create event queue to catch keystrokes
 	if (!global->queue)

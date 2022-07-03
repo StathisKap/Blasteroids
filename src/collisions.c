@@ -15,7 +15,10 @@ bool Box_Collision_Ship()
             global->ship.sy + 10 * global->ship.scale < global->asteroids[i].sy - 12.5 * 6 * global->asteroids[i].scale) // Down
 		            continue;
         else
+        {
+            global->ship.live = false;
             return true;
+        }
     }
     return false;
 }
@@ -34,7 +37,9 @@ bool Box_Collision_Bullets()
                     global->bullets[i].sy < global->asteroids[j].sy - 12.5 * 6 * global->asteroids[j].scale)
 		            	      continue;
                 else
+                {
                     return true;
+                }
             }
     }
     return false;
@@ -42,8 +47,6 @@ bool Box_Collision_Bullets()
 
 void Check_For_Collisions()
 {
-    if (Box_Collision_Bullets())
-        printf("Bullet Collision\n");
-    if (Box_Collision_Ship())
-        printf("Ship Collision\n");
+    Box_Collision_Bullets();
+    Box_Collision_Ship();
 }

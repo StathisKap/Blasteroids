@@ -5,6 +5,8 @@
 
 extern Global *global;
 
+void Respawn();
+
 void draw_ship()
 {
 	int xoffset = 20 * global->ship.scale / 2 , yoffset = 20 * global->ship.scale / 2; // Half the Bitmap scale * ship scale
@@ -25,16 +27,23 @@ void draw_ship()
 		global->SpaceShipBitmapCreated = true;
 	}
 
-	al_identity_transform(&global->ship.transform);
-	al_rotate_transform(&global->ship.transform, global->ship.heading + PI / 2); //We rotate it
-	al_translate_transform(&global->ship.transform, global->ship.sx, global->ship.sy); //We move the transform to where the ship should be
-	al_use_transform(&global->ship.transform);
-	al_draw_bitmap(
-		global->ship.image,
-		global->ship.scale * -10,
-		global->ship.scale * -10,
-		0);
-	teleport(&global->ship.sx, &global->ship.sy);
+	if (global->ship.live == true)
+	{
+		al_identity_transform(&global->ship.transform);
+		al_rotate_transform(&global->ship.transform, global->ship.heading + PI / 2); //We rotate it
+		al_translate_transform(&global->ship.transform, global->ship.sx, global->ship.sy); //We move the transform to where the ship should be
+		al_use_transform(&global->ship.transform);
+		al_draw_bitmap(
+			global->ship.image,
+			global->ship.scale * -10,
+			global->ship.scale * -10,
+			0);
+		teleport(&global->ship.sx, &global->ship.sy);
+	}
+	else
+	{
+		Respawn();
+	}
 }
 
 void draw_flame() //Draws the flame when it goes forward
@@ -101,6 +110,32 @@ void KeysForSpaceship()
 			}
 }
 
+
+void Respawn()
+{
+	global->ship.sx = DISPLAY_WIDTH / 2;
+	global->ship.sy = DISPLAY_HEIGHT / 2;
+	global->ship.heading = 3 * PI / 2;
+	global->ship.speed = 0;
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+
+	if(!al_get_timer_started(global->respawn_timer))
+		al_start_timer(global->respawn_timer);
+	if (al_get_timer_count(global->respawn_timer) % 5)
+	{
+		al_identity_transform(&global->ship.transform);
+		al_use_transform(&global->ship.transform);
+		al_draw_tinted_bitmap(global->ship.image, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),
+				(DISPLAY_WIDTH - 20 * global->ship.scale) / 2,
+				(DISPLAY_HEIGHT - 20 * global->ship.scale) / 2, 0);
+	}
+	if (al_get_timer_count(global->respawn_timer) > 30)
+	{
+		global->ship.live = true;
+		al_set_timer_count(global->respawn_timer, 0);
+		al_stop_timer(global->respawn_timer);
+	}
+}
 
 
 /* Collisions

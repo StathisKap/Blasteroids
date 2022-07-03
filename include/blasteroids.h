@@ -47,6 +47,7 @@ typedef struct Global{
     ALLEGRO_TIMER * asteroid_rotation_timer;
     ALLEGRO_TIMER * fire_rate_timer;
     ALLEGRO_TIMER * timer;
+    ALLEGRO_TIMER * respawn_timer;
     bool SpaceShipBitmapCreated;
     bool redraw;
     ALLEGRO_BITMAP *AsteroidBitmap;
