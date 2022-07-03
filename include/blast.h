@@ -15,4 +15,5 @@ typedef struct
 	ALLEGRO_COLOR color;
 	ALLEGRO_BITMAP *image;
 	float size;
+	ALLEGRO_TRANSFORM transform;
 } Bullet;

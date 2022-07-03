@@ -40,9 +40,8 @@ void draw_bullet()
 	{
 		if (global->bullets[i].live)
 		{
-			ALLEGRO_TRANSFORM transform;
-			al_identity_transform(&transform);
-			al_use_transform(&transform);
+			al_identity_transform(&global->bullets[i].transform);
+			al_use_transform(&global->bullets[i].transform);
 			al_draw_filled_circle(global->bullets[i].sx, global->bullets[i].sy, global->bullets[i].size, al_map_rgb(255,0,0)); // Draws a red dot
 		}
 
@@ -67,8 +66,6 @@ void update_bullet()
 				global->bullets[i].live = false;
 			if (global->bullets[i].sy > DISPLAY_HEIGHT)
 				global->bullets[i].live = false;
-
-
 		}
 
 	}

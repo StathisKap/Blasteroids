@@ -23,10 +23,10 @@ int main()
 			global->done = true;
 
 		KeysForSpaceship();
+		Check_For_Collisions();
 
 		if(global->redraw && al_is_event_queue_empty(global->queue))
 		{
-			Box_Collision();
 			draw_ship();
 			draw_bullet();
 			draw_asteroid();

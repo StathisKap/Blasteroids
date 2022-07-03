@@ -37,7 +37,6 @@ void draw_asteroid()
 
 	for (size_t i = 0; i <= MAX_BIG_ASTEROIDS; i++)
 	{
-
 		global->asteroids[i].image = global->AsteroidBitmap;
 
 		if (!global->asteroids[i].dead)
@@ -60,7 +59,7 @@ void draw_asteroid()
 					s,
 					s,
 					0);
-	}
+		}
 	}
 
 	update_asteroid();

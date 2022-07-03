@@ -5,44 +5,45 @@
 
 extern Global * global;
 
-bool Box_Collision()
+bool Box_Collision_Ship()
 {
-    al_identity_transform(&global->ship.transform);
-    al_use_transform(&global->ship.transform);
-    al_draw_rectangle(
-            global->ship.sx + 10 * global->ship.scale,
-            global->ship.sy + 10 * global->ship.scale,
-            global->ship.sx - 10 * global->ship.scale,
-            global->ship.sy - 10 * global->ship.scale,
-            al_map_rgb(255,0,0),
-            4);
-
-
     for (int i = 0; i < MAX_BIG_ASTEROIDS; i++)
     {
-        al_draw_rectangle(
-                global->asteroids[i].sx + 10 * 6 * global->asteroids[i].scale,
-                global->asteroids[i].sy + 10 * 6 * global->asteroids[i].scale,
-                global->asteroids[i].sx - 10 * 6 * global->asteroids[i].scale,
-                global->asteroids[i].sy - 10 * 6 * global->asteroids[i].scale,
-                al_map_rgb(255,0,0),
-                4);
-
-        if (global->ship.sx - 10 * global->ship.scale > global->asteroids[i].sx + 10 * 6 * global->asteroids[i].scale || // Left
-            global->ship.sx + 10 * global->ship.scale < global->asteroids[i].sx - 10 * 6 * global->asteroids[i].scale || // Right
-            global->ship.sy - 10 * global->ship.scale > global->asteroids[i].sy + 10 * 6 * global->asteroids[i].scale || // Up
-            global->ship.sy + 10 * global->ship.scale < global->asteroids[i].sy - 10 * 6 * global->asteroids[i].scale) // Down
-            {
-		    	      global->asteroids[i].color = al_map_rgba_f(0.211, 0.368, 0.639, 1);
-            }
+        if (global->ship.sx - 10 * global->ship.scale > global->asteroids[i].sx + 12.5 * 6 * global->asteroids[i].scale || // Left
+            global->ship.sx + 10 * global->ship.scale < global->asteroids[i].sx - 12.5 * 6 * global->asteroids[i].scale || // Right
+            global->ship.sy - 10 * global->ship.scale > global->asteroids[i].sy + 12.5 * 6 * global->asteroids[i].scale || // Up
+            global->ship.sy + 10 * global->ship.scale < global->asteroids[i].sy - 12.5 * 6 * global->asteroids[i].scale) // Down
+		            continue;
         else
-            global->asteroids[i].color = al_map_rgb(255,255,255);
+            return true;
     }
     return false;
 }
 
-bool Distance_Colission()
+bool Box_Collision_Bullets()
 {
-
+    for (int i = 0; i < BULLET_COUNT; i++)
+    {
+        if (global->bullets[i].live == false)
+            continue;
+            for (int j = 0; j < MAX_BIG_ASTEROIDS; j++)
+            {
+                if (global->bullets[i].sx > global->asteroids[j].sx + 12.5 * 6 * global->asteroids[j].scale ||
+                    global->bullets[i].sx < global->asteroids[j].sx - 12.5 * 6 * global->asteroids[j].scale ||
+                    global->bullets[i].sy > global->asteroids[j].sy + 12.5 * 6 * global->asteroids[j].scale ||
+                    global->bullets[i].sy < global->asteroids[j].sy - 12.5 * 6 * global->asteroids[j].scale)
+		            	      continue;
+                else
+                    return true;
+            }
+    }
     return false;
+}
+
+void Check_For_Collisions()
+{
+    if (Box_Collision_Bullets())
+        printf("Bullet Collision\n");
+    if (Box_Collision_Ship())
+        printf("Ship Collision\n");
 }
