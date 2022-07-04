@@ -112,11 +112,15 @@ void Respawn()
 		global->done = true;
 		return;
 	}
-	global->ship.sx = DISPLAY_WIDTH / 2;
-	global->ship.sy = DISPLAY_HEIGHT / 2;
-	global->ship.heading = 3 * PI / 2;
-	global->ship.speed = 0;
-	al_clear_to_color(al_map_rgb(0, 0, 0));
+
+	if (al_get_timer_count(global->respawn_timer) == 0)
+	{
+		global->ship.sx = DISPLAY_WIDTH / 2;
+		global->ship.sy = DISPLAY_HEIGHT / 2;
+		global->ship.heading = 3 * PI / 2;
+		global->ship.speed = 0;
+		al_clear_to_color(al_map_rgb(0, 0, 0));
+	}
 
 	if(!al_get_timer_started(global->respawn_timer))
 		al_start_timer(global->respawn_timer);
@@ -124,10 +128,16 @@ void Respawn()
 	if (al_get_timer_count(global->respawn_timer) % 5)
 	{
 		al_identity_transform(&global->ship.transform);
+		al_rotate_transform(&global->ship.transform, global->ship.heading + PI / 2); //We rotate it
+		al_translate_transform(&global->ship.transform, global->ship.sx, global->ship.sy);
 		al_use_transform(&global->ship.transform);
-		al_draw_tinted_bitmap(global->ship.image, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),
-				(DISPLAY_WIDTH - 20 * global->ship.scale) / 2,
-				(DISPLAY_HEIGHT - 20 * global->ship.scale) / 2, 0);
+		al_draw_tinted_bitmap(global->ship.image,
+			al_map_rgba_f(0.5, 0.5, 0.5, 0.5),
+			global->ship.scale * -10,
+			global->ship.scale * -10, 0);
+//		al_draw_tinted_bitmap(global->ship.image, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),
+//				(DISPLAY_WIDTH - 20 * global->ship.scale) / 2,
+//				(DISPLAY_HEIGHT - 20 * global->ship.scale) / 2, 0);
 	}
 	if (al_get_timer_count(global->respawn_timer) > 30)
 	{

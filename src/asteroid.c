@@ -63,20 +63,25 @@ void draw_asteroid()
 
 void spawn_asteroid()
 {
-	int x_initial = arc4random() * arc4random() % DISPLAY_WIDTH;
-	int y_initial = arc4random() * arc4random() % DISPLAY_HEIGHT;
-
-	float heading_initial = (arc4random() % (int)(2 * PI));
-	float twist_initial = (arc4random() % (int)(2 * PI));
-	float speed_initial = arc4random() % 2 + 1;
-	float rot_velocity_initial = arc4random() % 10;
-	float scale_initial = 1.0;
-
-	for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
+		for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
 
 		if (global->asteroids[i].dead) //If it is true then
 		{
+			int x_initial = arc4random() % 2 ?
+			(arc4random() % DISPLAY_WIDTH/2) - DISPLAY_WIDTH/3:
+			(arc4random() % DISPLAY_WIDTH/2) + DISPLAY_WIDTH/3;
+
+			int y_initial = arc4random() % 2 ?
+			(arc4random() % DISPLAY_WIDTH/2) - DISPLAY_WIDTH/4:
+			(arc4random() % DISPLAY_WIDTH/2) + DISPLAY_WIDTH/4;
+
+			float heading_initial = (arc4random() % (int)(2 * PI));
+			float twist_initial = (arc4random() % (int)(2 * PI));
+			float speed_initial = arc4random() % 2 + 1;
+			float rot_velocity_initial = arc4random() % 10;
+			float scale_initial = 1.0;
+
 			global->asteroids[i].sx = x_initial;
 			global->asteroids[i].sy = y_initial;
 			global->asteroids[i].heading = heading_initial;

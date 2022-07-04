@@ -17,8 +17,10 @@ int main()
 	{
 		al_wait_for_event(global->queue, &global->event); //Capture keystrokes
 
+		// if the timer has ticked, redraw
     if(global->event.type == ALLEGRO_EVENT_TIMER)
-        global->redraw = true;
+			global->redraw = true;
+		// if the user has pressed ESC or clicked the x on the window. Then close
     else if(global->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || global->event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 			global->done = true;
 
@@ -53,7 +55,6 @@ int main()
 		}
 	}
 
-
 	if(!al_destroy_all())
 		error("Couldn't destroy everything");
 	return 0;
@@ -84,6 +85,7 @@ int al_destroy_all()
 	free(global->bullets);
 	free(global->asteroids);
 	free(global);
+	printf("Freed Everything\n");
 	return 1;
 }
 
@@ -94,6 +96,7 @@ int al_register_all()
 	al_register_event_source(global->queue, al_get_timer_event_source(global->timer));
 	al_register_event_source(global->queue, al_get_timer_event_source(global->asteroid_rotation_timer));
 	al_register_event_source(global->queue, al_get_timer_event_source(global->fire_rate_timer));
+	printf("Registerd Everything\n");
 	return 1;
 }
 
