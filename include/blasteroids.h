@@ -41,6 +41,7 @@ typedef struct Global{
     bool done;
     bool SpaceShipBitmapCreated;
     bool redraw;
+	  short asteroids_alive;
     Bullet *bullets;
     Asteroid *asteroids;
     Spaceship ship;

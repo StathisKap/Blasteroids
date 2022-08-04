@@ -135,9 +135,6 @@ void Respawn()
 			al_map_rgba_f(0.5, 0.5, 0.5, 0.5),
 			global->ship.scale * -10,
 			global->ship.scale * -10, 0);
-//		al_draw_tinted_bitmap(global->ship.image, al_map_rgba_f(0.5, 0.5, 0.5, 0.5),
-//				(DISPLAY_WIDTH - 20 * global->ship.scale) / 2,
-//				(DISPLAY_HEIGHT - 20 * global->ship.scale) / 2, 0);
 	}
 	if (al_get_timer_count(global->respawn_timer) > 30)
 	{

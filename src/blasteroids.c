@@ -45,7 +45,7 @@ int main()
 						DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2,
 						ALLEGRO_ALIGN_CENTER, "GAME OVER!!");
 				al_flip_display();
-				al_rest(5);
+				al_rest(3);
 				break;
 			}
 
@@ -120,6 +120,7 @@ void Blasteroids_Init(Global * global)
 	global->bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
 	global->asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
 	global->redraw = true;
+	global->asteroids_alive = 0;
 	global->done = false;
 	global->AsteroidBitmap = NULL;
  	global->ship = (Spaceship){

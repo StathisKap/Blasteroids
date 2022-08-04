@@ -26,11 +26,11 @@ bool Box_Collision_Ship()
 
 bool Box_Collision_Bullets()
 {
-    for (int i = 0; i < BULLET_COUNT; i++)
+    for (short i = 0; i < BULLET_COUNT; i++)
     {
         if (global->bullets[i].live == false)
             continue;
-            for (int j = 0; j < MAX_BIG_ASTEROIDS; j++)
+            for (short j = 0; j < MAX_BIG_ASTEROIDS; j++)
             {
                 if (global->bullets[i].sx > global->asteroids[j].sx + 12.5 * 6 * global->asteroids[j].scale ||
                     global->bullets[i].sx < global->asteroids[j].sx - 12.5 * 6 * global->asteroids[j].scale ||
@@ -39,6 +39,8 @@ bool Box_Collision_Bullets()
 		            	      continue;
                 else
                 {
+                    global->bullets[i].live = false;
+                    Split(j);
                     return true;
                 }
             }
