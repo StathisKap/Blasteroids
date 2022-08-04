@@ -63,18 +63,18 @@ void draw_asteroid()
 
 void spawn_asteroid()
 {
-		for (size_t i = 0; i < MAX_BIG_ASTEROIDS; i++)
+	for (short i = 0; i < MAX_BIG_ASTEROIDS; i++)
 	{
 
 		if (global->asteroids[i].dead) //If it is true then
 		{
 			int x_initial = arc4random() % 2 ?
-			(arc4random() % DISPLAY_WIDTH/2) - DISPLAY_WIDTH/3:
-			(arc4random() % DISPLAY_WIDTH/2) + DISPLAY_WIDTH/3;
+			(arc4random() % (DISPLAY_WIDTH/2 - DISPLAY_WIDTH/5)):
+			DISPLAY_WIDTH - arc4random() % (DISPLAY_WIDTH/2 - DISPLAY_WIDTH/5);
 
 			int y_initial = arc4random() % 2 ?
-			(arc4random() % DISPLAY_WIDTH/2) - DISPLAY_WIDTH/4:
-			(arc4random() % DISPLAY_WIDTH/2) + DISPLAY_WIDTH/4;
+			(arc4random() % (DISPLAY_HEIGHT/2 - DISPLAY_HEIGHT/5)):
+			DISPLAY_HEIGHT - arc4random() % (DISPLAY_HEIGHT/2 - DISPLAY_HEIGHT/5);
 
 			float heading_initial = (arc4random() % (int)(2 * PI));
 			float twist_initial = (arc4random() % (int)(2 * PI));
@@ -116,6 +116,15 @@ void update_asteroid()
 		teleport(&global->asteroids[i].sx, &global->asteroids[i].sy);
 	}
 }
+
+void Split(short j)
+{
+	if (global->asteroids[j].scale > 0.5)
+		global->asteroids[j].scale -= global->asteroids[j].scale/3;
+	else
+		global->asteroids[j].dead = true;
+}
+
 
 /*
  * if an asteroid is hit by a blast from the spaceship's cannon
