@@ -32,11 +32,13 @@ void draw_asteroid()
 		al_draw_line(res * 0   + offset, res * 15  + offset, res * -20 + offset, res * 20  + offset, color, thickness);
 
 		al_set_target_bitmap(al_get_backbuffer(global->disp));
-		printf("Asteroid Bitmap Created\n");
+		LOG(1,"Asteroid Bitmap Created\n");
 	}
 
-	for (size_t i = 0; i <= MAX_BIG_ASTEROIDS; i++)
+	LOG(1, "Draw Asteroids Function Call\n");
+	for (short i = 0; i < global->asteroids_max_count; i++)
 	{
+		LOG(2, "Drawing Asteroid %d\t is_dead: %d\n",i, global->asteroids[i].dead);
 		global->asteroids[i].image = global->AsteroidBitmap;
 
 		if (!global->asteroids[i].dead)
@@ -56,6 +58,7 @@ void draw_asteroid()
 					s, s,
 					0);
 		}
+		LOG(2, "Drew Asteroid\n");
 	}
 
 	update_asteroid();
@@ -63,67 +66,104 @@ void draw_asteroid()
 
 void spawn_asteroid()
 {
-	for (short i = 0; i < MAX_BIG_ASTEROIDS; i++)
-	{
+    short dead_asteroids = 0;
 
-		if (global->asteroids[i].dead) //If it is true then
-		{
-			int x_initial = arc4random() % 2 ?
-			(arc4random() % (DISPLAY_WIDTH/2 - DISPLAY_WIDTH/5)):
-			DISPLAY_WIDTH - arc4random() % (DISPLAY_WIDTH/2 - DISPLAY_WIDTH/5);
-
-			int y_initial = arc4random() % 2 ?
-			(arc4random() % (DISPLAY_HEIGHT/2 - DISPLAY_HEIGHT/5)):
-			DISPLAY_HEIGHT - arc4random() % (DISPLAY_HEIGHT/2 - DISPLAY_HEIGHT/5);
-
-			float heading_initial = (arc4random() % (int)(2 * PI));
-			float twist_initial = (arc4random() % (int)(2 * PI));
-			float speed_initial = arc4random() % 2 + 1;
-			float rot_velocity_initial = arc4random() % 10;
-			float scale_initial = 1.0;
-
-			global->asteroids[i].sx = x_initial;
-			global->asteroids[i].sy = y_initial;
-			global->asteroids[i].heading = heading_initial;
-			global->asteroids[i].twist = twist_initial;
-			global->asteroids[i].speed = speed_initial;
-			global->asteroids[i].rot_velocity = rot_velocity_initial;
-			global->asteroids[i].scale = scale_initial;
-			global->asteroids[i].color = al_map_rgba_f(0.211, 0.368, 0.639, 1);
-			global->asteroids[i].dead = false; // It turns it to false
-			break;
-		}
+    for (short i = 0; i < global->asteroids_max_count; i++)
+    {
+        if (global->asteroids[i].dead)
+        {
+            dead_asteroids++;
+        }
+    }
+	// Check that the sum of dead and alive asteroids is equal to global->asteroids_max_count
+	LOG(1, "Dead Asteroids %d\tAlive Asteroids %d",dead_asteroids, global->asteroids_alive);
+    if (dead_asteroids + global->asteroids_alive != global->asteroids_max_count){
+		LOG(1, "dead: %d, alive: %d, max: %d\n", dead_asteroids, global->asteroids_alive, global->asteroids_max_count);
+        error("Error: Sum of dead and alive asteroids is not equal to global->asteroids_max_count\n");
 	}
+
+    if (global->asteroids_alive > global->asteroids_max_count)
+        error("Error: More asteroids alive than the max count\n");
+
+
+    if (dead_asteroids == global->asteroids_max_count)
+    {
+        short new_asteroids_count = global->asteroids_max_count;
+        for (short i = 0; i < global->asteroids_max_count && new_asteroids_count > 0; i++)
+        {
+            if (global->asteroids[i].dead)
+            {
+                int x_initial = rand() % 2 ?
+                    (rand() % (DISPLAY_WIDTH / 2 - DISPLAY_WIDTH / 5)) :
+                    DISPLAY_WIDTH - rand() % (DISPLAY_WIDTH / 2 - DISPLAY_WIDTH / 5);
+
+                int y_initial = rand() % 2 ?
+                    (rand() % (DISPLAY_HEIGHT / 2 - DISPLAY_HEIGHT / 5)) :
+                    DISPLAY_HEIGHT - rand() % (DISPLAY_HEIGHT / 2 - DISPLAY_HEIGHT / 5);
+
+                float heading_initial = (float)rand() / (float)RAND_MAX * (2 * PI);
+                float twist_initial = (float)rand() / (float)RAND_MAX * (2 * PI);
+                float speed_initial = (float)rand() / (float)RAND_MAX + 1;
+                float rot_velocity_initial = (float)rand() / (float)RAND_MAX * 10;
+                float scale_initial = 1.0;               
+
+				global->asteroids[i].sx = x_initial;
+				global->asteroids[i].sy = y_initial;
+				global->asteroids[i].heading = heading_initial;
+				global->asteroids[i].twist = twist_initial;
+				global->asteroids[i].speed = speed_initial;
+				global->asteroids[i].rot_velocity = rot_velocity_initial;
+				global->asteroids[i].scale = scale_initial;
+				global->asteroids[i].color = al_map_rgba_f(0.211, 0.368, 0.639, 1);
+
+                global->asteroids_alive++;
+                new_asteroids_count--;
+				global->asteroids[i].dead = false;
+
+                LOG(1, "Asteroid Spawned\n");
+            }
+        }
+    }
 }
+
 
 void update_asteroid()
 {
-	for (size_t i = 0; i <= MAX_BIG_ASTEROIDS; i++)
+	for (short i = 0; i < global->asteroids_max_count; i++)
 	{
+		if (!global->asteroids[i].dead)
+		{
+  	  		LOG(2, "A%d: %d\t",i, global->asteroids[i].dead);
+			if (global->event.timer.source == global->asteroid_rotation_timer)
+				global->asteroids[i].twist += global->asteroids[i].rot_velocity * PI /180;
 
-		if (global->event.timer.source == global->asteroid_rotation_timer)
-			global->asteroids[i].twist += global->asteroids[i].rot_velocity * PI /180;
+			if (global->asteroids[i].twist > 2 * PI)
+				global->asteroids[i].twist = 0;
 
-		if (global->asteroids[i].twist > 2 * PI)
-			global->asteroids[i].twist = 0;
+			if (global->asteroids[i].twist <  0)
+				global->asteroids[i].twist = 2 * PI;
 
-		if (global->asteroids[i].twist <  0)
-			global->asteroids[i].twist = 2 * PI;
+			global->asteroids[i].sx += global->asteroids[i].speed * cos(global->asteroids[i].heading);
+			global->asteroids[i].sy += global->asteroids[i].speed * sin(global->asteroids[i].heading);
 
-		global->asteroids[i].sx += global->asteroids[i].speed * cos(global->asteroids[i].heading);
-		global->asteroids[i].sy += global->asteroids[i].speed * sin(global->asteroids[i].heading);
-
-		teleport(&global->asteroids[i].sx, &global->asteroids[i].sy);
+			teleport(&global->asteroids[i].sx, &global->asteroids[i].sy);
+		}
 	}
+	LOG(2, "Alive: %d\n", global->asteroids_alive);
 }
 
 void Split(short j)
 {
-	if (global->asteroids[j].scale > 0.5)
-		global->asteroids[j].scale -= global->asteroids[j].scale/3;
-	else
-		global->asteroids[j].dead = true;
+    if (global->asteroids[j].scale > 0.5)
+        global->asteroids[j].scale -= global->asteroids[j].scale / 3;
+    else
+    {
+        global->asteroids[j].dead = true;
+        global->asteroids_alive--;
+        LOG(1, "Killed Asteroid");
+    }
 }
+
 
 
 /*

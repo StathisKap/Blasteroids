@@ -21,7 +21,7 @@ void draw_ship()
 		al_draw_line(6 * global->ship.scale  + xoffset, 4 * global->ship.scale + yoffset, 1 * global->ship.scale + xoffset, 4 * global->ship.scale + yoffset, global->ship.color, thickness); //We draw the lines
 		al_set_target_bitmap(al_get_backbuffer(global->disp));
 
-		printf("Ship Bitmap created\n");
+		LOG(1, "Ship Bitmap created");
 		global->SpaceShipBitmapCreated = true;
 	}
 

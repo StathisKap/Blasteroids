@@ -5,13 +5,14 @@
 
 Global *global;
 
-
 int main()
 {
-	printf("Start of the program\n");
+	LOG(1, "Start of the program\n");
 
 	global = malloc(sizeof(Global));
-	Blasteroids_Init(global);
+	DEBUG_ASTEROIDS_ALIVE(Blasteroids_Init(global));
+
+	short wave = 1;
 
 	while(!global->done)
 	{
@@ -25,19 +26,22 @@ int main()
 			global->done = true;
 
 
-		KeysForSpaceship();
-		Box_Collision_Bullets();
-
-		if (!al_get_timer_started(global->respawn_timer) && global->ship.live)
-			Box_Collision_Ship();
 
 		if(global->redraw && al_is_event_queue_empty(global->queue))
 		{
 			draw_ship();
 			draw_bullet();
-			draw_asteroid();
+			DEBUG_ASTEROIDS_ALIVE(draw_asteroid());
 			draw_lives();
-			spawn_asteroid();
+
+			DEBUG_ASTEROIDS_ALIVE(spawn_asteroid());
+
+			if (global->asteroids_alive < 0){
+				LOG(1, "%d\n",global->asteroids_alive);
+				return 0;
+			}
+
+
 
 			if(global->done)
 			{
@@ -53,6 +57,12 @@ int main()
 		  al_clear_to_color(al_map_rgb(0, 0, 0));
     	global->redraw = false;
 		}
+
+		KeysForSpaceship();
+		DEBUG_ASTEROIDS_ALIVE(Box_Collision_Bullets());
+
+		if (!al_get_timer_started(global->respawn_timer) && global->ship.live)
+			Box_Collision_Ship();
 	}
 
 	if(!al_destroy_all())
@@ -85,7 +95,7 @@ int al_destroy_all()
 	free(global->bullets);
 	free(global->asteroids);
 	free(global);
-	printf("Freed Everything\n");
+	LOG(1, "Freed Everything\n");
 	return 1;
 }
 
@@ -96,7 +106,7 @@ int al_register_all()
 	al_register_event_source(global->queue, al_get_timer_event_source(global->timer));
 	al_register_event_source(global->queue, al_get_timer_event_source(global->asteroid_rotation_timer));
 	al_register_event_source(global->queue, al_get_timer_event_source(global->fire_rate_timer));
-	printf("Registerd Everything\n");
+	LOG(1, "Registerd Everything");
 	return 1;
 }
 
@@ -114,13 +124,15 @@ void teleport(float *sx, float *sy)
 
 void Blasteroids_Init(Global * global)
 {
+	srand(0);
 
 	// Initializing variables that are on the heap or are from other source files
 	global->Player_Lives = 3;
 	global->bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
-	global->asteroids = malloc(sizeof(Asteroid)*MAX_BIG_ASTEROIDS);
 	global->redraw = true;
 	global->asteroids_alive = 0;
+	global->asteroids_max_count = MAX_BIG_ASTEROIDS;
+	global->asteroids = malloc(sizeof(Asteroid)*global->asteroids_max_count);
 	global->done = false;
 	global->AsteroidBitmap = NULL;
  	global->ship = (Spaceship){
@@ -135,7 +147,7 @@ void Blasteroids_Init(Global * global)
 		 NULL, 				// image
 		 };
 
-	for(int i = 0 ; i <= MAX_BIG_ASTEROIDS; i++)
+	for(int i = 0 ; i < global->asteroids_max_count; i++)
 		global->asteroids[i].dead = true;
 
 	if (!al_init())
@@ -170,7 +182,7 @@ void Blasteroids_Init(Global * global)
 		error("Couldn't initialize Fire Rate Timer");
 
 	global->respawn_timer = al_create_timer(1.0/10);
-	if (!global->fire_rate_timer)
+	if (!global->respawn_timer)
 		error("Couldn't initialize Respawn Timer");
 
 	global->queue = al_create_event_queue(); //Create event queue to catch keystrokes
@@ -184,13 +196,13 @@ void Blasteroids_Init(Global * global)
 	if(!al_register_all())
 		error("Coulnd't register something");
 
-  al_start_timer(global->timer);
-  al_start_timer(global->fire_rate_timer);
-  al_start_timer(global->asteroid_rotation_timer);
+	al_start_timer(global->timer);
+	al_start_timer(global->fire_rate_timer);
+	al_start_timer(global->asteroid_rotation_timer);
 
 	al_set_window_title(global->disp, "Blasteroids");
 
-	printf("Global Variables initialised\n");
+	LOG(1, "Global Variables initialised");
 
 	draw_ship();
 }

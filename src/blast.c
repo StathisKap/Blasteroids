@@ -44,7 +44,6 @@ void draw_bullet()
 			al_use_transform(&global->bullets[i].transform);
 			al_draw_filled_circle(global->bullets[i].sx, global->bullets[i].sy, global->bullets[i].size, al_map_rgb(255,0,0)); // Draws a red dot
 		}
-
 	}
 	update_bullet();
 }
