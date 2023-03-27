@@ -35,10 +35,10 @@ void draw_asteroid()
 		LOG(1,"Asteroid Bitmap Created\n");
 	}
 
-	LOG(1, "Draw Asteroids Function Call\n");
+	LOG(2, "Draw Asteroids Function Call\n");
 	for (short i = 0; i < global->asteroids_max_count; i++)
 	{
-		LOG(2, "Drawing Asteroid %d\t is_dead: %d\n",i, global->asteroids[i].dead);
+		LOG(3, "Drawing Asteroid %d\t is_dead: %d\n",i, global->asteroids[i].dead);
 		global->asteroids[i].image = global->AsteroidBitmap;
 
 		if (!global->asteroids[i].dead)
@@ -64,7 +64,7 @@ void draw_asteroid()
 	update_asteroid();
 }
 
-void spawn_asteroid()
+void spawn_asteroid(int wave)
 {
     short dead_asteroids = 0;
 
@@ -88,6 +88,8 @@ void spawn_asteroid()
 
     if (dead_asteroids == global->asteroids_max_count)
     {
+        global->asteroids_max_count++;
+		Realloc_Asteroid();
         short new_asteroids_count = global->asteroids_max_count;
         for (short i = 0; i < global->asteroids_max_count && new_asteroids_count > 0; i++)
         {
@@ -149,7 +151,7 @@ void update_asteroid()
 			teleport(&global->asteroids[i].sx, &global->asteroids[i].sy);
 		}
 	}
-	LOG(2, "Alive: %d\n", global->asteroids_alive);
+	LOG(2, "Asteroids alive after Update: %d\n", global->asteroids_alive);
 }
 
 void Split(short j)
@@ -160,11 +162,9 @@ void Split(short j)
     {
         global->asteroids[j].dead = true;
         global->asteroids_alive--;
-        LOG(1, "Killed Asteroid");
+        LOG(2, "Killed Asteroid");
     }
 }
-
-
 
 /*
  * if an asteroid is hit by a blast from the spaceship's cannon

@@ -12,7 +12,7 @@ int main()
 	global = malloc(sizeof(Global));
 	DEBUG_ASTEROIDS_ALIVE(Blasteroids_Init(global));
 
-	short wave = 1;
+	short wave = 0;
 
 	while(!global->done)
 	{
@@ -122,17 +122,43 @@ void teleport(float *sx, float *sy)
 		*sy = DISPLAY_HEIGHT;
 }
 
-void Blasteroids_Init(Global * global)
+void Realloc_Asteroid(){
+	// Create a temporary array
+	Asteroid* temp = malloc(sizeof(global->asteroids_alive));
+	if (temp == NULL) {
+		error("Failed to allocate memory to temp in Realloc Asteroid\n");
+	}
+
+	// Copy the contents of global->asteroids to the temporary array
+	memcpy(temp, global->asteroids, sizeof(global->asteroids_alive));
+
+	// Reallocate global->asteroids
+	global->asteroids = realloc(global->asteroids, sizeof(Asteroid) * global->asteroids_max_count * 2);
+	if (global->asteroids == NULL) {
+		error("Failed to allocate memory to global->asteroids in Realloc Asteroid\n");
+	    free(temp);
+	    return;
+	}
+
+	// Copy the contents of the temporary array back to global->asteroids
+	memcpy(global->asteroids, temp, sizeof(global->asteroids));
+	global->asteroids[global->asteroids_max_count-1].dead = true;
+
+	// Free the temporary array
+	free(temp);
+}
+
+	void Blasteroids_Init(Global * global)
 {
 	srand(0);
 
 	// Initializing variables that are on the heap or are from other source files
 	global->Player_Lives = 3;
 	global->bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
-	global->redraw = true;
 	global->asteroids_alive = 0;
 	global->asteroids_max_count = MAX_BIG_ASTEROIDS;
-	global->asteroids = malloc(sizeof(Asteroid)*global->asteroids_max_count);
+	global->asteroids = malloc(sizeof(Asteroid)*global->asteroids_max_count*2);
+	global->redraw = true;
 	global->done = false;
 	global->AsteroidBitmap = NULL;
  	global->ship = (Spaceship){

@@ -28,7 +28,7 @@
 #define DISPLAY_HEIGHT 1400
 #define BULLET_COUNT 15
 #define BULLET_SPEED 15
-#define MAX_BIG_ASTEROIDS 4
+#define MAX_BIG_ASTEROIDS 2
 
 enum COLOURS {YELLOW, ORANGE, RED};
 
@@ -42,8 +42,8 @@ typedef struct Global{
     bool done;
     bool SpaceShipBitmapCreated;
     bool redraw;
-	  short asteroids_alive;
-	  short asteroids_max_count;
+	short asteroids_alive;
+	short asteroids_max_count;
     Bullet *bullets;
     Asteroid *asteroids;
     Spaceship ship;
@@ -58,6 +58,7 @@ typedef struct Global{
     ALLEGRO_BITMAP *AsteroidBitmap;
 } Global;
 
+void Realloc_Asteroid();
 void Blasteroids_Init(Global * global);
 void error(char *msg);
 int  al_destroy_all();
@@ -68,11 +69,11 @@ void teleport(float *sx, float *sy);
 
 #define DEBUG_ASTEROIDS_ALIVE(func_call) do { \
     if (LOG_LEVEL == 2) { \
-        printf("Before %s at %s:%d - asteroids_alive: %d\n", #func_call, __FILE__, __LINE__, global->asteroids_alive); \
+        printf("\033[1;31mBefore %s \033[0mat %s:%d - asteroids_alive: %d\n", #func_call, __FILE__, __LINE__, global->asteroids_alive); \
     } \
     func_call; \
     if (LOG_LEVEL == 2) { \
-        printf("After %s at %s:%d - asteroids_alive: %d\n", #func_call, __FILE__, __LINE__, global->asteroids_alive); \
+        printf("\033[1;31mAfter %s \033[0mat %s:%d - asteroids_alive: %d\n", #func_call, __FILE__, __LINE__, global->asteroids_alive); \
     } \
 } while (0)
 
