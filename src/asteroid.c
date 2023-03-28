@@ -93,7 +93,6 @@ void Realloc_Asteroid()
 	free(temp);
 }
 
-
 void spawn_asteroid()
 {
 	// Count the number of dead asteroids
@@ -129,7 +128,7 @@ void spawn_asteroid()
 			{
 
 				// Declare a variable to store the initial x value of the asteroid
-				 int x_initial = 0;
+				int x_initial = 0;
 
 				// Loop until a valid x value is generated
 				do
@@ -141,7 +140,7 @@ void spawn_asteroid()
 				} while (fabsf(global->ship.sx - x_initial) < 100); // Repeat the loop if the distance between the ship's x coordinate and the generated x coordinate is less than 100
 
 				// Declare a variable to store the initial x value of the asteroid
-				 int y_initial = 0;
+				int y_initial = 0;
 
 				// Loop until a valid x value is generated
 				do
@@ -210,7 +209,7 @@ void Split(short j)
 	// Print the status of all asteroids in the array
 	for (short i = 0; i < global->asteroids_max_count * 2; i++)
 		LOG(1, "Asteroid %d is %s", i, global->asteroids[i].dead ? "Dead" : "Alive");
-	
+
 	global->asteroids[j].dead = true;
 	global->asteroids_alive--;
 
@@ -225,53 +224,31 @@ void Split(short j)
 		if (global->asteroids_alive + 2 <= global->asteroids_max_count * 2)
 		{
 
-			LOG(1, "Generating Asteroid 1. Max_Count: %d", global->asteroids_max_count);
 			// Create two new asteroids and add them to the array
-			// Create the first new asteroid
-			Asteroid asteroid1 = global->asteroids[j];
-			asteroid1.scale = 0.5;
-			asteroid1.twist = rand() * 2 * PI / RAND_MAX;
-			asteroid1.heading = rand() * 2 * PI / RAND_MAX;
-			asteroid1.speed = global->asteroids[j].speed * (float)rand() / RAND_MAX * 1.5f;
-			asteroid1.color = al_map_rgb(255, 0, 255);
-			asteroid1.sx = global->asteroids[j].sx + (float)rand() / RAND_MAX * 25;
-			asteroid1.sy = global->asteroids[j].sy + (float)rand() / RAND_MAX * 25;
-			asteroid1.dead = false;
+			for (short i = 0; i < 2; i++)
+			{
 
-			// Find the first empty spot in the array and add the new asteroid
-			for (short i = 0; i < global->asteroids_max_count * 2; i++)
-				if (global->asteroids[i].dead)
-				{
-					LOG(1, "Adding Asteroid 1 to position %d", i);
-					global->asteroids[i] = asteroid1;
-					global->asteroids_alive++;
-					break;
-				}
+				LOG(1, "Generating Asteroid %d. Max_Count: %d", i, global->asteroids_max_count);
+				Asteroid asteroid1 = global->asteroids[j];
+				asteroid1.scale = 0.5;
+				asteroid1.twist = rand() * 2 * PI / RAND_MAX;
+				asteroid1.heading = rand() * 2 * PI / RAND_MAX;
+				asteroid1.speed = global->asteroids[j].speed * (float)rand() / RAND_MAX * 2.0f;
+				asteroid1.color = al_map_rgb(255, 0, 255);
+				asteroid1.sx = global->asteroids[j].sx + (float)rand() / RAND_MAX * 25;
+				asteroid1.sy = global->asteroids[j].sy + (float)rand() / RAND_MAX * 25;
+				asteroid1.dead = false;
 
-			LOG(1, "Generating Asteroid 2. Max_Count: %d", global->asteroids_max_count);
-			// Create the second new asteroid
-			Asteroid asteroid2 = global->asteroids[j];
-			asteroid2.scale = 0.5;
-			asteroid2.twist = rand() * 2 * PI / RAND_MAX;
-			asteroid2.heading = rand() * 2 * PI / RAND_MAX;
-			asteroid2.speed = global->asteroids[j].speed * (float)rand() / RAND_MAX * 1.5f;
-			;
-			asteroid2.color = al_map_rgb(255, 0, 255);
-			asteroid2.sx = global->asteroids[j].sx + (float)rand() / RAND_MAX * 25;
-			asteroid2.sy = global->asteroids[j].sy + (float)rand() / RAND_MAX * 25;
-			asteroid2.dead = false;
-
-			// Find the next empty spot in the array and add the new asteroid
-			for (short i = 0; i < global->asteroids_max_count * 2; i++)
-				if (global->asteroids[i].dead)
-				{
-					LOG(1, "Adding Asteroid 2 to position %d", i);
-					global->asteroids[i] = asteroid2;
-					global->asteroids_alive++;
-					break;
-				}
-
-
+				// Find the first empty spot in the array and add the new asteroid
+				for (short z = 0; z < global->asteroids_max_count * 2; z++)
+					if (global->asteroids[z].dead)
+					{
+						LOG(1, "Adding Asteroid %d to position %d", i, z);
+						global->asteroids[z] = asteroid1;
+						global->asteroids_alive++;
+						break;
+					}
+			}
 		}
 		else
 		{
