@@ -18,7 +18,7 @@
 #include <allegro5/allegro_ttf.h>
 
 #define PI M_PI
-#define ROT_SPEED PI * 0.025
+#define ROT_SPEED PI * 0.01875
 #define SPACESHIP_KEYS_NUM 6
 #define SPACESHIP_SPEED 0.08
 #define SPACESHIP_SPEED_MAX 4.5
@@ -64,7 +64,7 @@ int  al_destroy_all();
 int  al_register_all();
 void teleport(float *sx, float *sy);
 
-#define LOG_LEVEL 1
+#define LOG_LEVEL 0
 
 #define DEBUG_ASTEROIDS_ALIVE(func_call) do { \
     if (LOG_LEVEL == 2) { \

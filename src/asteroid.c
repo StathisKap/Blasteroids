@@ -67,14 +67,14 @@ void draw_asteroid()
 void Realloc_Asteroid()
 {
 	// Create a temporary array
-	Asteroid *temp = malloc(sizeof(global->asteroids_alive));
+	Asteroid *temp = malloc(sizeof(Asteroid) * global->asteroids_alive);
 	if (temp == NULL)
 	{
 		error("Failed to allocate memory to temp in Realloc Asteroid\n");
 	}
 
 	// Copy the contents of global->asteroids to the temporary array
-	memcpy(temp, global->asteroids, sizeof(global->asteroids_alive));
+	memcpy(temp, global->asteroids, sizeof(Asteroid) * global->asteroids_alive);
 
 	// Reallocate global->asteroids
 	global->asteroids = realloc(global->asteroids, sizeof(Asteroid) * global->asteroids_max_count * 2);
@@ -86,12 +86,13 @@ void Realloc_Asteroid()
 	}
 
 	// Copy the contents of the temporary array back to global->asteroids
-	memcpy(global->asteroids, temp, sizeof(global->asteroids));
+	memcpy(global->asteroids, temp, sizeof(Asteroid) * global->asteroids_alive);
 	global->asteroids[global->asteroids_max_count - 1].dead = true;
 
 	// Free the temporary array
 	free(temp);
 }
+
 
 void spawn_asteroid()
 {

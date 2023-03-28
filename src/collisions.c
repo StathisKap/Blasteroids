@@ -7,7 +7,7 @@ extern Global *global;
 
 bool Box_Collision_Ship()
 {
-    for (int i = 0; i < global->asteroids_max_count; i++)
+    for (int i = 0; i < global->asteroids_max_count * 2; i++)
     {
         if (!global->asteroids[i].dead)
         {
