@@ -14,20 +14,18 @@ int main()
 
 	short wave = 0;
 
-	while(!global->done)
+	while (!global->done)
 	{
-		al_wait_for_event(global->queue, &global->event); //Capture keystrokes
+		al_wait_for_event(global->queue, &global->event); // Capture keystrokes
 
 		// if the timer has ticked, redraw
-    if(global->event.type == ALLEGRO_EVENT_TIMER)
+		if (global->event.type == ALLEGRO_EVENT_TIMER)
 			global->redraw = true;
 		// if the user has pressed ESC or clicked the x on the window. Then close
-    else if(global->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || global->event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+		else if (global->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || global->event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 			global->done = true;
 
-
-
-		if(global->redraw && al_is_event_queue_empty(global->queue))
+		if (global->redraw && al_is_event_queue_empty(global->queue))
 		{
 			draw_ship();
 			draw_bullet();
@@ -36,26 +34,25 @@ int main()
 
 			DEBUG_ASTEROIDS_ALIVE(spawn_asteroid());
 
-			if (global->asteroids_alive < 0){
-				LOG(1, "%d\n",global->asteroids_alive);
+			if (global->asteroids_alive < 0)
+			{
+				LOG(1, "Asteroids Alive is negative %d\n", global->asteroids_alive);
 				return 0;
 			}
 
-
-
-			if(global->done)
+			if (global->done)
 			{
-				al_draw_text(global->font, al_map_rgb(255,255,255),
-						DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2,
-						ALLEGRO_ALIGN_CENTER, "GAME OVER!!");
+				al_draw_text(global->font, al_map_rgb(255, 255, 255),
+							 DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2,
+							 ALLEGRO_ALIGN_CENTER, "GAME OVER!!");
 				al_flip_display();
 				al_rest(3);
 				break;
 			}
 
 			al_flip_display();
-		  al_clear_to_color(al_map_rgb(0, 0, 0));
-    	global->redraw = false;
+			al_clear_to_color(al_map_rgb(0, 0, 0));
+			global->redraw = false;
 		}
 
 		KeysForSpaceship();
@@ -65,7 +62,7 @@ int main()
 			Box_Collision_Ship();
 	}
 
-	if(!al_destroy_all())
+	if (!al_destroy_all())
 		error("Couldn't destroy everything");
 	return 0;
 }
@@ -75,7 +72,7 @@ int main()
  * When you run out of lives you need to display "Game Over!"
  * in big friendly letters in the middle of the screen.
  *
-*/
+ */
 
 void error(char *msg)
 {
@@ -122,59 +119,35 @@ void teleport(float *sx, float *sy)
 		*sy = DISPLAY_HEIGHT;
 }
 
-void Realloc_Asteroid(){
-	// Create a temporary array
-	Asteroid* temp = malloc(sizeof(global->asteroids_alive));
-	if (temp == NULL) {
-		error("Failed to allocate memory to temp in Realloc Asteroid\n");
-	}
-
-	// Copy the contents of global->asteroids to the temporary array
-	memcpy(temp, global->asteroids, sizeof(global->asteroids_alive));
-
-	// Reallocate global->asteroids
-	global->asteroids = realloc(global->asteroids, sizeof(Asteroid) * global->asteroids_max_count * 2);
-	if (global->asteroids == NULL) {
-		error("Failed to allocate memory to global->asteroids in Realloc Asteroid\n");
-	    free(temp);
-	    return;
-	}
-
-	// Copy the contents of the temporary array back to global->asteroids
-	memcpy(global->asteroids, temp, sizeof(global->asteroids));
-	global->asteroids[global->asteroids_max_count-1].dead = true;
-
-	// Free the temporary array
-	free(temp);
-}
-
-	void Blasteroids_Init(Global * global)
+void Blasteroids_Init(Global *global)
 {
 	srand(0);
 
 	// Initializing variables that are on the heap or are from other source files
 	global->Player_Lives = 3;
-	global->bullets = malloc(sizeof(Bullet)*BULLET_COUNT);
+	global->bullets = malloc(sizeof(Bullet) * BULLET_COUNT);
 	global->asteroids_alive = 0;
 	global->asteroids_max_count = MAX_BIG_ASTEROIDS;
-	global->asteroids = malloc(sizeof(Asteroid)*global->asteroids_max_count*2);
+	global->asteroids = malloc(sizeof(Asteroid) * global->asteroids_max_count * 2);
 	global->redraw = true;
 	global->done = false;
 	global->AsteroidBitmap = NULL;
- 	global->ship = (Spaceship){
-		 DISPLAY_HEIGHT / 2,//	sx
-		 DISPLAY_WIDTH / 2, // sy
-		 3 * PI / 2, 				// heading
-		 0,					// speed
-		 0,					// drift
-		 2,					// scale
-		 true,				// live
-		 al_map_rgb(255,255,0), //color
-		 NULL, 				// image
-		 };
+	global->ship = (Spaceship){
+		DISPLAY_HEIGHT / 2,		 //	sx
+		DISPLAY_WIDTH / 2,		 // sy
+		3 * PI / 2,				 // heading
+		0,						 // speed
+		0,						 // drift
+		2,						 // scale
+		true,					 // live
+		al_map_rgb(255, 255, 0), // color
+		NULL,					 // image
+	};
 
-	for(int i = 0 ; i < global->asteroids_max_count; i++)
+	for (int i = 0; i < global->asteroids_max_count * 2; i++)
 		global->asteroids[i].dead = true;
+	for (short i = 0; i < global->asteroids_max_count * 2; i++)
+		LOG(1,"Asteroid %d is %s", i, global->asteroids[i].dead ? "Dead" : "Alive");
 
 	if (!al_init())
 		error("Couldn't initialize Allegro");
@@ -182,44 +155,44 @@ void Realloc_Asteroid(){
 	if (!al_init_primitives_addon())
 		error("Couldn't initialize Allegro Primitives");
 
-	if(!al_init_font_addon())
+	if (!al_init_font_addon())
 		error("Couldn't initialize Allegro Font");
 
-	if(!al_init_ttf_addon())
+	if (!al_init_ttf_addon())
 		error("Couldn't initialize Allegro TTF");
 
 	global->font = al_load_ttf_font("./assets/arial.ttf", 40, 0);
-	if(!global->font)
+	if (!global->font)
 		error("Couldn't Load TTF");
 
 	if (!al_install_keyboard())
 		error("Couldn't initialize Keyboard");
 
-	global->timer = al_create_timer(1.0 / 60.0); //FPS
+	global->timer = al_create_timer(1.0 / 60.0); // FPS
 	if (!global->timer)
 		error("Couldn't initialize Timer");
 
-	global->asteroid_rotation_timer = al_create_timer(1.0/15);
+	global->asteroid_rotation_timer = al_create_timer(1.0 / 15);
 	if (!global->asteroid_rotation_timer)
 		error("Couldn't initialize Asteroid Rotation Timer");
 
-	global->fire_rate_timer = al_create_timer(1.0/2);
+	global->fire_rate_timer = al_create_timer(1.0 / 2);
 	if (!global->fire_rate_timer)
 		error("Couldn't initialize Fire Rate Timer");
 
-	global->respawn_timer = al_create_timer(1.0/10);
+	global->respawn_timer = al_create_timer(1.0 / 10);
 	if (!global->respawn_timer)
 		error("Couldn't initialize Respawn Timer");
 
-	global->queue = al_create_event_queue(); //Create event queue to catch keystrokes
+	global->queue = al_create_event_queue(); // Create event queue to catch keystrokes
 	if (!global->queue)
 		error("Couldn't initialize Queue");
 
-	global->disp = al_create_display(DISPLAY_HEIGHT, DISPLAY_WIDTH); //Creates a window
+	global->disp = al_create_display(DISPLAY_HEIGHT, DISPLAY_WIDTH); // Creates a window
 	if (!global->disp)
 		error("Couldn't initialize Display");
 
-	if(!al_register_all())
+	if (!al_register_all())
 		error("Coulnd't register something");
 
 	al_start_timer(global->timer);

@@ -33,7 +33,7 @@ bool Box_Collision_Bullets()
     {
         if (global->bullets[i].live == false)
             continue;
-        for (short j = 0; j < global->asteroids_max_count; j++)
+        for (short j = 0; j < global->asteroids_max_count * 2; j++)
         {
             if (global->asteroids[j].dead)
                 continue;

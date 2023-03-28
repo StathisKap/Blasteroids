@@ -58,7 +58,6 @@ typedef struct Global{
     ALLEGRO_BITMAP *AsteroidBitmap;
 } Global;
 
-void Realloc_Asteroid();
 void Blasteroids_Init(Global * global);
 void error(char *msg);
 int  al_destroy_all();
