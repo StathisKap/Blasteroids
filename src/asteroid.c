@@ -126,11 +126,30 @@ void spawn_asteroid()
 		{
 			if (global->asteroids[i].dead)
 			{
-				// Generate random initial values for the asteroid's properties
 
-				int x_initial = rand() % 2 ? (rand() % (DISPLAY_WIDTH / 2 - DISPLAY_WIDTH / 5)) : DISPLAY_WIDTH - rand() % (DISPLAY_WIDTH / 2 - DISPLAY_WIDTH / 5);
+				// Declare a variable to store the initial x value of the asteroid
+				 int x_initial = 0;
 
-				int y_initial = rand() % 2 ? (rand() % (DISPLAY_HEIGHT / 2 - DISPLAY_HEIGHT / 5)) : DISPLAY_HEIGHT - rand() % (DISPLAY_HEIGHT / 2 - DISPLAY_HEIGHT / 5);
+				// Loop until a valid x value is generated
+				do
+				{
+					// Generate a random value between 0 and 1, and select a value for x_initial based on the result
+					// If the random value is 0, set x_initial to a random value between 0 and half the display width minus a fifth of the display width
+					// If the random value is 1, set x_initial to the display width minus a random value between 0 and half the display width minus a fifth of the display width
+					x_initial = rand() % 2 ? (rand() % (DISPLAY_WIDTH / 2 - DISPLAY_WIDTH / 5)) : DISPLAY_WIDTH - rand() % (DISPLAY_WIDTH / 2 - DISPLAY_WIDTH / 5);
+				} while (fabsf(global->ship.sx - x_initial) < 100); // Repeat the loop if the distance between the ship's x coordinate and the generated x coordinate is less than 100
+
+				// Declare a variable to store the initial x value of the asteroid
+				 int y_initial = 0;
+
+				// Loop until a valid x value is generated
+				do
+				{
+					// Generate a random value between 0 and 1, and select a value for y_initial based on the result
+					// If the random value is 0, set y_initial to a random value between 0 and half the display width minus a fifth of the display width
+					// If the random value is 1, set y_initial to the display width minus a random value between 0 and half the display width minus a fifth of the display width
+					y_initial = rand() % 2 ? (rand() % (DISPLAY_WIDTH / 2 - DISPLAY_WIDTH / 5)) : DISPLAY_WIDTH - rand() % (DISPLAY_WIDTH / 2 - DISPLAY_WIDTH / 5);
+				} while (fabsf(global->ship.sy - y_initial) < 100); // Repeat the loop if the distance between the ship's x coordinate and the generated x coordinate is less than 100
 
 				float heading_initial = (float)rand() / (float)RAND_MAX * (2 * PI);
 				float twist_initial = (float)rand() / (float)RAND_MAX * (2 * PI);
@@ -138,7 +157,7 @@ void spawn_asteroid()
 				float rot_velocity_initial = (float)rand() / (float)RAND_MAX * 10;
 				float scale_initial = 1.0;
 
-	            // Set the asteroid's properties to the generated values and set it as alive
+				// Set the asteroid's properties to the generated values and set it as alive
 				global->asteroids[i].sx = x_initial;
 				global->asteroids[i].sy = y_initial;
 				global->asteroids[i].heading = heading_initial;
@@ -186,7 +205,7 @@ void update_asteroid()
 void Split(short j)
 {
 	LOG(1, "Splitting");
-	
+
 	// Check if the asteroid's scale is greater than 0.5
 	if (global->asteroids[j].scale > 0.5)
 	{
