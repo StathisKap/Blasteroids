@@ -207,6 +207,14 @@ void Split(short j)
 {
 	LOG(1, "Splitting");
 
+	// Print the status of all asteroids in the array
+	for (short i = 0; i < global->asteroids_max_count * 2; i++)
+		LOG(1, "Asteroid %d is %s", i, global->asteroids[i].dead ? "Dead" : "Alive");
+	
+	global->asteroids[j].dead = true;
+	global->asteroids_alive--;
+	LOG(1, "\n\tAsteroid %d is %s", j, global->asteroids[j].dead ? "Dead" : "Alive");
+
 	// Check if the asteroid's scale is greater than 0.5
 	if (global->asteroids[j].scale > 0.5)
 	{
@@ -218,7 +226,7 @@ void Split(short j)
 			// Create two new asteroids and add them to the array
 			// Create the first new asteroid
 			Asteroid asteroid1 = global->asteroids[j];
-			asteroid1.scale /= 2;
+			asteroid1.scale = 0.5;
 			asteroid1.twist = rand() * 2 * PI / RAND_MAX;
 			asteroid1.heading = rand() * 2 * PI / RAND_MAX;
 			asteroid1.speed = global->asteroids[j].speed * (float)rand() / RAND_MAX * 1.5f;
@@ -226,10 +234,6 @@ void Split(short j)
 			asteroid1.sx = global->asteroids[j].sx + (float)rand() / RAND_MAX * 25;
 			asteroid1.sy = global->asteroids[j].sy + (float)rand() / RAND_MAX * 25;
 			asteroid1.dead = false;
-
-			// Print the status of all asteroids in the array
-			for (short i = 0; i < global->asteroids_max_count * 2; i++)
-				LOG(1, "Asteroid %d is %s", i, global->asteroids[i].dead ? "Dead" : "Alive");
 
 			// Find the first empty spot in the array and add the new asteroid
 			for (short i = 0; i < global->asteroids_max_count * 2; i++)
@@ -244,7 +248,7 @@ void Split(short j)
 			LOG(1, "Generating Asteroid 2. Max_Count: %d", global->asteroids_max_count);
 			// Create the second new asteroid
 			Asteroid asteroid2 = global->asteroids[j];
-			asteroid2.scale /= 2;
+			asteroid2.scale = 0.5;
 			asteroid2.twist = rand() * 2 * PI / RAND_MAX;
 			asteroid2.heading = rand() * 2 * PI / RAND_MAX;
 			asteroid2.speed = global->asteroids[j].speed * (float)rand() / RAND_MAX * 1.5f;
@@ -264,20 +268,13 @@ void Split(short j)
 					break;
 				}
 
-			global->asteroids[j].dead = true;
-			global->asteroids_alive--;
+
 		}
 		else
 		{
 			// Handle case where there is not enough space in the array for the new asteroids
 			global->asteroids[j].scale -= global->asteroids[j].scale / 3;
 		}
-	}
-	else
-	{
-		global->asteroids[j].dead = true;
-		global->asteroids_alive--;
-		LOG(2, "Killed Asteroid");
 	}
 }
 
