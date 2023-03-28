@@ -11,6 +11,8 @@
 #include <math.h>
 #include <pthread.h>
 #include <time.h>
+#include <locale.h>
+
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
@@ -39,6 +41,7 @@ enum COLOURS {YELLOW, ORANGE, RED};
 
 typedef struct Global{
     short Player_Lives;
+    unsigned int score;
     bool done;
     bool SpaceShipBitmapCreated;
     bool redraw;
@@ -58,6 +61,7 @@ typedef struct Global{
     ALLEGRO_BITMAP *AsteroidBitmap;
 } Global;
 
+void draw_score();
 void Blasteroids_Init(Global * global);
 void error(char *msg);
 int  al_destroy_all();

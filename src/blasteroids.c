@@ -31,6 +31,7 @@ int main()
 			draw_bullet();
 			DEBUG_ASTEROIDS_ALIVE(draw_asteroid());
 			draw_lives();
+			draw_score();
 
 			DEBUG_ASTEROIDS_ALIVE(spawn_asteroid());
 
@@ -122,9 +123,12 @@ void teleport(float *sx, float *sy)
 void Blasteroids_Init(Global *global)
 {
 	srand(0);
+	setlocale(LC_NUMERIC, "");
+
 
 	// Initializing variables that are on the heap or are from other source files
 	global->Player_Lives = 3;
+	global->score = 0;
 	global->bullets = malloc(sizeof(Bullet) * BULLET_COUNT);
 	global->asteroids_alive = 0;
 	global->asteroids_max_count = MAX_BIG_ASTEROIDS;
@@ -147,7 +151,7 @@ void Blasteroids_Init(Global *global)
 	for (int i = 0; i < global->asteroids_max_count * 2; i++)
 		global->asteroids[i].dead = true;
 	for (short i = 0; i < global->asteroids_max_count * 2; i++)
-		LOG(1,"Asteroid %d is %s", i, global->asteroids[i].dead ? "Dead" : "Alive");
+		LOG(1, "Asteroid %d is %s", i, global->asteroids[i].dead ? "Dead" : "Alive");
 
 	if (!al_init())
 		error("Couldn't initialize Allegro");
@@ -204,4 +208,12 @@ void Blasteroids_Init(Global *global)
 	LOG(1, "Global Variables initialised");
 
 	draw_ship();
+}
+
+
+void draw_score()
+{
+	al_draw_textf(global->font, al_map_rgb(0, 255, 0),
+				 DISPLAY_WIDTH / 2, 50,
+				 ALLEGRO_ALIGN_CENTER, "Score: %'u", global->score);
 }

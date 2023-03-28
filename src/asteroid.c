@@ -213,6 +213,9 @@ void Split(short j)
 	
 	global->asteroids[j].dead = true;
 	global->asteroids_alive--;
+
+	global->score += global->asteroids[j].scale * 100;
+
 	LOG(1, "\n\tAsteroid %d is %s", j, global->asteroids[j].dead ? "Dead" : "Alive");
 
 	// Check if the asteroid's scale is greater than 0.5
