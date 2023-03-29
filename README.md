@@ -73,6 +73,5 @@ Binary will be `bin/ship`
 
 
 ## TODO
-- Add a score at the top left of the game
 - Create a Menu with a scoreboard, options, play and exit options
 - Package it and give it an installer so people who can't program or mess around with git, can still play it
