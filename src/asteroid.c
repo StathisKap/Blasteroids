@@ -205,6 +205,7 @@ void update_asteroid()
 void Split(short j)
 {
 	LOG(1, "Splitting");
+	al_play_sample(global->explosion_sound, 0.8, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 
 	// Print the status of all asteroids in the array
 	for (short i = 0; i < global->asteroids_max_count * 2; i++)

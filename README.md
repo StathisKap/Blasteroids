@@ -65,7 +65,11 @@ or apt:
 
     sudo apt-get install liballegro5-dev
 
-Then run 
+Then you need libraries 
+    flac, dumb, and opusfile
+Use the package manager of your choosing
+
+Finally run
     
     make
 

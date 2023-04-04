@@ -18,6 +18,8 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 #define PI M_PI
 #define ROT_SPEED PI * 0.01875
@@ -59,6 +61,10 @@ typedef struct Global{
     ALLEGRO_TIMER * timer;
     ALLEGRO_TIMER * respawn_timer;
     ALLEGRO_BITMAP *AsteroidBitmap;
+    ALLEGRO_SAMPLE* shoot_sound;
+    ALLEGRO_SAMPLE* explosion_sound;
+    ALLEGRO_SAMPLE* lifeup_sound;
+    ALLEGRO_SAMPLE* flame_sound;
 } Global;
 
 void draw_score();

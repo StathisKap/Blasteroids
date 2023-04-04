@@ -11,6 +11,7 @@ void spawn_bullet()
 	{
 		if (!global->bullets[i].live) //If it is false then
 		{
+			al_play_sample(global->shoot_sound, 0.3, 0.0, 2.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 			global->bullets[i].live = true; // It turns it to true
 			global->bullets[i].heading = global->ship.heading; // It sets the heading equal to wherever the ship was looking
 			global->bullets[i].sx = global->ship.sx + 10 * sin(global->ship.heading + PI / 2) * global->ship.scale; // It sets the starting position to where the ship is

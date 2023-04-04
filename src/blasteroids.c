@@ -90,6 +90,9 @@ int al_destroy_all()
 	al_destroy_event_queue(global->queue);
 	al_destroy_bitmap(global->AsteroidBitmap);
 	al_destroy_font(global->font);
+	al_destroy_sample(global->shoot_sound);
+	al_destroy_sample(global->explosion_sound);
+	al_destroy_sample(global->lifeup_sound);
 	free(global->bullets);
 	free(global->asteroids);
 	free(global);
@@ -165,9 +168,38 @@ void Blasteroids_Init(Global *global)
 	if (!al_init_ttf_addon())
 		error("Couldn't initialize Allegro TTF");
 
+	if (!al_install_audio()) 
+		error("Couldn't initialize Allegro Audio");
+
+	if (!al_init_acodec_addon()) 
+		error("Couldn't initialize Allegro Acodec");
+
+	if (!al_reserve_samples(1))
+		error("Couldn't initialize Allegro Audio Reverse");
+
+
 	global->font = al_load_ttf_font("./assets/arial.ttf", 40, 0);
 	if (!global->font)
 		error("Couldn't Load TTF");
+
+	if(!al_reserve_samples(100))
+		error("Couldn't resever audio samples");
+
+	global->shoot_sound = al_load_sample("./assets/Laser_Shoot.wav");
+	if (!global->shoot_sound)
+		error("Couldn't load Shoot Sound");
+
+	global->explosion_sound = al_load_sample("./assets/Explosion.wav");
+	if (!global->explosion_sound)
+		error("Couldn't Load Explosion Sound");
+
+	global->flame_sound= al_load_sample("./assets/Flame.wav");
+	if (!global->flame_sound)
+		error("Couldn't Load Flame Sound");
+
+	global->lifeup_sound = al_load_sample("./assets/Life_Up.wav");
+	if (!global->lifeup_sound)
+		error("Couldn't Load Life Up Sound");
 
 	if (!al_install_keyboard())
 		error("Couldn't initialize Keyboard");
