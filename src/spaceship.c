@@ -115,8 +115,8 @@ void Respawn()
 
 	if (al_get_timer_count(global->respawn_timer) == 0)
 	{
-		global->ship.sx = DISPLAY_WIDTH / 2;
-		global->ship.sy = DISPLAY_HEIGHT / 2;
+		global->ship.sx = DISPLAY_WIDTH / 2.0;
+		global->ship.sy = DISPLAY_HEIGHT / 2.0;
 		global->ship.heading = 3 * PI / 2;
 		global->ship.speed = 0;
 		al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -149,6 +149,7 @@ void LifeUp(int points) {
 	if (global->score >= previous_score + points) {
 	    global->Player_Lives++; // increase player lives by 1
 	    previous_score += points; // update previous score
+			al_play_sample(global->lifeup_sound, 0.7, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 	}
 }
 

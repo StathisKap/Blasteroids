@@ -22,6 +22,7 @@
 #include <allegro5/allegro_acodec.h>
 
 #define PI M_PI
+#define FPS 60.0
 #define ROT_SPEED PI * 0.01875
 #define SPACESHIP_KEYS_NUM 6
 #define SPACESHIP_SPEED 0.08

@@ -12,8 +12,6 @@ int main()
 	global = malloc(sizeof(Global));
 	DEBUG_ASTEROIDS_ALIVE(Blasteroids_Init(global));
 
-	short wave = 0;
-
 	while (!global->done)
 	{
 		al_wait_for_event(global->queue, &global->event); // Capture keystrokes
@@ -45,7 +43,7 @@ int main()
 			if (global->done)
 			{
 				al_draw_text(global->font, al_map_rgb(255, 255, 255),
-							 DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2,
+							 DISPLAY_WIDTH / 2.0, DISPLAY_HEIGHT / 2.0,
 							 ALLEGRO_ALIGN_CENTER, "GAME OVER!!");
 				al_flip_display();
 				al_rest(3);
@@ -96,6 +94,7 @@ int al_destroy_all()
 	al_destroy_sample(global->shoot_sound);
 	al_destroy_sample(global->explosion_sound);
 	al_destroy_sample(global->lifeup_sound);
+	al_destroy_sample(global->flame_sound);
 	free(global->bullets);
 	free(global->asteroids);
 	free(global);
@@ -143,8 +142,8 @@ void Blasteroids_Init(Global *global)
 	global->done = false;
 	global->AsteroidBitmap = NULL;
 	global->ship = (Spaceship){
-		DISPLAY_HEIGHT / 2,		 //	sx
-		DISPLAY_WIDTH / 2,		 // sy
+		DISPLAY_HEIGHT / 2.0,		 //	sx
+		DISPLAY_WIDTH / 2.0,		 // sy
 		3 * PI / 2,				 // heading
 		0,						 // speed
 		0,						 // drift
@@ -171,10 +170,10 @@ void Blasteroids_Init(Global *global)
 	if (!al_init_ttf_addon())
 		error("Couldn't initialize Allegro TTF");
 
-	if (!al_install_audio()) 
+	if (!al_install_audio())
 		error("Couldn't initialize Allegro Audio");
 
-	if (!al_init_acodec_addon()) 
+	if (!al_init_acodec_addon())
 		error("Couldn't initialize Allegro Acodec");
 
 	if (!al_reserve_samples(1))
@@ -196,7 +195,7 @@ void Blasteroids_Init(Global *global)
 	if (!global->explosion_sound)
 		error("Couldn't Load Explosion Sound");
 
-	global->flame_sound= al_load_sample("./assets/Flame.wav");
+	global->flame_sound = al_load_sample("./assets/Flame.wav");
 	if (!global->flame_sound)
 		error("Couldn't Load Flame Sound");
 
@@ -207,7 +206,7 @@ void Blasteroids_Init(Global *global)
 	if (!al_install_keyboard())
 		error("Couldn't initialize Keyboard");
 
-	global->timer = al_create_timer(1.0 / 60.0); // FPS
+	global->timer = al_create_timer(1.0 / FPS); // FPS
 	if (!global->timer)
 		error("Couldn't initialize Timer");
 
@@ -249,6 +248,6 @@ void Blasteroids_Init(Global *global)
 void draw_score()
 {
 	al_draw_textf(global->font, al_map_rgb(0, 255, 0),
-				 DISPLAY_WIDTH / 2, 50,
+				 DISPLAY_WIDTH / 2.0, 50,
 				 ALLEGRO_ALIGN_CENTER, "Score: %'u", global->score);
 }
