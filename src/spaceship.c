@@ -144,6 +144,15 @@ void Respawn()
 	}
 }
 
+void LifeUp(int points) {
+	static int previous_score = 0; // static variable to track previous score
+	if (global->score >= previous_score + points) {
+	    global->Player_Lives++; // increase player lives by 1
+	    previous_score += points; // update previous score
+	}
+}
+
+
 void draw_lives()
 {
 		al_identity_transform(&global->ship.transform);

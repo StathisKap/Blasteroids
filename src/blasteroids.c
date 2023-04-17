@@ -33,6 +33,7 @@ int main()
 			draw_lives();
 			draw_score();
 
+
 			DEBUG_ASTEROIDS_ALIVE(spawn_asteroid());
 
 			if (global->asteroids_alive < 0)
@@ -58,6 +59,8 @@ int main()
 
 		KeysForSpaceship();
 		DEBUG_ASTEROIDS_ALIVE(Box_Collision_Bullets());
+
+		LifeUp(10000);
 
 		if (!al_get_timer_started(global->respawn_timer) && global->ship.live)
 			Box_Collision_Ship();
