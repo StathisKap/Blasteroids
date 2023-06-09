@@ -199,9 +199,22 @@ void Blasteroids_Init(Global *global)
 	if (!global->flame_sound)
 		error("Couldn't Load Flame Sound");
 
+	global->flame_instance = al_create_sample_instance(global->flame_sound);
+	if (!global->flame_instance)
+		error("Couldn't Create Flame Insance");
+
+	al_set_sample_instance_playmode(global->flame_instance, ALLEGRO_PLAYMODE_LOOP);
+	al_attach_sample_instance_to_mixer(global->flame_instance, al_get_default_mixer());
+
+
 	global->lifeup_sound = al_load_sample("./assets/Life_Up.wav");
 	if (!global->lifeup_sound)
 		error("Couldn't Load Life Up Sound");
+
+	global->death_sound= al_load_sample("./assets/Death.wav");
+	if (!global->death_sound)
+		error("Couldn't Load Death Sound");
+
 
 	if (!al_install_keyboard())
 		error("Couldn't initialize Keyboard");
@@ -243,7 +256,6 @@ void Blasteroids_Init(Global *global)
 
 	draw_ship();
 }
-
 
 void draw_score()
 {

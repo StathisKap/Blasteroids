@@ -48,8 +48,8 @@ typedef struct Global{
     bool done;
     bool SpaceShipBitmapCreated;
     bool redraw;
-	short asteroids_alive;
-	short asteroids_max_count;
+	  short asteroids_alive;
+	  short asteroids_max_count;
     Bullet *bullets;
     Asteroid *asteroids;
     Spaceship ship;
@@ -66,6 +66,8 @@ typedef struct Global{
     ALLEGRO_SAMPLE* explosion_sound;
     ALLEGRO_SAMPLE* lifeup_sound;
     ALLEGRO_SAMPLE* flame_sound;
+    ALLEGRO_SAMPLE* death_sound;
+    ALLEGRO_SAMPLE_INSTANCE *flame_instance;
 } Global;
 
 void draw_score();

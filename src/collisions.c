@@ -20,6 +20,7 @@ bool Box_Collision_Ship()
             {
                 global->ship.live = false;
                 global->Player_Lives--;
+			          al_play_sample(global->death_sound, 0.7, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                 return true;
             }
         }

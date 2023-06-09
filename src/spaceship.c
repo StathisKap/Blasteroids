@@ -51,6 +51,8 @@ void draw_flame() //Draws the flame when it goes forward
 	al_use_transform(&global->ship.transform);
 	al_draw_line(0, 25 * global->ship.scale, 5 * global->ship.scale, 10 * global->ship.scale, al_map_rgb(222,  136,  44),  thickness); //We draw the lines
 	al_draw_line(0, 25 * global->ship.scale, -5 * global->ship.scale, 10 * global->ship.scale, al_map_rgb(222,  136,  44),  thickness); //We draw the lines
+	//al_play_sample(global->flame_sound, 0.7, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+	al_play_sample_instance(global->flame_instance);
 }
 
 void KeysForSpaceship()
@@ -75,6 +77,10 @@ void KeysForSpaceship()
 		global->ship.drift = global->ship.heading;
 		draw_flame();
 	}
+
+	if (!al_key_down(&keystate, ALLEGRO_KEY_UP))
+		al_stop_sample_instance(global->flame_instance);
+
 
 	if (al_key_down(&keystate, ALLEGRO_KEY_DOWN))
 		global->ship.speed -= DRAG * 10;
