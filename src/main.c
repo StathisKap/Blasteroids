@@ -4,11 +4,12 @@
 #endif
 
 Global *global;
+GameState gameState;
 
 void main()
 {
     int menuSelection = 0;
-    GameState gameState = MENU;
+    gameState = MENU;
     LOG(1, "Start of the program\n");
 
     global = malloc(sizeof(Global));
@@ -22,6 +23,7 @@ void main()
                     menu();
         	      break;
         	      case PLAY:
+                    LOG(1, "Blasteroids Case\n");
                     blasteroids();
         	          break;
         	      case HIGH_SCORES:
@@ -41,7 +43,7 @@ int menu()
     register_menu_events();
     int selection = 0;
     draw_menu(&selection);
-    while (!global->done){
+    while (gameState == MENU){
         al_wait_for_event(global->queue, &global->event); // Capture keystrokes
 
         // if the timer has ticked, redraw
@@ -159,12 +161,14 @@ int keys_for_menu(int *selection)
     LOG(1, "%d", *selection);
     if (global->event.keyboard.keycode == ALLEGRO_KEY_DOWN){
         (*selection)++;
-    //    global->redraw = true;
     }
 
     if (global->event.keyboard.keycode == ALLEGRO_KEY_UP){
         (*selection)--;
-    //    global->redraw = true;
+    }
+
+    if (global->event.keyboard.keycode == ALLEGRO_KEY_ENTER){
+        gameState = *selection;
     }
 
     if (*selection < 0)
