@@ -5,12 +5,12 @@
 
 Global *global;
 
-int main()
+int blasteroids()
 {
-	LOG(1, "Start of the program\n");
+	LOG(1, "Start of the Game\n");
 
 	global = malloc(sizeof(Global));
-	DEBUG_ASTEROIDS_ALIVE(Blasteroids_Init(global));
+	DEBUG_ASTEROIDS_ALIVE(blasteroids_init());
 
 	while (!global->done)
 	{
@@ -30,8 +30,6 @@ int main()
 			DEBUG_ASTEROIDS_ALIVE(draw_asteroid());
 			draw_lives();
 			draw_score();
-
-
 			DEBUG_ASTEROIDS_ALIVE(spawn_asteroid());
 
 			if (global->asteroids_alive < 0)
@@ -55,10 +53,10 @@ int main()
 			global->redraw = false;
 		}
 
-		KeysForSpaceship();
+		keys_for_spaceship();
 		DEBUG_ASTEROIDS_ALIVE(Box_Collision_Bullets());
 
-		LifeUp(10000);
+		life_up(10000);
 
 		if (!al_get_timer_started(global->respawn_timer) && global->ship.live)
 			Box_Collision_Ship();
@@ -68,13 +66,6 @@ int main()
 		error("Couldn't destroy everything");
 	return 0;
 }
-
-/*
- * You need to display the number of lives, and score on the screen
- * When you run out of lives you need to display "Game Over!"
- * in big friendly letters in the middle of the screen.
- *
- */
 
 void error(char *msg)
 {
@@ -125,7 +116,7 @@ void teleport(float *sx, float *sy)
 		*sy = DISPLAY_HEIGHT;
 }
 
-void Blasteroids_Init(Global *global)
+void blasteroids_init()
 {
 	srand(0);
 	setlocale(LC_NUMERIC, "");

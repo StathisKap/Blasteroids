@@ -37,7 +37,7 @@ void draw_ship()
 		teleport(&global->ship.sx, &global->ship.sy);
 	}
 	else
-		Respawn();
+		respawn();
 }
 
 void draw_flame() //Draws the flame when it goes forward
@@ -51,17 +51,15 @@ void draw_flame() //Draws the flame when it goes forward
 	al_use_transform(&global->ship.transform);
 	al_draw_line(0, 25 * global->ship.scale, 5 * global->ship.scale, 10 * global->ship.scale, al_map_rgb(222,  136,  44),  thickness); //We draw the lines
 	al_draw_line(0, 25 * global->ship.scale, -5 * global->ship.scale, 10 * global->ship.scale, al_map_rgb(222,  136,  44),  thickness); //We draw the lines
-	//al_play_sample(global->flame_sound, 0.7, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 	al_play_sample_instance(global->flame_instance);
 }
 
-void KeysForSpaceship()
+void keys_for_spaceship()
 {
 	// create a keyboard keystate
 	ALLEGRO_KEYBOARD_STATE keystate;
 	// get the current state of the keyboard
 	al_get_keyboard_state(&keystate);
-
 
 	if (al_key_down(&keystate, ALLEGRO_KEY_SPACE))
 		fire_bullet();
@@ -81,10 +79,8 @@ void KeysForSpaceship()
 	if (!al_key_down(&keystate, ALLEGRO_KEY_UP))
 		al_stop_sample_instance(global->flame_instance);
 
-
 	if (al_key_down(&keystate, ALLEGRO_KEY_DOWN))
 		global->ship.speed -= DRAG * 10;
-
 
 	// Keeping the heading angle between 0 and 2*PI
 	if (global->ship.heading > 2*PI)
@@ -111,7 +107,7 @@ void KeysForSpaceship()
 }
 
 
-void Respawn()
+void respawn()
 {
 	if (global->Player_Lives <= 0)
 	{
@@ -150,7 +146,7 @@ void Respawn()
 	}
 }
 
-void LifeUp(int points) {
+void life_up(int points) {
 	static int previous_score = 0; // static variable to track previous score
 	if (global->score >= previous_score + points) {
 	    global->Player_Lives++; // increase player lives by 1
@@ -158,7 +154,6 @@ void LifeUp(int points) {
 			al_play_sample(global->lifeup_sound, 0.7, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 	}
 }
-
 
 void draw_lives()
 {

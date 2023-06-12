@@ -35,8 +35,6 @@
 #define BULLET_SPEED 15
 #define MAX_BIG_ASTEROIDS 2
 
-enum COLOURS {YELLOW, ORANGE, RED};
-
 #include "./collisions.h"
 #include "./asteroid.h"
 #include "./spaceship.h"
@@ -70,8 +68,9 @@ typedef struct Global{
     ALLEGRO_SAMPLE_INSTANCE *flame_instance;
 } Global;
 
+int blasteroids();
 void draw_score();
-void Blasteroids_Init(Global * global);
+void blasteroids_init();
 void error(char *msg);
 int  al_destroy_all();
 int  al_register_all();

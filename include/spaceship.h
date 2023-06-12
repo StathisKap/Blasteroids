@@ -15,9 +15,9 @@ typedef struct {
 	ALLEGRO_TRANSFORM transform;
 } Spaceship;
 
-void draw_ship(); //Draws the ship
-void draw_flame(); //Draws the flame when it goes forward
-void KeysForSpaceship(); // Reads the keystate of the keys and does stuff
-void Respawn();
+void draw_ship(); //draws the ship
+void draw_flame(); //draws the flame when it goes forward
+void keys_for_spaceship(); // reads the keystate of the keys and does stuff
+void respawn();
 void draw_lives();
-void LifeUp(int points);
+void life_up(int points);
