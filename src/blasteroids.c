@@ -3,7 +3,7 @@
 #include "../include/blasteroids.h"
 #endif
 
-Global *global;
+extern Global *global;
 
 int blasteroids()
 {
