@@ -133,10 +133,12 @@ void draw_menu(int *selection)
     // The Y position to start drawing the menu options
     int start_y = (DISPLAY_HEIGHT - total_height) / 2; // This will center the options
 
-    int options_num = 2;
-    char options[][5] = {"PLAY", "EXIT" };
+    char options[][5] = {"PLAY", "EXIT"};
 
-    // Set the color to white for the text
+    // Get the number of options
+    int options_num = sizeof(options)/sizeof(options[0]);
+
+    // Set the colors of the text and the chosen option
     ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
     ALLEGRO_COLOR gray= al_map_rgb(150, 150, 150);
 
