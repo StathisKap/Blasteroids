@@ -5,6 +5,7 @@
 
 Global *global;
 GameState gameState;
+int selection;
 
 void main()
 {
@@ -35,14 +36,11 @@ void main()
     };
 }
 
-
 int menu()
 {
     LOG(1, "Start of the Menu\n");
+    selection = 0;
     init_menu();
-    register_menu_events();
-    int selection = 0;
-    draw_menu(&selection);
     while (gameState == MENU){
         al_wait_for_event(global->queue, &global->event); // Capture keystrokes
 
@@ -94,6 +92,8 @@ void init_menu()
     global->font = al_load_ttf_font("./assets/arial.ttf", 40, 0);
     if (!global->font)
         error("Couldn't Load TTF");
+    else
+        printf("Loaded TTF\n");
 
     if (!al_install_keyboard())
         error("Couldn't initialize Keyboard");
@@ -112,7 +112,13 @@ void init_menu()
 
     al_set_window_title(global->disp, "Blasteroids");
 
+
+	  if (!register_menu_events())
+        error("Coulnd't register Menu events");
+
 	  al_start_timer(global->timer);
+
+    draw_menu(&selection);
     LOG(1, "Initialised Global Variables for Menu");
 }
 

@@ -9,7 +9,6 @@ int blasteroids()
 {
 	LOG(1, "Start of the Game\n");
 
-	global = malloc(sizeof(Global));
 	DEBUG_ASTEROIDS_ALIVE(blasteroids_init());
 
 	while (!global->done)
@@ -95,9 +94,6 @@ int al_destroy_all()
 
 int al_register_all()
 {
-	al_register_event_source(global->queue, al_get_keyboard_event_source());
-	al_register_event_source(global->queue, al_get_display_event_source(global->disp));
-	al_register_event_source(global->queue, al_get_timer_event_source(global->timer));
 	al_register_event_source(global->queue, al_get_timer_event_source(global->asteroid_rotation_timer));
 	al_register_event_source(global->queue, al_get_timer_event_source(global->fire_rate_timer));
 	LOG(1, "Registerd Everything");
@@ -118,10 +114,6 @@ void teleport(float *sx, float *sy)
 
 void blasteroids_init()
 {
-	srand(0);
-	setlocale(LC_NUMERIC, "");
-
-
 	// Initializing variables that are on the heap or are from other source files
 	global->Player_Lives = 3;
 	global->score = 0;
@@ -149,18 +141,6 @@ void blasteroids_init()
 	for (short i = 0; i < global->asteroids_max_count * 2; i++)
 		LOG(1, "Asteroid %d is %s", i, global->asteroids[i].dead ? "Dead" : "Alive");
 
-	if (!al_init())
-		error("Couldn't initialize Allegro");
-
-	if (!al_init_primitives_addon())
-		error("Couldn't initialize Allegro Primitives");
-
-	if (!al_init_font_addon())
-		error("Couldn't initialize Allegro Font");
-
-	if (!al_init_ttf_addon())
-		error("Couldn't initialize Allegro TTF");
-
 	if (!al_install_audio())
 		error("Couldn't initialize Allegro Audio");
 
@@ -169,11 +149,6 @@ void blasteroids_init()
 
 	if (!al_reserve_samples(1))
 		error("Couldn't initialize Allegro Audio Reverse");
-
-
-	global->font = al_load_ttf_font("./assets/arial.ttf", 40, 0);
-	if (!global->font)
-		error("Couldn't Load TTF");
 
 	if(!al_reserve_samples(100))
 		error("Couldn't resever audio samples");
@@ -197,7 +172,6 @@ void blasteroids_init()
 	al_set_sample_instance_playmode(global->flame_instance, ALLEGRO_PLAYMODE_LOOP);
 	al_attach_sample_instance_to_mixer(global->flame_instance, al_get_default_mixer());
 
-
 	global->lifeup_sound = al_load_sample("./assets/Life_Up.wav");
 	if (!global->lifeup_sound)
 		error("Couldn't Load Life Up Sound");
@@ -206,13 +180,6 @@ void blasteroids_init()
 	if (!global->death_sound)
 		error("Couldn't Load Death Sound");
 
-
-	if (!al_install_keyboard())
-		error("Couldn't initialize Keyboard");
-
-	global->timer = al_create_timer(1.0 / FPS); // FPS
-	if (!global->timer)
-		error("Couldn't initialize Timer");
 
 	global->asteroid_rotation_timer = al_create_timer(1.0 / 15);
 	if (!global->asteroid_rotation_timer)
@@ -226,22 +193,11 @@ void blasteroids_init()
 	if (!global->respawn_timer)
 		error("Couldn't initialize Respawn Timer");
 
-	global->queue = al_create_event_queue(); // Create event queue to catch keystrokes
-	if (!global->queue)
-		error("Couldn't initialize Queue");
-
-	global->disp = al_create_display(DISPLAY_HEIGHT, DISPLAY_WIDTH); // Creates a window
-	if (!global->disp)
-		error("Couldn't initialize Display");
-
 	if (!al_register_all())
 		error("Coulnd't register something");
 
-	al_start_timer(global->timer);
 	al_start_timer(global->fire_rate_timer);
 	al_start_timer(global->asteroid_rotation_timer);
-
-	al_set_window_title(global->disp, "Blasteroids");
 
 	LOG(1, "Global Variables initialised");
 
