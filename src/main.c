@@ -27,8 +27,8 @@ void main()
                     LOG(1, "Blasteroids Case\n");
                     blasteroids();
         	          break;
-        	      case HIGH_SCORES:
-        	          // Show high scores.
+        	      case EXIT:
+                    global->done = true;
         	          break;
         	      default:
         	          break;
@@ -174,7 +174,7 @@ int keys_for_menu(int *selection)
     }
 
     if (global->event.keyboard.keycode == ALLEGRO_KEY_ENTER){
-        gameState = *selection;
+        gameState = *selection + 1;
     }
 
     if (*selection < 0)
@@ -197,5 +197,3 @@ int al_destroy_all()
 	LOG(1, "Freed All Blasteroids Variables\n");
 	return 1;
 }
-
-

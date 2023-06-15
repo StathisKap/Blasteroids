@@ -13,7 +13,7 @@
 typedef enum GameState {
     MENU,
     PLAY,
-    HIGH_SCORES
+    EXIT,
 } GameState;
 
 void init_menu();
