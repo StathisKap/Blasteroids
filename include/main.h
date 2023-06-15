@@ -18,6 +18,7 @@ typedef enum GameState {
 
 void init_menu();
 void draw_menu(int *selection);
+int al_destroy_all();
 int menu();
 int register_menu_events();
 int keys_for_menu(int * selection);

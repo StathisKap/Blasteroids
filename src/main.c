@@ -12,7 +12,6 @@ void main()
     int menuSelection = 0;
     gameState = MENU;
     LOG(1, "Start of the program\n");
-
     global = malloc(sizeof(Global));
 
     while (!global->done)
@@ -28,19 +27,22 @@ void main()
                     blasteroids();
         	          break;
         	      case EXIT:
+                    LOG(1, "Exit Case\n");
                     global->done = true;
         	          break;
         	      default:
         	          break;
         	}
     };
+    al_destroy_all();
 }
 
 int menu()
 {
     LOG(1, "Start of the Menu\n");
     selection = 0;
-    init_menu();
+    if (!global->disp)
+        init_menu();
     while (gameState == MENU){
         al_wait_for_event(global->queue, &global->event); // Capture keystrokes
 
@@ -133,12 +135,12 @@ void draw_menu(int *selection)
     // The Y position to start drawing the menu options
     int start_y = (DISPLAY_HEIGHT - total_height) / 2; // This will center the options
 
-    char options[][5] = {"PLAY", "EXIT"};
+    char options[][5] = {"PLAY", "EXIT" };
 
     // Get the number of options
     int options_num = sizeof(options)/sizeof(options[0]);
 
-    // Set the colors of the text and the chosen option
+    // Set the colors of the text and the chosen options
     ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
     ALLEGRO_COLOR gray= al_map_rgb(150, 150, 150);
 

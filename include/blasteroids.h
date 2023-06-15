@@ -76,7 +76,7 @@ int al_destroy_blasteroids();
 int  al_register_all();
 void teleport(float *sx, float *sy);
 
-#define LOG_LEVEL 0
+#define LOG_LEVEL 1
 
 #define DEBUG_ASTEROIDS_ALIVE(func_call) do { \
     if (LOG_LEVEL == 2) { \

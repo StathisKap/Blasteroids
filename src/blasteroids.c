@@ -1,9 +1,10 @@
 #ifndef BLASTEROIDS_
 #define BLASTEROIDS_
-#include "../include/blasteroids.h"
+#include "../include/main.h"
 #endif
 
 extern Global *global;
+extern GameState gameState;
 
 int blasteroids()
 {
@@ -11,7 +12,8 @@ int blasteroids()
 
 	DEBUG_ASTEROIDS_ALIVE(blasteroids_init());
 
-	while (!global->done)
+	LOG(1, "Start of the Game Loop\n");
+	while (gameState == PLAY)
 	{
 		al_wait_for_event(global->queue, &global->event); // Capture keystrokes
 
@@ -19,8 +21,12 @@ int blasteroids()
 		if (global->event.type == ALLEGRO_EVENT_TIMER)
 			global->redraw = true;
 		// if the user has pressed ESC or clicked the x on the window. Then close
-		else if (global->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || global->event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+		else if (global->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 			global->done = true;
+		else if (global->event.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
+			LOG(1, "ESC pressed. Setting GameState to MENU\n");
+			gameState = MENU;
+		}
 
 		if (global->redraw && al_is_event_queue_empty(global->queue))
 		{
@@ -74,13 +80,11 @@ void error(char *msg)
 
 int al_destroy_blasteroids()
 {
-	al_destroy_display(global->disp);
-	al_destroy_timer(global->timer);
 	al_destroy_timer(global->asteroid_rotation_timer);
 	al_destroy_timer(global->fire_rate_timer);
-	al_destroy_event_queue(global->queue);
 	al_destroy_bitmap(global->AsteroidBitmap);
-	al_destroy_font(global->font);
+	al_destroy_bitmap(global->ship.image);
+	global->SpaceShipBitmapCreated = false;
 	al_destroy_sample(global->shoot_sound);
 	al_destroy_sample(global->explosion_sound);
 	al_destroy_sample(global->lifeup_sound);
@@ -198,7 +202,7 @@ void blasteroids_init()
 	al_start_timer(global->fire_rate_timer);
 	al_start_timer(global->asteroid_rotation_timer);
 
-	LOG(1, "Global Variables initialised");
+	LOG(1, "Blasteroids Variables initialised");
 
 	draw_ship();
 }
