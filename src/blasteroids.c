@@ -61,7 +61,7 @@ int blasteroids()
 			Box_Collision_Ship();
 	}
 
-	if (!al_destroy_all())
+	if (!al_destroy_blasteroids())
 		error("Couldn't destroy everything");
 	return 0;
 }
@@ -72,7 +72,7 @@ void error(char *msg)
 	exit(1);
 }
 
-int al_destroy_all()
+int al_destroy_blasteroids()
 {
 	al_destroy_display(global->disp);
 	al_destroy_timer(global->timer);
@@ -87,8 +87,7 @@ int al_destroy_all()
 	al_destroy_sample(global->flame_sound);
 	free(global->bullets);
 	free(global->asteroids);
-	free(global);
-	LOG(1, "Freed Everything\n");
+	LOG(1, "Freed All Blasteroids Variables\n");
 	return 1;
 }
 

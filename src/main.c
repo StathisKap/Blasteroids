@@ -184,3 +184,18 @@ int keys_for_menu(int *selection)
 
     return *selection;
 }
+
+
+
+int al_destroy_all()
+{
+	al_destroy_display(global->disp);
+	al_destroy_timer(global->timer);
+	al_destroy_event_queue(global->queue);
+	al_destroy_font(global->font);
+  free(global);
+	LOG(1, "Freed All Blasteroids Variables\n");
+	return 1;
+}
+
+

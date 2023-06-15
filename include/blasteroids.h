@@ -72,7 +72,7 @@ int blasteroids();
 void draw_score();
 void blasteroids_init();
 void error(char *msg);
-int  al_destroy_all();
+int al_destroy_blasteroids();
 int  al_register_all();
 void teleport(float *sx, float *sy);
 
