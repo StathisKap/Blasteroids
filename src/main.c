@@ -1,6 +1,7 @@
 #ifndef MAIN_
 #define MAIN_
 #include "../include/main.h"
+#include "../include/menu.h"
 #endif
 
 Global *global;

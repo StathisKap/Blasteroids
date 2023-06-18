@@ -1,9 +1,11 @@
 #ifndef SHIP_
 #define SHIP_
 #include "../include/blasteroids.h"
+#include "../include/main.h"
 #endif
 
 extern Global *global;
+extern GameState gameState;
 
 void draw_ship()
 {
@@ -111,7 +113,7 @@ void respawn()
 {
 	if (global->Player_Lives <= 0)
 	{
-		global->done = true;
+		gameState = MENU;
 		return;
 	}
 

@@ -6,7 +6,7 @@
 	void draw_asteroid();
 	void update_asteroid();
 	void Split(short j);
-	
+
 	typedef struct {
 		float sx;
 		float sy;

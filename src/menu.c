@@ -96,6 +96,8 @@ void init_menu()
 
 void draw_menu(int *selection)
 {
+		ALLEGRO_TRANSFORM transform;
+		al_identity_transform(&transform);
     // Set the color to dark green and clear the screen
     al_clear_to_color(al_map_rgb(0, 100, 0));
     // Calculate the height of the menu options
@@ -123,6 +125,7 @@ void draw_menu(int *selection)
     }
     LOG(1, "Selection in draw_menu: %d", *selection);
 
+		al_use_transform(&transform);
     al_flip_display();
 }
 
