@@ -1,6 +1,6 @@
 #ifndef MENU_
 #define MENU_
-#include "../include/main.h"
+#include "../include/menu.h"
 #endif
 
 extern Global *global;
@@ -12,8 +12,14 @@ int menu()
     int selection = 0;
     if (!global->disp)
         init_menu();
+
+    char *options[] = {"PLAY", "HIGH SCORES","EXIT" };
+
+    // Get the number of options
+    short options_num = sizeof(options)/sizeof(options[0]);
+
     LOG(1, "Drawing the Menu Once\n");
-    draw_menu(&selection);
+    draw_menu(&selection, options, options_num);
     while (gameState == MENU){
         al_wait_for_event(global->queue, &global->event); // Capture keystrokes
 
@@ -29,12 +35,12 @@ int menu()
 
         if (global->redraw && al_is_event_queue_empty(global->queue))
         {
-            draw_menu(&selection);
+            draw_menu(&selection, options, options_num);
             global->redraw = false;
         }
 
         if (global->event.type == ALLEGRO_EVENT_KEY_DOWN) {
-            selection = keys_for_menu(&selection);
+            selection = keys_for_menu(&selection, options_num);
         }
     }
     return 0;
@@ -94,7 +100,7 @@ void init_menu()
     LOG(1, "Initialised Global Variables for Menu");
 }
 
-void draw_menu(int *selection)
+void draw_menu(int *selection, char **options, short options_num)
 {
 		ALLEGRO_TRANSFORM transform;
 		al_identity_transform(&transform);
@@ -106,11 +112,6 @@ void draw_menu(int *selection)
 
     // The Y position to start drawing the menu options
     int start_y = (DISPLAY_HEIGHT - total_height) / 2; // This will center the options
-
-    char options[][5] = {"PLAY", "EXIT" };
-
-    // Get the number of options
-    int options_num = sizeof(options)/sizeof(options[0]);
 
     // Set the colors of the text and the chosen options
     ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
@@ -139,7 +140,7 @@ int register_menu_events()
     return 1;
 }
 
-int keys_for_menu(int *selection)
+int keys_for_menu(int *selection, short options_num)
 {
     LOG(1, "%d", *selection);
     if (global->event.keyboard.keycode == ALLEGRO_KEY_DOWN){
@@ -156,8 +157,8 @@ int keys_for_menu(int *selection)
 
     if (*selection < 0)
         *selection = 0;
-    else if (*selection > 1)
-        *selection = 1;
+    else if (*selection > options_num-1)
+        *selection = options_num-1;
 
     return *selection;
 }

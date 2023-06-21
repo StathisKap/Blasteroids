@@ -68,7 +68,7 @@ int blasteroids()
 	}
 
 	if (!al_destroy_blasteroids())
-		error("Couldn't destroy everything");
+		error("Couldn't destroy all Blasteroids Variables");
 	return 0;
 }
 

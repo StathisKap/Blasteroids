@@ -25,6 +25,10 @@ void main()
                     LOG(1, "Blasteroids Case\n");
                     blasteroids();
         	          break;
+        	      case HIGH_SCORE:
+                    LOG(1, "High Score Case\n");
+                    global->done = true;
+        	          break;
         	      case EXIT:
                     LOG(1, "Exit Case\n");
                     global->done = true;
@@ -33,7 +37,8 @@ void main()
         	          break;
         	}
     };
-    al_destroy_all();
+	  if (!al_destroy_all())
+	  	error("Couldn't destroy all Main Variables");
 }
 
 
