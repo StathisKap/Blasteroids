@@ -1,4 +1,4 @@
-#ifndef	BLAST_
+#ifndef BLAST_
 #define BLAST_
 #include "../include/blasteroids.h"
 #endif
@@ -26,7 +26,7 @@ void fire_bullet()
 {
 	if (!al_get_timer_started(global->fire_rate_timer))
 	{
-  	al_start_timer(global->fire_rate_timer);
+		al_start_timer(global->fire_rate_timer);
 		spawn_bullet();
 	}
 

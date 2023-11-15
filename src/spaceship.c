@@ -9,15 +9,16 @@ extern GameState gameState;
 
 void draw_ship()
 {
-	int xoffset = 20 * global->ship.scale / 2 , yoffset = 20 * global->ship.scale / 2; // Half the Bitmap scale * ship scale
+	int xoffset = 20 * global->ship.scale / 2, yoffset = 20 * global->ship.scale / 2;  // Half the Bitmap scale * ship scale
 
-	if(global->SpaceShipBitmapCreated == false)
+
+	if (global->SpaceShipBitmapCreated == false)
 	{
 		float thickness = 2.5f; // just a variable to control the thickness in case we wanna vary it;
 		thickness += global->ship.scale - 1;
 		global->ship.image = al_create_bitmap(20 * global->ship.scale, 20 * global->ship.scale);
- 	  al_set_target_bitmap(global->ship.image);
-	 	al_draw_line(-8 * global->ship.scale + xoffset, 10 * global->ship.scale + yoffset, 0 * global->ship.scale + xoffset, -10 * global->ship.scale + yoffset, global->ship.color, thickness ); //We draw the lines
+		al_set_target_bitmap(global->ship.image);
+		al_draw_line(-8 * global->ship.scale + xoffset, 10 * global->ship.scale + yoffset, 0 * global->ship.scale + xoffset, -10 * global->ship.scale + yoffset, global->ship.color, thickness ); //We draw the lines
 		al_draw_line(0 * global->ship.scale  + xoffset, -10 * global->ship.scale + yoffset, 8 * global->ship.scale + xoffset, 10 * global->ship.scale + yoffset, global->ship.color, thickness);  //We draw the lines
 		al_draw_line(-6 * global->ship.scale + xoffset, 4 * global->ship.scale + yoffset, -1 * global->ship.scale + xoffset, 4 * global->ship.scale + yoffset, global->ship.color, thickness); //We draw the lines
 		al_draw_line(6 * global->ship.scale  + xoffset, 4 * global->ship.scale + yoffset, 1 * global->ship.scale + xoffset, 4 * global->ship.scale + yoffset, global->ship.color, thickness); //We draw the lines
@@ -34,8 +35,8 @@ void draw_ship()
 		al_translate_transform(&global->ship.transform, global->ship.sx, global->ship.sy); //We move the transform to where the ship should be
 		al_use_transform(&global->ship.transform);
 		al_draw_bitmap(global->ship.image,
-			global->ship.scale * -10,
-			global->ship.scale * -10, 0);
+		               global->ship.scale * -10,
+		               global->ship.scale * -10, 0);
 		teleport(&global->ship.sx, &global->ship.sy);
 	}
 	else
@@ -44,8 +45,10 @@ void draw_ship()
 
 void draw_flame() //Draws the flame when it goes forward
 {
-	int xoffset = 20 * global->ship.scale / 2 , yoffset = 20 * global->ship.scale / 2; // Half the Bitmap scale * ship scale
+	int xoffset = 20 * global->ship.scale / 2, yoffset = 20 * global->ship.scale / 2;  // Half the Bitmap scale * ship scale
 	float thickness = 2.5f; // just a variable to control the thickness in case we wanna vary it;
+
+
 	thickness += global->ship.scale - 1;
 	al_identity_transform(&global->ship.transform);
 	al_rotate_transform(&global->ship.transform, global->ship.heading + PI / 2); //We rotate it
@@ -60,6 +63,8 @@ void keys_for_spaceship()
 {
 	// create a keyboard keystate
 	ALLEGRO_KEYBOARD_STATE keystate;
+
+
 	// get the current state of the keyboard
 	al_get_keyboard_state(&keystate);
 
@@ -97,7 +102,7 @@ void keys_for_spaceship()
 
 	// ship decelaration due to "drag"
 	global->ship.speed = global->ship.speed > 0 ? global->ship.speed - DRAG : 0;
-	if(global->ship.speed > SPACESHIP_SPEED_MAX) //Not exceeding max speed
+	if (global->ship.speed > SPACESHIP_SPEED_MAX)//Not exceeding max speed
 		global->ship.speed = SPACESHIP_SPEED_MAX;
 
 	if (global->event.type == ALLEGRO_EVENT_TIMER)
@@ -126,7 +131,7 @@ void respawn()
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 	}
 
-	if(!al_get_timer_started(global->respawn_timer))
+	if (!al_get_timer_started(global->respawn_timer))
 		al_start_timer(global->respawn_timer);
 
 	if (al_get_timer_count(global->respawn_timer) % 5)
@@ -136,9 +141,9 @@ void respawn()
 		al_translate_transform(&global->ship.transform, global->ship.sx, global->ship.sy);
 		al_use_transform(&global->ship.transform);
 		al_draw_tinted_bitmap(global->ship.image,
-			al_map_rgba_f(0.5, 0.5, 0.5, 0.5),
-			global->ship.scale * -10,
-			global->ship.scale * -10, 0);
+		                      al_map_rgba_f(0.5, 0.5, 0.5, 0.5),
+		                      global->ship.scale * -10,
+		                      global->ship.scale * -10, 0);
 	}
 	if (al_get_timer_count(global->respawn_timer) > 30)
 	{
@@ -150,28 +155,30 @@ void respawn()
 
 void life_up(int points) {
 	static int previous_score = 0; // static variable to track previous score
+
+
 	if (global->score >= previous_score + points) {
-	    global->Player_Lives++; // increase player lives by 1
-	    previous_score += points; // update previous score
-			al_play_sample(global->lifeup_sound, 0.7, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+		global->Player_Lives++; // increase player lives by 1
+		previous_score += points; // update previous score
+		al_play_sample(global->lifeup_sound, 0.7, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 	}
 }
 
 void draw_lives()
 {
-		al_identity_transform(&global->ship.transform);
-		al_use_transform(&global->ship.transform);
-		for (short i = 0; i < global->Player_Lives; i++)
-		{
-			al_draw_tinted_scaled_bitmap(global->ship.image,
-					al_map_rgba_f(0.2, 0.7, 0.2, 1.0),
-					0,0,
-					20 * global->ship.scale,
-					20 * global->ship.scale,
-					17 * global->ship.scale * i + 5, // the +5 is the shift from the left
-					5, // Shift from the top
-					15 * global->ship.scale,
-					15 * global->ship.scale,
-					0);
-		}
+	al_identity_transform(&global->ship.transform);
+	al_use_transform(&global->ship.transform);
+	for (short i = 0; i < global->Player_Lives; i++)
+	{
+		al_draw_tinted_scaled_bitmap(global->ship.image,
+		                             al_map_rgba_f(0.2, 0.7, 0.2, 1.0),
+		                             0,0,
+		                             20 * global->ship.scale,
+		                             20 * global->ship.scale,
+		                             17 * global->ship.scale * i + 5, // the +5 is the shift from the left
+		                             5, // Shift from the top
+		                             15 * global->ship.scale,
+		                             15 * global->ship.scale,
+		                             0);
+	}
 }

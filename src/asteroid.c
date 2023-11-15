@@ -10,6 +10,8 @@ void draw_asteroid()
 	int res = 3;
 	int size = res * 50;
 	float thickness = 3.0f * res;
+
+
 	if (global->AsteroidBitmap == NULL)
 	{
 		// Asteroid bitmap
@@ -46,7 +48,7 @@ void draw_asteroid()
 			float s = global->asteroids[i].s = global->asteroids[i].scale * size;
 			ALLEGRO_TRANSFORM transform;
 			al_identity_transform(&transform);
-			al_rotate_transform(&transform, global->asteroids[i].twist);						  // We rotate it
+			al_rotate_transform(&transform, global->asteroids[i].twist);                                              // We rotate it
 			al_translate_transform(&transform, global->asteroids[i].sx, global->asteroids[i].sy); // We move it to an initial position
 			al_use_transform(&transform);
 			al_draw_tinted_scaled_bitmap(
@@ -68,6 +70,8 @@ void Realloc_Asteroid()
 {
 	// Create a temporary array
 	Asteroid *temp = malloc(sizeof(Asteroid) * global->asteroids_alive);
+
+
 	if (temp == NULL)
 	{
 		error("Failed to allocate memory to temp in Realloc Asteroid\n");
@@ -98,6 +102,8 @@ void spawn_asteroid()
 	// Count the number of dead asteroids
 
 	short dead_asteroids = 0;
+
+
 	for (short i = 0; i < global->asteroids_max_count; i++)
 	{
 		if (global->asteroids[i].dead)

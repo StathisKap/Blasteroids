@@ -8,157 +8,159 @@ extern GameState gameState;
 
 int menu()
 {
-    LOG(1, "Start of the Menu\n");
-    int selection = 0;
-    if (!global->disp)
-        init_menu();
+	LOG(1, "Start of the Menu\n");
+	int selection = 0;
+	if (!global->disp)
+		init_menu();
 
-    char *options[] = {"PLAY", "HIGH SCORES","EXIT" };
+	char *options[] = {"PLAY", "HIGH SCORES","EXIT" };
 
-    // Get the number of options
-    short options_num = sizeof(options)/sizeof(options[0]);
+	// Get the number of options
+	short options_num = sizeof(options)/sizeof(options[0]);
 
-    LOG(1, "Drawing the Menu Once\n");
-    draw_menu(&selection, options, options_num);
-    while (gameState == MENU){
-        al_wait_for_event(global->queue, &global->event); // Capture keystrokes
+	LOG(1, "Drawing the Menu Once\n");
+	draw_menu(&selection, options, options_num);
+	while (gameState == MENU){
+		al_wait_for_event(global->queue, &global->event); // Capture keystrokes
 
-        // if the timer has ticked, redraw
-        if (global->event.type == ALLEGRO_EVENT_TIMER){
-            global->redraw = true;
-        }
-       // if the user has pressed ESC or clicked the x on the window. Then close
-        else if (global->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ||
-                 (global->event.type == ALLEGRO_EVENT_KEY_DOWN &&
-                  global->event.keyboard.keycode == ALLEGRO_KEY_ESCAPE))
-            global->done = true;
+		// if the timer has ticked, redraw
+		if (global->event.type == ALLEGRO_EVENT_TIMER){
+			global->redraw = true;
+		}
+		// if the user has pressed ESC or clicked the x on the window. Then close
+		else if (global->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ||
+		         (global->event.type == ALLEGRO_EVENT_KEY_DOWN &&
+		          global->event.keyboard.keycode == ALLEGRO_KEY_ESCAPE))
+			global->done = true;
 
-        if (global->redraw && al_is_event_queue_empty(global->queue))
-        {
-            draw_menu(&selection, options, options_num);
-            global->redraw = false;
-        }
+		if (global->redraw && al_is_event_queue_empty(global->queue))
+		{
+			draw_menu(&selection, options, options_num);
+			global->redraw = false;
+		}
 
-        if (global->event.type == ALLEGRO_EVENT_KEY_DOWN) {
-            selection = keys_for_menu(&selection, options_num);
-        }
-    }
-    return 0;
+		if (global->event.type == ALLEGRO_EVENT_KEY_DOWN) {
+			selection = keys_for_menu(&selection, options_num);
+		}
+	}
+	return 0;
 }
 
 
 void init_menu()
 {
-    LOG(1, "Initialising Global Variables for Menu");
-    srand(0);
-    setlocale(LC_NUMERIC, "");
+	LOG(1, "Initialising Global Variables for Menu");
+	srand(0);
+	setlocale(LC_NUMERIC, "");
 
-	  global->redraw = true;
-	  global->done = false;
+	global->redraw = true;
+	global->done = false;
 
-    if (!al_init())
-        error("Couldn't initialize Allegro");
+	if (!al_init())
+		error("Couldn't initialize Allegro");
 
-    if (!al_init_primitives_addon())
-        error("Couldn't initialize Allegro Primitives");
+	if (!al_init_primitives_addon())
+		error("Couldn't initialize Allegro Primitives");
 
-    if (!al_init_font_addon())
-        error("Couldn't initialize Allegro Font");
+	if (!al_init_font_addon())
+		error("Couldn't initialize Allegro Font");
 
-    if (!al_init_ttf_addon())
-        error("Couldn't initialize Allegro TTF");
+	if (!al_init_ttf_addon())
+		error("Couldn't initialize Allegro TTF");
 
-    global->font = al_load_ttf_font("./assets/arial.ttf", 40, 0);
-    if (!global->font)
-        error("Couldn't Load TTF");
-    else
-        printf("Loaded TTF\n");
+	global->font = al_load_ttf_font("./assets/arial.ttf", 40, 0);
+	if (!global->font)
+		error("Couldn't Load TTF");
+	else
+		printf("Loaded TTF\n");
 
-    if (!al_install_keyboard())
-        error("Couldn't initialize Keyboard");
+	if (!al_install_keyboard())
+		error("Couldn't initialize Keyboard");
 
-    global->queue = al_create_event_queue();
-    if (!global->queue)
-        error("Couldn't initialize Queue");
+	global->queue = al_create_event_queue();
+	if (!global->queue)
+		error("Couldn't initialize Queue");
 
-    global->disp = al_create_display(DISPLAY_HEIGHT, DISPLAY_WIDTH);
-    if (!global->disp)
-        error("Couldn't initialize Display");
+	global->disp = al_create_display(DISPLAY_HEIGHT, DISPLAY_WIDTH);
+	if (!global->disp)
+		error("Couldn't initialize Display");
 
-    global->timer = al_create_timer(1.0 / FPS); // FPS
-	  if (!global->timer)
-		    error("Couldn't initialize Timer");
+	global->timer = al_create_timer(1.0 / FPS); // FPS
+	if (!global->timer)
+		error("Couldn't initialize Timer");
 
-    al_set_window_title(global->disp, "Blasteroids");
+	al_set_window_title(global->disp, "Blasteroids");
 
 
-	  if (!register_menu_events())
-        error("Coulnd't register Menu events");
+	if (!register_menu_events())
+		error("Coulnd't register Menu events");
 
-	  al_start_timer(global->timer);
+	al_start_timer(global->timer);
 
-    LOG(1, "Initialised Global Variables for Menu");
+	LOG(1, "Initialised Global Variables for Menu");
 }
 
 void draw_menu(int *selection, char **options, short options_num)
 {
-		ALLEGRO_TRANSFORM transform;
-		al_identity_transform(&transform);
-    // Set the color to dark green and clear the screen
-    al_clear_to_color(al_map_rgb(0, 100, 0));
-    // Calculate the height of the menu options
-    int font_height = al_get_font_line_height(global->font);
-    int total_height = font_height * 4; // 3 options and 1 additional space for between the options
+	ALLEGRO_TRANSFORM transform;
 
-    // The Y position to start drawing the menu options
-    int start_y = (DISPLAY_HEIGHT - total_height) / 2; // This will center the options
 
-    // Set the colors of the text and the chosen options
-    ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
-    ALLEGRO_COLOR gray= al_map_rgb(150, 150, 150);
+	al_identity_transform(&transform);
+	// Set the color to dark green and clear the screen
+	al_clear_to_color(al_map_rgb(0, 100, 0));
+	// Calculate the height of the menu options
+	int font_height = al_get_font_line_height(global->font);
+	int total_height = font_height * 4; // 3 options and 1 additional space for between the options
 
-    ALLEGRO_COLOR colors[options_num];
+	// The Y position to start drawing the menu options
+	int start_y = (DISPLAY_HEIGHT - total_height) / 2; // This will center the options
 
-    for (int i = 0; i < options_num; i++){
-        colors[i] = *selection == i ? white : gray;
-        al_draw_text(global->font, colors[i], DISPLAY_WIDTH / 2.0, start_y +font_height * i,
-                     ALLEGRO_ALIGN_CENTRE, options[i]);
-    }
-    LOG(1, "Selection in draw_menu: %d", *selection);
+	// Set the colors of the text and the chosen options
+	ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
+	ALLEGRO_COLOR gray= al_map_rgb(150, 150, 150);
 
-		al_use_transform(&transform);
-    al_flip_display();
+	ALLEGRO_COLOR colors[options_num];
+
+	for (int i = 0; i < options_num; i++){
+		colors[i] = *selection == i ? white : gray;
+		al_draw_text(global->font, colors[i], DISPLAY_WIDTH / 2.0, start_y +font_height * i,
+		             ALLEGRO_ALIGN_CENTRE, options[i]);
+	}
+	LOG(1, "Selection in draw_menu: %d", *selection);
+
+	al_use_transform(&transform);
+	al_flip_display();
 }
 
 int register_menu_events()
 {
-    LOG(1, "Registering menu events");
-    al_register_event_source(global->queue, al_get_keyboard_event_source());
-	  al_register_event_source(global->queue, al_get_timer_event_source(global->timer));
-    al_register_event_source(global->queue, al_get_display_event_source(global->disp));
-    LOG(1, "Registered menu events");
-    return 1;
+	LOG(1, "Registering menu events");
+	al_register_event_source(global->queue, al_get_keyboard_event_source());
+	al_register_event_source(global->queue, al_get_timer_event_source(global->timer));
+	al_register_event_source(global->queue, al_get_display_event_source(global->disp));
+	LOG(1, "Registered menu events");
+	return 1;
 }
 
 int keys_for_menu(int *selection, short options_num)
 {
-    LOG(1, "%d", *selection);
-    if (global->event.keyboard.keycode == ALLEGRO_KEY_DOWN){
-        (*selection)++;
-    }
+	LOG(1, "%d", *selection);
+	if (global->event.keyboard.keycode == ALLEGRO_KEY_DOWN){
+		(*selection)++;
+	}
 
-    if (global->event.keyboard.keycode == ALLEGRO_KEY_UP){
-        (*selection)--;
-    }
+	if (global->event.keyboard.keycode == ALLEGRO_KEY_UP){
+		(*selection)--;
+	}
 
-    if (global->event.keyboard.keycode == ALLEGRO_KEY_ENTER){
-        gameState = *selection + 1;
-    }
+	if (global->event.keyboard.keycode == ALLEGRO_KEY_ENTER){
+		gameState = *selection + 1;
+	}
 
-    if (*selection < 0)
-        *selection = 0;
-    else if (*selection > options_num-1)
-        *selection = options_num-1;
+	if (*selection < 0)
+		*selection = 0;
+	else if (*selection > options_num-1)
+		*selection = options_num-1;
 
-    return *selection;
+	return *selection;
 }

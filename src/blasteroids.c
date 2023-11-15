@@ -46,8 +46,8 @@ int blasteroids()
 			if (global->done)
 			{
 				al_draw_text(global->font, al_map_rgb(255, 255, 255),
-							 DISPLAY_WIDTH / 2.0, DISPLAY_HEIGHT / 2.0,
-							 ALLEGRO_ALIGN_CENTER, "GAME OVER!!");
+				             DISPLAY_WIDTH / 2.0, DISPLAY_HEIGHT / 2.0,
+				             ALLEGRO_ALIGN_CENTER, "GAME OVER!!");
 				al_flip_display();
 				al_rest(3);
 				break;
@@ -128,15 +128,15 @@ void blasteroids_init()
 	global->done = false;
 	global->AsteroidBitmap = NULL;
 	global->ship = (Spaceship){
-		DISPLAY_HEIGHT / 2.0,		 //	sx
-		DISPLAY_WIDTH / 2.0,		 // sy
-		3 * PI / 2,				 // heading
-		0,						 // speed
-		0,						 // drift
-		2,						 // scale
-		true,					 // live
+		DISPLAY_HEIGHT / 2.0,            //	sx
+		DISPLAY_WIDTH / 2.0,             // sy
+		3 * PI / 2,                              // heading
+		0,                                               // speed
+		0,                                               // drift
+		2,                                               // scale
+		true,                                    // live
 		al_map_rgb(255, 255, 0), // color
-		NULL,					 // image
+		NULL,                                    // image
 	};
 
 	for (int i = 0; i < global->asteroids_max_count * 2; i++)
@@ -153,7 +153,7 @@ void blasteroids_init()
 	if (!al_reserve_samples(1))
 		error("Couldn't initialize Allegro Audio Reverse");
 
-	if(!al_reserve_samples(100))
+	if (!al_reserve_samples(100))
 		error("Couldn't resever audio samples");
 
 	global->shoot_sound = al_load_sample("./assets/Laser_Shoot.wav");
@@ -210,6 +210,6 @@ void blasteroids_init()
 void draw_score()
 {
 	al_draw_textf(global->font, al_map_rgb(0, 255, 0),
-				 DISPLAY_WIDTH / 2.0, 50,
-				 ALLEGRO_ALIGN_CENTER, "Score: %'u", global->score);
+	              DISPLAY_WIDTH / 2.0, 50,
+	              ALLEGRO_ALIGN_CENTER, "Score: %'u", global->score);
 }
