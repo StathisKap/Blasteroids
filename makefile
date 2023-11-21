@@ -2,14 +2,20 @@ CC = gcc
 SRC_DIR = ./src/
 OBJ_DIR = ./objects/
 BIN_PATH = ./bin/game
-SRC_FILES= $(wildcard $(SRC_DIR)*.c)
-OBJ= $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC_FILES))
-CFLAGS = `pkg-config --cflags --libs allegro_main-5 allegro_font-5 allegro_primitives-5 allegro_image-5 allegro_ttf-5 allegro_audio-5 allegro_acodec-5`
-CFLAGS += -lm -Wno-unused-command-line-argument -g
+SRC_FILES = $(wildcard $(SRC_DIR)*.c)
+OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC_FILES))
+
+# Local Allegro path
+ALLEGRO_DIR = ./lib/allegro
+ALLEGRO_LIBS = -lallegro_main -lallegro -lallegro_font -lallegro_primitives -lallegro_image -lallegro_ttf -lallegro_audio -lallegro_acodec
+
+CFLAGS = -I$(ALLEGRO_DIR)/include -Wno-unused-command-line-argument -g
+LDFLAGS = $(ALLEGRO_LIBS) -L$(ALLEGRO_DIR)/lib -lm -Wl,-rpath,@executable_path/../lib/allegro/lib/
+
 
 $(BIN_PATH): $(OBJ)
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(OBJ) -o $@
+	$(CC) $(OBJ) $(LDFLAGS) -o $@ -v
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(@D)
