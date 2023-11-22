@@ -5,12 +5,26 @@ BIN_PATH = ./bin/game
 SRC_FILES = $(wildcard $(SRC_DIR)*.c)
 OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC_FILES))
 
-# Local Allegro path
-ALLEGRO_DIR = ./lib/allegro
-ALLEGRO_LIBS = -lallegro_main -lallegro -lallegro_font -lallegro_primitives -lallegro_image -lallegro_ttf -lallegro_audio -lallegro_acodec
+# Detect OS
+UNAME_S := $(shell uname -s)
+
+# Echo the OS
+$(info Detected OS: $(UNAME_S))
+
+# Set Allegro library paths based on OS
+ifeq ($(UNAME_S),Linux)
+    ALLEGRO_DIR = ./lib/allegro_linux
+    ALLEGRO_LIBS = -lallegro -lallegro_font -lallegro_primitives -lallegro_image -lallegro_ttf -lallegro_audio -lallegro_acodec
+    RPATH = -Wl,-rpath,$(ALLEGRO_DIR)/lib/
+endif
+ifeq ($(UNAME_S),Darwin)
+    ALLEGRO_DIR = ./lib/allegro_osx
+    ALLEGRO_LIBS = -lallegro_main -lallegro -lallegro_font -lallegro_primitives -lallegro_image -lallegro_ttf -lallegro_audio -lallegro_acodec
+    RPATH = -Wl,-rpath,@executable_path/../lib/allegro/lib/
+endif
 
 CFLAGS = -I$(ALLEGRO_DIR)/include -Wno-unused-command-line-argument -g
-LDFLAGS = $(ALLEGRO_LIBS) -L$(ALLEGRO_DIR)/lib -lm -Wl,-rpath,@executable_path/../lib/allegro/lib/
+LDFLAGS = $(ALLEGRO_LIBS) -L$(ALLEGRO_DIR)/lib -lm $(RPATH)
 
 
 $(BIN_PATH): $(OBJ)
