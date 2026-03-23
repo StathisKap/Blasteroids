@@ -3,3 +3,4 @@ objects/
 bin/
 tags
 .DS_Store
+deps/
