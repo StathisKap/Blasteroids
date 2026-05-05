@@ -2,6 +2,7 @@
 #define SHIP_
 #include "../include/blasteroids.h"
 #include "../include/main.h"
+#include "../include/score.h"
 #endif
 
 extern Global *global;
@@ -119,6 +120,7 @@ void respawn()
 	if (global->Player_Lives <= 0)
 	{
 		gameState = MENU;
+    write_score("stathis", global->score);
 		return;
 	}
 

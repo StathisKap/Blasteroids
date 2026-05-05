@@ -34,7 +34,7 @@ All the entities on the screen get updated every frame using a respective update
 
 ## File Breakdown
 1. blasteroids.c:
-    * Main function goes here and it goes through the main loop. 
+    * Main function goes here and it goes through the main loop.
     * Takes care of a rendering
     * Takes care of initialisation
     * Frees allocated memory
@@ -65,12 +65,12 @@ or apt:
 
     sudo apt-get install liballegro5-dev
 
-Then you need libraries 
+Then you need libraries
     flac, dumb, and opusfile
 Use the package manager of your choosing
 
 Finally run
-    
+
     make
 
 Binary will be `bin/ship`

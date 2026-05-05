@@ -5,6 +5,10 @@ BIN_PATH = ./bin/game
 SRC_FILES = $(wildcard $(SRC_DIR)*.c)
 OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC_FILES))
 
+# SQLite amalgamation
+SQLITE_DIR = deps/sqlite
+SQLITE_OBJ = $(OBJ_DIR)sqlite3.o
+
 # Detect OS
 UNAME_S := $(shell uname -s)
 $(info Detected OS: $(UNAME_S))
@@ -23,29 +27,35 @@ ifeq ($(UNAME_S),Darwin)
     ALLEGRO_LIBS = -lallegro_main -lallegro -lallegro_font -lallegro_primitives \
                    -lallegro_image -lallegro_ttf -lallegro_audio -lallegro_acodec
     ALLEGRO_SENTINEL = $(ALLEGRO_DIR)/lib/liballegro.dylib
+    SQLITE_EXTRA_LIBS =
 endif
 ifeq ($(UNAME_S),Linux)
     JOBS = $(shell nproc)
     ALLEGRO_LIBS = -lallegro -lallegro_font -lallegro_primitives \
                    -lallegro_image -lallegro_ttf -lallegro_audio -lallegro_acodec
     ALLEGRO_SENTINEL = $(ALLEGRO_DIR)/lib/liballegro.so
+    SQLITE_EXTRA_LIBS = -ldl
 endif
 
 RPATH  = -Wl,-rpath,$(abspath $(ALLEGRO_DIR)/lib)
-CFLAGS = -I$(ALLEGRO_DIR)/include -Wno-unused-command-line-argument -g
-LDFLAGS = $(ALLEGRO_LIBS) -L$(ALLEGRO_DIR)/lib -lm $(RPATH)
+CFLAGS = -I$(ALLEGRO_DIR)/include -I$(SQLITE_DIR) -Wno-unused-command-line-argument -g
+LDFLAGS = $(ALLEGRO_LIBS) -L$(ALLEGRO_DIR)/lib -lm $(SQLITE_EXTRA_LIBS) $(RPATH)
 
 .PHONY: all deps clean clean-deps run
 
 all: deps $(BIN_PATH)
 
-$(BIN_PATH): $(OBJ)
+$(BIN_PATH): $(OBJ) $(SQLITE_OBJ)
 	@mkdir -p $(@D)
-	$(CC) $(OBJ) $(LDFLAGS) -o $@
+	$(CC) $(OBJ) $(SQLITE_OBJ) $(LDFLAGS) -o $@
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(ALLEGRO_SENTINEL)
 	@mkdir -p $(@D)
 	$(CC) $< $(CFLAGS) -c -o $@
+
+$(SQLITE_OBJ): $(SQLITE_DIR)/sqlite3.c
+	@mkdir -p $(@D)
+	$(CC) $< -c -O2 -o $@
 
 # Build Allegro from source if not already installed
 deps: $(ALLEGRO_SENTINEL)

@@ -4,3 +4,8 @@ bin/
 tags
 .DS_Store
 deps/
+!deps/sqlite/
+!deps/sqlite/sqlite3.c
+!deps/sqlite/sqlite3.h
+.gitignore
+blasteroids.db
