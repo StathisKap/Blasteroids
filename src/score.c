@@ -1,7 +1,7 @@
 #ifndef SCORE_
 #define SCORE_
-#include "../include/blasteroids.h"
 #include "../include/score.h"
+#include "../include/blasteroids.h"
 #include <sqlite3.h>
 #include <stdio.h>
 #endif
@@ -32,7 +32,7 @@ sqlite3 *open_db() {
   return db;
 };
 
-int write_score(char *name, int points) {
+int write_score(Score *score) {
   sqlite3 *db = open_db();
   sqlite3_stmt *stmt;
   int rc;
@@ -46,8 +46,8 @@ int write_score(char *name, int points) {
     return 1;
   }
 
-  sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC);
-  sqlite3_bind_int(stmt, 2, points);
+  sqlite3_bind_text(stmt, 1, score->name, -1, SQLITE_STATIC);
+  sqlite3_bind_int(stmt, 2, score->points);
   sqlite3_step(stmt);
   sqlite3_reset(stmt);
   sqlite3_close(db);
@@ -72,13 +72,40 @@ Score *get_all_scores(int *count) {
   *count = 0;
 
   while (sqlite3_step(stmt) == SQLITE_ROW) {
-      scores = realloc(scores, (*count + 1) * sizeof(Score));
-      scores[*count].name   = strdup((char *)sqlite3_column_text(stmt, 1));
-      scores[*count].points = sqlite3_column_int(stmt, 2);
-      (*count)++;
+    scores = realloc(scores, (*count + 1) * sizeof(Score));
+    scores[*count].name = strdup((char *)sqlite3_column_text(stmt, 1));
+    scores[*count].points = sqlite3_column_int(stmt, 2);
+    (*count)++;
   }
 
   sqlite3_finalize(stmt);
   sqlite3_close(db);
+  return scores;
+}
+
+void write_score_bin(Score *scores, int count) {
+  FILE *f = fopen("blasteroids.bin", "wb");
+  fwrite(&count, sizeof(int), 1, f);
+  for (int i = 0; i < count; i++) {
+    int len = strlen(scores[i].name) + 1;
+    fwrite(&len, sizeof(int), 1, f);
+    fwrite(scores[i].name, 1, len, f);
+    fwrite(&scores[i].points, sizeof(int), 1, f);
+  }
+  fclose(f);
+}
+
+Score *get_all_scores_bin(int *count) {
+  FILE *f = fopen("scores.bin", "rb");
+  fread(count, sizeof(int), 1, f);
+  Score *scores = malloc(*count * sizeof(Score));
+  for (int i = 0; i < *count; i++) {
+    int len;
+    fread(&len, sizeof(int), 1, f);
+    scores[i].name = malloc(len);
+    fread(scores[i].name, 1, len, f);
+    fread(&scores[i].points, sizeof(int), 1, f);
+  }
+  fclose(f);
   return scores;
 }

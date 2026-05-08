@@ -7,7 +7,7 @@
 
 Global *global;
 GameState gameState;
-void main() {
+int main() {
   int menuSelection = 0;
 
   gameState = MENU;
@@ -30,13 +30,13 @@ void main() {
       int count = 10;
       Score *scores;
       scores = get_all_scores(&count);
-      for (int i = 0; i < count; i++){
-            printf("%s: %d\n", scores[i].name, scores[i].points);
+      for (int i = 0; i < count; i++) {
+        printf("%s: %d\n", scores[i].name, scores[i].points);
       }
       for (int i = 0; i < count; i++)
         free(scores[i].name);
       free(scores);
-      global->done = true;
+      gameState = MENU;
       break;
     case EXIT:
       LOG(1, "Exit Case\n");
@@ -48,6 +48,7 @@ void main() {
   };
   if (!al_destroy_all())
     error("Couldn't destroy all Main Variables");
+  return 0;
 }
 
 int al_destroy_all() {

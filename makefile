@@ -41,7 +41,7 @@ RPATH  = -Wl,-rpath,$(abspath $(ALLEGRO_DIR)/lib)
 CFLAGS = -I$(ALLEGRO_DIR)/include -I$(SQLITE_DIR) -Wno-unused-command-line-argument -g
 LDFLAGS = $(ALLEGRO_LIBS) -L$(ALLEGRO_DIR)/lib -lm $(SQLITE_EXTRA_LIBS) $(RPATH)
 
-.PHONY: all deps clean clean-deps run
+.PHONY: all deps clean clean-deps run compile_commands
 
 all: deps $(BIN_PATH)
 
@@ -81,6 +81,18 @@ $(ALLEGRO_SENTINEL):
 	@echo "==> Installing Allegro..."
 	$(MAKE) -C $(ALLEGRO_BUILD) install
 	@echo "==> Allegro $(ALLEGRO_VERSION) ready."
+
+compile_commands:
+	@echo '[' > compile_commands.json
+	@first=1; for f in $(SRC_FILES); do \
+		[ $$first -eq 0 ] && echo ',' >> compile_commands.json; \
+		first=0; \
+		printf '  {\n    "directory": "%s",\n    "file": "%s/%s",\n    "command": "$(CC) %s $(CFLAGS) -c -o /dev/null"\n  }' \
+			"$(CURDIR)" "$(CURDIR)" "$$f" "$(CURDIR)/$$f" >> compile_commands.json; \
+	done
+	@echo '' >> compile_commands.json
+	@echo ']' >> compile_commands.json
+	@echo "==> compile_commands.json generated."
 
 clean:
 	rm -rf ./objects

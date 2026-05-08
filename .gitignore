@@ -9,3 +9,7 @@ deps/
 !deps/sqlite/sqlite3.h
 .gitignore
 blasteroids.db
+blasteroids.bin
+.clangd
+.cache/
+compile_commands.json
