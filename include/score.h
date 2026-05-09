@@ -6,6 +6,13 @@ typedef struct Score {
   int points;
 } Score;
 
+
+int scoreboard();
+void init_scoreboard();
+void draw_scoreboard(int *selection, Score *scores, short scores_num);
+int register_scoreboard_events();
+int keys_for_scoreboard(int *selection, short options_num);
+
 int write_score(Score *score);
 Score *get_all_scores(int *count);
 void write_score_bin(Score *scores, int count);

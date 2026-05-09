@@ -27,16 +27,17 @@ int main() {
       break;
     case HIGH_SCORE:
       LOG(1, "High Score Case\n");
-      int count = 10;
-      Score *scores;
-      scores = get_all_scores(&count);
-      for (int i = 0; i < count; i++) {
-        printf("%s: %d\n", scores[i].name, scores[i].points);
-      }
-      for (int i = 0; i < count; i++)
-        free(scores[i].name);
-      free(scores);
-      gameState = MENU;
+      //int count = 10;
+      //Score *scores;
+      //scores = get_all_scores(&count);
+      //for (int i = 0; i < count; i++) {
+      //  printf("%s: %d\n", scores[i].name, scores[i].points);
+      //}
+      //for (int i = 0; i < count; i++)
+      //  free(scores[i].name);
+      //free(scores);
+      //gameState = MENU;
+      scoreboard();
       break;
     case EXIT:
       LOG(1, "Exit Case\n");
