@@ -4,6 +4,7 @@
 #include "../include/blasteroids.h"
 #include "../include/main.h"
 #include "allegro5/allegro_font.h"
+#include "allegro5/keycodes.h"
 #include <sqlite3.h>
 #include <stdio.h>
 #endif
@@ -29,10 +30,8 @@ int scoreboard() {
     if (global->event.type == ALLEGRO_EVENT_TIMER) {
       global->redraw = true;
     }
-    // if the user has pressed ESC or clicked the x on the window. Then close
-    else if (global->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE ||
-             (global->event.type == ALLEGRO_EVENT_KEY_DOWN &&
-              global->event.keyboard.keycode == ALLEGRO_KEY_ESCAPE))
+    // if the user clicked the x on the window. Then close
+    else if (global->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
       global->done = true;
 
     if (global->redraw && al_is_event_queue_empty(global->queue)) {
@@ -41,7 +40,7 @@ int scoreboard() {
     }
 
     if (global->event.type == ALLEGRO_EVENT_KEY_DOWN) {
-      selection = keys_for_scoreboard(&selection, count);
+      keys_for_scoreboard(&selection, count);
     }
   }
   return 0;
@@ -155,7 +154,7 @@ int register_scoreboard_events() {
   return 1;
 }
 
-int keys_for_scoreboard(int *selection, short options_num) {
+void keys_for_scoreboard(int *selection, short options_num) {
   LOG(1, "%d", *selection);
   if (global->event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
     (*selection)++;
@@ -165,16 +164,14 @@ int keys_for_scoreboard(int *selection, short options_num) {
     (*selection)--;
   }
 
-  if (global->event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-    gameState = *selection + 1;
+  if (global->event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+    gameState = MENU;
   }
 
   if (*selection < 0)
     *selection = 0;
   else if (*selection > options_num - 1)
     *selection = options_num - 1;
-
-  return *selection;
 }
 
 sqlite3 *open_db() {
