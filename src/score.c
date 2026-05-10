@@ -23,7 +23,7 @@ int scoreboard() {
 
   LOG(1, "Drawing the Scoreboard Once\n");
   draw_scoreboard(&selection, scores, count);
-  while (gameState == HIGH_SCORE) {
+  while (gameState == SCOREBOARD) {
     al_wait_for_event(global->queue, &global->event); // Capture keystrokes
 
     // if the timer has ticked, redraw

@@ -25,7 +25,7 @@ int main() {
       LOG(1, "Blasteroids Case\n");
       blasteroids();
       break;
-    case HIGH_SCORE:
+    case SCOREBOARD:
       LOG(1, "High Score Case\n");
       //int count = 10;
       //Score *scores;

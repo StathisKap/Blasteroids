@@ -12,7 +12,7 @@
 typedef enum GameState {
   MENU,
   PLAY,
-  HIGH_SCORE,
+  SCOREBOARD,
   EXIT,
 } GameState;
 
